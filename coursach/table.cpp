@@ -1,7 +1,7 @@
 ﻿#include <iostream>
 #include <iomanip>
 #include <cstdarg>
-#include "table.h"
+#include "table"
 using namespace std;
 
 int drawRow(int width, ...) {

@@ -23,8 +23,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="table.h">
+    <None Include="table">
       <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
+    </None>
   </ItemGroup>
 </Project>

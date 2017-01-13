@@ -8,7 +8,7 @@
 #include <fstream>
 #include <string>
 #include <conio.h>
-#include "table.h"
+#include "table"
 
 void dosmth() {}
 
