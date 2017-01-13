@@ -14,23 +14,24 @@ void dosmth() {}
 int main(int argc, char* argv[]) {
 	// Main loop
 	while (true) {
-		bool again = false;
-
 		// Choose action loop
-		do switch (_getch()) {
-
+		do switch (getch()) {
+		// TODO
 		case '1': dosmth();
 			break;
-
+		// TODO
 		case '2': dosmth();
 			break;
-
+		// TODO
 		case '3': dosmth();
 			break;
-
-		case '0': return 0;
+		// TODO
+		case '4': dosmth();
+			break;
 		// Exit program
-		default: again = true;
-		} while (again);
+		case '0': return 0;
+		// Incorrect key
+		default: continue;
+		} while (false);
 	}
 }
