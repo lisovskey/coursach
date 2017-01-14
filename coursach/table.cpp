@@ -9,7 +9,7 @@ int drawRow(int width, ...) {
 
 	// Top line
 	int num = width;
-	cout << " " << (char)218;
+	cout << (char)218;
 
 	while (num--) {
 		cout << setfill((char)196) << setw(4) 
@@ -23,7 +23,7 @@ int drawRow(int width, ...) {
 
 	// Middle line
 	num = width;
-	cout << " " << (char)179;
+	cout << (char)179;
 
 	va_start(args, width);
 	while (num--) {
@@ -47,7 +47,7 @@ int drawRow(int width, ...) {
 
 	// Bottom line
 	num = width;
-	cout << " " << (char)192;
+	cout << (char)192;
 
 	while (num--) {
 		cout << setfill((char)196) << setw(4) 
