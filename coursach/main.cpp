@@ -8,43 +8,55 @@
 #include <fstream>
 #include <string>
 #include <conio.h>
-#include "table"
+#include "menu"
+using namespace std;
 
-void dosmth() {}
+struct {
+	string name;
+	int group;
+	int cash;
+};
+
 int auth();
 int userMode();
 int adminMode();
 
+// Temp function
+void dosmth() {}
+
+// Menu loops helper
+bool correct;
+
 int main(int argc, char* argv[]) {
-	return auth() ? userMode() : adminMode();
+	return auth() ? adminMode() : userMode();
 }
 
 int auth() {
-	system("cls");
-	drawRow(2, "User", "Admin");
 	// Auth loop
 	while (true) {
+		drawMenu(2, "Admin", "User");
 		// Choose action loop
 		do switch (_getch()) {
-			// TODO
+			correct = true;
+		// TODO
 		case '1': dosmth();
 			return 1;
-			// TODO
+		// TODO
 		case '0': dosmth();
 			return 0;
-			// Incorrect key
-		default: continue;
-		} while (false);
+		// Incorrect key
+		default: correct = false;
+		} while (!correct);
 	}
 }
 
 int userMode() {
-	system("cls");
-	drawRow(3, "Find", "Sort", "Quit");
 	// Main loop
 	while (true) {
+		drawMenu(3, "Find", "Sort", "Quit");
 		// Choose action loop
 		do switch (_getch()) {
+			correct = true;
 		// TODO
 		case '1': dosmth();
 			break;
@@ -58,18 +70,18 @@ int userMode() {
 		case '0': dosmth();
 			return 0;
 		// Incorrect key
-		default: continue;
-		} while (false);
+		default: correct = false;
+		} while (!correct);
 	}
 }
 
 int adminMode() {
-	system("cls");
-	drawRow(5, "Add", "Edit", "Sort", "Save", "Quit");
 	// Main loop
 	while (true) {
+		drawMenu(5, "Add", "Edit", "Sort", "Save", "Quit");
 		// Choose action loop
 		do switch (_getch()) {
+			correct = true;
 		// TODO
 		case '1': dosmth();
 			break;
@@ -86,7 +98,7 @@ int adminMode() {
 		case '0': dosmth();
 			return 0;
 		// Incorrect key
-		default: continue;
-		} while (false);
+		default: correct = false;
+		} while (!correct);
 	}
 }
