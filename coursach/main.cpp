@@ -11,9 +11,12 @@
 #include "menu"
 using namespace std;
 
-struct {
+struct student {
 	string name;
 	int group;
+	double gpa;
+	bool budget;
+	bool social;
 	int cash;
 };
 
