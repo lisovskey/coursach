@@ -1,7 +1,5 @@
 ﻿/*
-*
 * RitZEED inc.
-*
 */
 
 #include <conio.h>
@@ -13,10 +11,6 @@ int auth();
 int userMode();
 int adminMode();
 int quit();
-
-// Temp function
-void dosmth() {}
-// Menu loops helper
 bool correct;
 
 int main(int argc, char* argv[]) {
@@ -24,85 +18,77 @@ int main(int argc, char* argv[]) {
 }
 
 int auth() {
-	// Auth loop
-	while (true) {
-		drawMenu(2, ADMIN, USER);
-		// Choose action loop
-		do switch (_getch()) {
-			correct = true;
-		// Admin mode
-		case '1': dosmth();
-			return 1;
-		// User mode
-		case '0': dosmth();
-			return 0;
-		// Incorrect key
-		default: correct = false;
-		} while (!correct);
-	}
+	drawMenu(2, ADMIN, USER);
+	// Цикл выбора режимар
+	do switch (_getwch()) {
+		correct = true;
+	// Режим администратора
+	case '1': return 1;
+	// Режим пользователя
+	case '0': return 0;
+	// Неверный ввод
+	default: correct = false;
+	} while (!correct);
 }
 
 int userMode() {
-	// Main loop
+	// Основной цикл
 	while (true) {
 		drawMenu(3, FIND, SORT, QUIT);
-		// Choose action loop
-		do switch (_getch()) {
+		// Цикл выбора действия
+		do switch (_getwch()) {
 			correct = true;
-		// TODO
+		// Найти студента
 		case '1': findStudent();
 			break;
-		// TODO
+		// Сортировать список
 		case '2': sortStudents();
 			break;
-		// Quit program
+		// Выйти из программы
 		case '0': return 0;
-		// Incorrect key
+		// Неверный ввод
 		default: correct = false;
 		} while (!correct);
 	}
 }
 
 int adminMode() {
-	// Main loop
+	// Основной цикл
 	while (true) {
 		drawMenu(5, ADD, EDIT, SORT, SAVE, QUIT);
-		// Choose action loop
-		do switch (_getch()) {
+		// Цикл выбора действия
+		do switch (_getwch()) {
 			correct = true;
-		// TODO
+		// Добавить студента
 		case '1': addStudent();
 			break;
-		// TODO
+		// Изменить информацию
 		case '2': editStudent();
 			break;
-		// TODO
+		// Сортировать список
 		case '3': sortStudents();
 			break;
-		// TODO
-		case '4': dosmth();
+		// Сохранить изменения
+		case '4': saveChanges();
 			break;
-		// Quit program
+		// Выйти из программы
 		case '0': return quit();
-		// Incorrect key
+		// Неверный ввод
 		default: correct = false;
 		} while (!correct);
 	}
 }
 
 int quit() {
-	// Quit loop
-	while (true) {
-		drawMenu(2, SAVE_N_QUIT, QUIT);
-		// Choose action loop
-		do switch (_getch()) {
-			correct = true;
-			// Save changes and quit
-		case '1': saveChanges();
-			// Quit without saving changes
-		case '0': return 0;
-			// Incorrect key
-		default: correct = false;
-		} while (!correct);
-	}
+	drawMenu(2, SAVE_N_QUIT, QUIT);
+	// Цикл выбора действия
+	do switch (_getwch()) {
+		correct = true;
+	// Сохранить и выйти
+	case '1': saveChanges();
+	// Выйти без сохранения
+	case '0': return 0;
+	// Неверный ввод
+	default: correct = false;
+	} while (!correct);
 }
