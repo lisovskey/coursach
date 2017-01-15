@@ -55,7 +55,7 @@ int userMode() {
 		// TODO
 		case '2': sortStudents();
 			break;
-		// TODO
+		// Quit program
 		case '0': return 0;
 		// Incorrect key
 		default: correct = false;
@@ -82,7 +82,7 @@ int adminMode() {
 		// TODO
 		case '4': dosmth();
 			break;
-		// TODO
+		// Quit program
 		case '0': return quit();
 		// Incorrect key
 		default: correct = false;
