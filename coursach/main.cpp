@@ -30,10 +30,10 @@ int auth() {
 		// Choose action loop
 		do switch (_getch()) {
 			correct = true;
-		// TODO
+		// Admin mode
 		case '1': dosmth();
 			return 1;
-		// TODO
+		// User mode
 		case '0': dosmth();
 			return 0;
 		// Incorrect key
