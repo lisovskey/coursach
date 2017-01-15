@@ -18,7 +18,7 @@ int drawMenu(int num, ...) {
 
 	while (count--) {
 		cout << setfill((char)196) << setw(4) 
-			 << (char)194 << setw(12);
+			 << (char)194 << setw(13);
 
 		if (count > 0)
 			cout << (char)191 << " " << (char)218;
@@ -40,7 +40,7 @@ int drawMenu(int num, ...) {
 			cout << num - count;
 
 		cout << " " << setfill(' ') << (char)179 
-			 << " " << setw(10) << left 
+			 << " " << setw(11) << left 
 			 << va_arg(args, char*) << right;
 
 		if (count > 0)
@@ -56,7 +56,7 @@ int drawMenu(int num, ...) {
 
 	while (count--) {
 		cout << setfill((char)196) << setw(4) 
-			 << (char)193 << setw(12);
+			 << (char)193 << setw(13);
 
 		if (count > 0)
 			cout << (char)217 << " " << (char)192;

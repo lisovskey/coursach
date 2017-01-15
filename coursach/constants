@@ -1,0 +1,11 @@
+#pragma once
+
+const char* ADMIN = "ADMIN";
+const char* USER = "USER";
+const char* ADD = "ADD";
+const char* FIND = "FIND";
+const char* EDIT = "EDIT";
+const char* SORT = "SORT";
+const char* SAVE = "SAVE";
+const char* QUIT = "QUIT";
+const char* SAVE_N_QUIT = "SAVE&QUIT";

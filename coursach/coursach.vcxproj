@@ -112,9 +112,14 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />
+    <ClCompile Include="student.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="menu" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="constants" />
+    <ClInclude Include="student" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

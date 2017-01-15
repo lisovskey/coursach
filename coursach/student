@@ -1,0 +1,7 @@
+#pragma once
+
+void addStudent();
+void findStudent();
+void editStudent();
+void sortStudents();
+void saveChanges();
