@@ -8,4 +8,4 @@ const char* EDIT = "EDIT";
 const char* SORT = "SORT";
 const char* SAVE = "SAVE";
 const char* QUIT = "QUIT";
-const char* SAVE_N_QUIT = "SAVE&QUIT";
+const char* BACK = "BACK";

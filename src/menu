@@ -1,4 +1,3 @@
 #pragma once
 
 int drawMenu(int width, ...);
-int chooseAction(int num, ...);

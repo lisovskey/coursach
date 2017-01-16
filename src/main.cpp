@@ -45,7 +45,8 @@ int userMode() {
 		case '2': sortStudents();
 			break;
 		// Выйти из программы
-		case '0': return 0;
+		case '0': if (quit())
+			return 0;
 		// Неверный ввод
 		default: correct = false;
 		} while (!correct);
@@ -72,7 +73,8 @@ int adminMode() {
 		case '4': saveChanges();
 			break;
 		// Выйти из программы
-		case '0': return quit();
+		case '0': if (quit())
+			return 0;
 		// Неверный ввод
 		default: correct = false;
 		} while (!correct);
@@ -80,13 +82,13 @@ int adminMode() {
 }
 
 int quit() {
-	drawMenu(2, SAVE_N_QUIT, QUIT);
+	drawMenu(2, QUIT, BACK);
 	// Цикл выбора действия
 	do switch (_getwch()) {
 		correct = true;
-	// Сохранить и выйти
-	case '1': saveChanges();
-	// Выйти без сохранения
+	// Действительно выйти
+	case '1': return 1;
+	// Вернуться в меню
 	case '0': return 0;
 	// Неверный ввод
 	default: correct = false;

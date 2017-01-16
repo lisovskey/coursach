@@ -66,29 +66,3 @@ int drawMenu(int num, ...) {
 
 	return 0;
 }
-
-int chooseAction(int num, ...) {
-	// MAD DEVELOPMENT
-
-	va_list args;
-	map<char, void(*)()> action;
-	char key;
-
-	va_start(args, num);
-	for (int i = 1; i <= num; i++) {
-		if (i == num)
-			key = '0';
-		else
-			key = '0' + i;
-		action.insert(pair<char, function>(key, va_arg(args, function)));
-	}
-	va_end(args);
-	
-	while (true) {
-		key = _getch();
-		if (action.count(key) > 0)
-			action[key]();
-	}
-
-	return 0;
-}
