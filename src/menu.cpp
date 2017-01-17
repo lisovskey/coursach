@@ -1,4 +1,8 @@
-﻿#include <iostream>
+﻿/*
+* RitZEED inc.
+*/
+
+#include <iostream>
 #include <iomanip>
 #include <cstdarg>
 #include <map>

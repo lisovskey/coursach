@@ -1,3 +1,7 @@
+/*
+* RitZEED inc.
+*/
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -5,10 +9,10 @@
 using namespace std;
 
 typedef struct {
-	int math;
-	int prog;
-	int phys;
-	int phil;
+	short math;
+	short prog;
+	short phys;
+	short phil;
 } marks;
 
 typedef struct {
@@ -35,6 +39,8 @@ void addStudent() {}
 void findStudent() {}
 
 void editStudent() {}
+
+void viewStudents() {}
 
 void sortStudents() {}
 

@@ -3,5 +3,6 @@
 void addStudent();
 void findStudent();
 void editStudent();
+void viewStudents();
 void sortStudents();
 void saveChanges();
