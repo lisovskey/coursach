@@ -1,3 +1,7 @@
+/*
+* RitZEED inc.
+*/
+
 #include <iostream>
 #include <fstream>
 #include <string>
