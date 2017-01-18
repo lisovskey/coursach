@@ -5,14 +5,15 @@
 #include <iostream>
 #include <iomanip>
 #include <cstdarg>
-#include <map>
-#include <conio.h>
+#include <windows.h>
 #include "menu"
 using namespace std;
 
-typedef void(*function)();
-
 int drawMenu(int num, ...) {
+	if (num > 10) {
+		cerr << "Too many arguments" << endl;
+		exit(1);
+	}
 	va_list args;
 	system("cls");
 
@@ -34,25 +35,33 @@ int drawMenu(int num, ...) {
 	count = num;
 	cout << (char)179;
 
-	va_start(args, num);
-	while (count--) {
-		cout << " ";
+	__try {
+		va_start(args, num);
+		while (count--) {
+			cout << " ";
 
-		if (count == 0)
-			cout << "0";
-		else
-			cout << num - count;
+			if (count == 0)
+				cout << "0";
+			else
+				cout << num - count;
 
-		cout << " " << setfill(' ') << (char)179 
-			 << " " << setw(11) << left 
-			 << va_arg(args, char*) << right;
+			cout << " " << setfill(' ') << (char)179
+				<< " " << setw(11) << left
+				<< va_arg(args, char*) << right;
 
-		if (count > 0)
-			cout << (char)179 << " " << (char)179;
-		else
-			cout << (char)179 << endl;
+			if (count > 0)
+				cout << (char)179 << " " << (char)179;
+			else
+				cout << (char)179 << endl;
+		}
+		va_end(args);
 	}
-	va_end(args);
+	__except (GetExceptionCode() == EXCEPTION_ACCESS_VIOLATION ? 
+		EXCEPTION_EXECUTE_HANDLER : 
+		EXCEPTION_CONTINUE_SEARCH) {
+		cerr << "Memory error" << endl;
+		exit(2);
+	}
 
 	// Bottom line
 	count = num;
@@ -68,5 +77,5 @@ int drawMenu(int num, ...) {
 			cout << (char)217 << endl;
 	}
 
-	return 0;
+	return num;
 }

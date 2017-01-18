@@ -3,7 +3,6 @@
 */
 
 #include <conio.h>
-#include <iostream>
 #include "auth"
 #include "constants"
 #include "menu"
@@ -14,7 +13,7 @@ int userMode();
 int adminMode();
 int quit();
 
-int main(int argc, char* argv[]) {
+int main(void) {
 	return auth() ? adminMode() : userMode();
 }
 
