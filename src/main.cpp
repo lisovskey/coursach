@@ -8,7 +8,6 @@
 #include "menu"
 #include "student"
 
-int auth();
 int userMode();
 int adminMode();
 int quit();

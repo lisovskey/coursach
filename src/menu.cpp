@@ -23,12 +23,12 @@ int drawMenu(int num, ...) {
 
 	while (count--) {
 		cout << setfill((char)196) << setw(4) 
-			 << (char)194 << setw(13);
+			 << (char)194 << setw(13) << (char)191;
 
 		if (count > 0)
-			cout << (char)191 << " " << (char)218;
+			cout << " " << (char)218;
 		else
-			cout << (char)191 << endl;
+			cout << endl;
 	}
 
 	// Middle line
@@ -47,12 +47,12 @@ int drawMenu(int num, ...) {
 
 			cout << " " << setfill(' ') << (char)179
 				<< " " << setw(11) << left
-				<< va_arg(args, char*) << right;
+				<< va_arg(args, char*) << right << (char)179;
 
 			if (count > 0)
-				cout << (char)179 << " " << (char)179;
+				cout << " " << (char)179;
 			else
-				cout << (char)179 << endl;
+				cout << endl;
 		}
 		va_end(args);
 	}
@@ -69,12 +69,12 @@ int drawMenu(int num, ...) {
 
 	while (count--) {
 		cout << setfill((char)196) << setw(4) 
-			 << (char)193 << setw(13);
+			 << (char)193 << setw(13) << (char)217;
 
 		if (count > 0)
-			cout << (char)217 << " " << (char)192;
+			cout << " " << (char)192;
 		else
-			cout << (char)217 << endl;
+			cout << endl;
 	}
 
 	return num;
