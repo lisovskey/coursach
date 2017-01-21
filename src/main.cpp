@@ -20,7 +20,7 @@ int userMode() {
 	bool correct;
 	// Основной цикл
 	while (true) {
-		drawMenu(3, FIND, SORT, QUIT);
+		drawMenu(3, FIND, VIEW, QUIT);
 		// Цикл выбора действия
 		do {
 			correct = true;
@@ -29,7 +29,7 @@ int userMode() {
 			case '1': findStudent();
 				break;
 			// Сортировать список
-			case '2': sortStudents();
+			case '2': viewStudents();
 				break;
 			// Выйти из программы
 			case '0': if (quit()) return 0;
@@ -45,7 +45,7 @@ int adminMode() {
 	bool correct;
 	// Основной цикл
 	while (true) {
-		drawMenu(5, ADD, EDIT, SORT, SAVE, QUIT);
+		drawMenu(5, ADD, EDIT, VIEW, SAVE, QUIT);
 		// Цикл выбора действия
 		do {
 			correct = true;
@@ -57,7 +57,7 @@ int adminMode() {
 			case '2': editStudent();
 				break;
 			// Сортировать список
-			case '3': sortStudents();
+			case '3': viewStudents();
 				break;
 			// Сохранить изменения
 			case '4': saveChanges();
@@ -74,13 +74,10 @@ int adminMode() {
 
 int quit() {
 	drawMenu(2, QUIT, BACK);
-	// Цикл выбора действия
-	while (true) {
-		switch (_getwch()) {
-		// Действительно выйти
-		case '1': return 1;
-		// Вернуться в меню
-		case '0': return 0;
-		}
-	}
+	do switch (_getwch()) {
+	// Действительно выйти
+	case '1': return 1;
+	// Вернуться в меню
+	case '0': return 0;
+	} while (true);
 }

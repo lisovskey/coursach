@@ -10,8 +10,8 @@
 using namespace std;
 
 struct account {
-	char	login[21];
-	char	pass[21];
+	char	login[20];
+	char	pass[20];
 	bool	admin;
 };
 
