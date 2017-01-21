@@ -65,7 +65,23 @@ int addStudent() {
 
 void findStudent() {}
 
-void editStudent() {}
+int editStudent() {
+	drawMenu(6, NAME, GROUP, MARKS, CREDITS, CIRCS, BACK);
+	do switch (_getwch()) {
+	// Имя
+	case '1': return 1;
+	// Группу
+	case '2': return 2;
+	// Отметки
+	case '3': return 3;
+	// Зачеты
+	case '4': return 4;
+	// Льготы
+	case '5': return 5;
+	// Вернуться
+	case '0': return 0;
+	} while (true);
+}
 
 int viewStudents() {
 	drawMenu(5, BY_NO, BY_NAME, BY_CASH, BY_GPA, BACK);

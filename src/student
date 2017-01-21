@@ -2,6 +2,6 @@
 
 int addStudent();
 void findStudent();
-void editStudent();
+int editStudent();
 int viewStudents();
 void saveChanges();

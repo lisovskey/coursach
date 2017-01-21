@@ -9,50 +9,33 @@
 #include "menu"
 using namespace std;
 
+HANDLE  hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
 int drawMenu(int num, ...) {
 	if (num > 10) {
 		cerr << "Too many arguments" << endl;
 		exit(1);
 	}
+
+	FlushConsoleInputBuffer(hConsole);
+	SetConsoleTextAttribute(hConsole, 240);
+
 	va_list args;
 	system("cls");
-
-	// Top line
 	int count = num;
-	cout << (char)218;
 
-	while (count--) {
-		cout << setfill((char)196) << setw(4) 
-			 << (char)194 << setw(13) << (char)191;
-
-		if (count > 0)
-			cout << " " << (char)218;
-		else
-			cout << endl;
-	}
-
-	// Middle line
-	count = num;
-	cout << (char)179;
-
+	cout << left;
 	__try {
 		va_start(args, num);
 		while (count--) {
-			cout << " ";
-
+			SetConsoleTextAttribute(hConsole, 15);
 			if (count == 0)
-				cout << "0";
+				cout << " 0 ";
 			else
-				cout << num - count;
+				cout << " " << num - count << " ";
+			SetConsoleTextAttribute(hConsole, 240);
 
-			cout << " " << setfill(' ') << (char)179
-				<< " " << setw(11) << left
-				<< va_arg(args, char*) << right << (char)179;
-
-			if (count > 0)
-				cout << " " << (char)179;
-			else
-				cout << endl;
+			cout << " " << setfill(' ') << setw(11) << va_arg(args, char*);
 		}
 		va_end(args);
 	}
@@ -62,20 +45,7 @@ int drawMenu(int num, ...) {
 		cerr << "Memory error" << endl;
 		exit(2);
 	}
-
-	// Bottom line
-	count = num;
-	cout << (char)192;
-
-	while (count--) {
-		cout << setfill((char)196) << setw(4) 
-			 << (char)193 << setw(13) << (char)217;
-
-		if (count > 0)
-			cout << " " << (char)192;
-		else
-			cout << endl;
-	}
+	cout << endl;
 
 	return num;
 }
