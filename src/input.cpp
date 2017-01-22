@@ -1,15 +1,17 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <limits>
+#include "input"
 using namespace std;
 
 unsigned int getNumber() {
 	string line;
 	unsigned int number;
-	cin.ignore();
 
 	while (true) {
 		getline(cin, line);
+		cin.clear();
 		stringstream ss(line);
 		if (ss >> number && line.find('-') == string::npos)
 			if (ss.eof())
@@ -22,14 +24,17 @@ unsigned int getNumber() {
 bool getBoolean() {
 	string line;
 	bool boolean;
-	cin.ignore();
+	//cin.ignore();
 
 	while (true) {
 		getline(cin, line);
+		cin.clear();
+		for (int i = 0; i < line.length(); ++i)
+			line[i] = tolower(line[i]);
 
-		if (line == "yes" || line == "true")
+		if (line == "yes" || line == "y" || line == "true")
 			return true;
-		else if (line == "no" || line == "false")
+		else if (line == "no" || line == "n" || line == "false")
 			return false;
 
 		stringstream ss(line);

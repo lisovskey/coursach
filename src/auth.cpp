@@ -6,6 +6,7 @@
 #include <fstream>
 #include <string>
 #include <cstring>
+#include <limits>
 #include "constants"
 #include "auth"
 using namespace std;
@@ -26,6 +27,8 @@ bool auth() {
 			cin >> input.login;
 			cout << "pass: ";
 			cin >> input.pass;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
 			while (!fin.eof()) {
 				fin.read((char*)&user, sizeof(account));

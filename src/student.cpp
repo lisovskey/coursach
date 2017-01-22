@@ -5,8 +5,12 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cstring>
 #include <vector>
+#include <regex>
+#include <limits>
 #include "constants"
+#include "olives"
 #include "input"
 #include "menu"
 #include "student"
@@ -40,7 +44,7 @@ typedef struct {
 	unsigned int	group;
 	marks			knowledge;
 	double			gpa;
-	credits			pass;
+	credits			passes;
 	circumstances	privileges;
 	double			cash;
 } student;
@@ -63,18 +67,126 @@ int getStudents() {
 	}
 }
 
+unsigned short getId() {
+	system("cls");
+	cout << "Enter id: ";
+	// TODO
+	return (unsigned short)getNumber();
+}
+
+void setName(student* s) {
+	cout << "Enter name: ";
+	static char name[32];
+	while (true) {
+		cin.getline(name, 32);
+		cin.clear();
+		if (strlen(name) == 31) {
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cout << "Too long name: ";
+		}
+		else if (regex_match(name, regex("^[A-Z a-z]+$"))) {
+			if (wordCount(name) == 2) {
+				strcpy_s(s->name, name);
+				return;
+			}
+			else {
+				cout << "Name and surname: ";
+			}
+		}
+		else {
+			cout << "Invalid name: ";
+		}
+	}
+}
+
+void setGroup(student* s) {
+	cout << "Enter group: ";
+	unsigned int group;
+	while (true) {
+		group = getNumber();
+		if (group > 99999 && group < 1000000) {
+			s->group = group;
+			return;
+		}
+		else {
+			cout << "Invalid group: ";
+		}
+	}
+}
+
+unsigned short getMark() {
+	unsigned int mark;
+	while (true) {
+		mark = getNumber();
+		if (mark > 0 && mark < 11)
+			return mark;
+		else
+			cout << "Invalid mark: ";
+	}
+}
+
+void setMarks(student* s) {
+	double sum = 0;
+	cout << endl << "Enter math mark: ";
+	sum += s->knowledge.math = getMark();
+	cout << "Enter programming mark: ";
+	sum += s->knowledge.prog = getMark();
+	cout << "Enter physics mark: ";
+	sum += s->knowledge.phys = getMark();
+	cout << "Enter philosophy mark: ";
+	sum += s->knowledge.phil = getMark();
+
+	s->gpa = sum / 4;
+}
+
+void setCredits(student* s) {
+	cout << endl << "Passed graphics credit: ";
+	s->passes.graphics = getBoolean();
+	cout << "Passed english credit: ";
+	s->passes.english = getBoolean();
+	cout << "Passed swimming credit: ";
+	s->passes.swimming = getBoolean();
+	cout << "Passed designing credit: ";
+	s->passes.designing = getBoolean();
+	cout << "Passed history credit: ";
+	s->passes.history = getBoolean();
+}
+
+void setCircs(student* s) {
+	cout << endl << "Is on budget: ";
+	s->privileges.budget = getBoolean();
+	cout << "Is activist: ";
+	s->privileges.activism = getBoolean();
+	cout << "Is in poverty: ";
+	s->privileges.poverty = getBoolean();
+	cout << "Is foreign: ";
+	s->privileges.foreign = getBoolean();
+}
+
+void calculateCash(student* s) {
+	s->cash = 0;
+	// TODO
+}
+
 int createStudent() {
+	system("cls");
+	student s;
+	setName(&s);
+	setGroup(&s);
+	setMarks(&s);
+	setCredits(&s);
+	setCircs(&s);
+
+	calculateCash(&s);
+
+	// TODO
+
 	return 0;
 }
 
 int generateStudent() {
 	return 0;
-}
-
-unsigned short getId() {
-	system("cls");
-	cout << "Enter id: ";
-	return (unsigned short)getNumber();
+	// TODO
 }
 
 int addStudent() {
@@ -91,6 +203,7 @@ int addStudent() {
 
 void findStudent() {
 	unsigned short id = getId();
+	// TODO
 }
 
 int editStudent() {
