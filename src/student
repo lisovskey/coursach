@@ -1,7 +1,8 @@
 #pragma once
 
+int getStudents();
 int addStudent();
 void findStudent();
 int editStudent();
 int viewStudents();
-void saveChanges();
+int saveChanges();

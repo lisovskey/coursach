@@ -6,18 +6,19 @@
 #include <fstream>
 #include <string>
 #include <cstring>
+#include "constants"
 #include "auth"
 using namespace std;
 
-struct account {
+typedef struct {
 	char	login[20];
 	char	pass[20];
 	bool	admin;
-};
+} account;
 
 bool auth() {
 	account user, input;
-	ifstream fin("users.bin", ios::binary | ios::in);
+	ifstream fin(ACCS, ios::binary | ios::in);
 	if (fin.is_open()) {
 		while (true) {
 			system("cls");
@@ -27,7 +28,7 @@ bool auth() {
 			cin >> input.pass;
 
 			while (!fin.eof()) {
-				fin.read((char*)&user, sizeof(user));
+				fin.read((char*)&user, sizeof(account));
 				if (strcmp(input.login, user.login) == 0 && 
 					strcmp(input.pass, user.pass) == 0) {
 					fin.close();

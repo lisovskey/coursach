@@ -5,7 +5,9 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 #include "constants"
+#include "input"
 #include "menu"
 #include "student"
 using namespace std;
@@ -32,16 +34,34 @@ typedef struct {
 	bool			foreign		:1;
 } circumstances;
 
-struct student {
+typedef struct {
 	unsigned short	id;
-	string			name;
+	char			name[32];
 	unsigned int	group;
 	marks			knowledge;
 	double			gpa;
 	credits			pass;
 	circumstances	privileges;
 	double			cash;
-};
+} student;
+
+vector<student> students;
+
+int getStudents() {
+	ifstream fin(DATA, ios::binary | ios::in);
+	if (fin.is_open()) {
+		while (!fin.eof()) {
+			student tmp;
+			fin.read((char*)&tmp, sizeof(student));
+			students.push_back(tmp);
+		}
+		fin.close();
+		return students.size();
+	}
+	else {
+		return 0;
+	}
+}
 
 int createStudent() {
 	return 0;
@@ -49,6 +69,12 @@ int createStudent() {
 
 int generateStudent() {
 	return 0;
+}
+
+unsigned short getId() {
+	system("cls");
+	cout << "Enter id: ";
+	return (unsigned short)getNumber();
 }
 
 int addStudent() {
@@ -63,24 +89,35 @@ int addStudent() {
 	} while (true);
 }
 
-void findStudent() {}
+void findStudent() {
+	unsigned short id = getId();
+}
 
 int editStudent() {
-	drawMenu(6, NAME, GROUP, MARKS, CREDITS, CIRCS, BACK);
-	do switch (_getwch()) {
-	// Имя
-	case '1': return 1;
-	// Группу
-	case '2': return 2;
-	// Отметки
-	case '3': return 3;
-	// Зачеты
-	case '4': return 4;
-	// Льготы
-	case '5': return 5;
-	// Вернуться
-	case '0': return 0;
-	} while (true);
+	unsigned short id = getId();
+	bool correct;
+	while (true) {
+		drawMenu(6, NAME, GROUP, MARKS, CREDITS, CIRCS, BACK);
+		do {
+			correct = true;
+			switch (_getwch()) {
+			// Имя
+			case '1': break;
+			// Группу
+			case '2': break;
+			// Отметки
+			case '3': break;
+			// Зачеты
+			case '4': break;
+			// Льготы
+			case '5': break;
+			// Вернуться
+			case '0': return 0;
+			// Неверный ввод
+			default: correct = false;
+			}
+		} while (!correct);
+	}
 }
 
 int viewStudents() {
@@ -99,4 +136,16 @@ int viewStudents() {
 	} while (true);
 }
 
-void saveChanges() {}
+int saveChanges() {
+	ofstream fout(DATA, ios::binary | ios::out);
+	for (auto &person : students)
+		fout.write((char*)&person, sizeof(student));
+	fout.close();
+
+	system("cls");
+	cout << "All changes have been saved\n" << endl;
+	cout << "press any key...";
+	_getwch();
+
+	return students.size();
+}

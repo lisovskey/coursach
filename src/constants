@@ -1,5 +1,8 @@
 #pragma once
 
+static const char* DATA = "students.bin";
+static const char* ACCS = "users.bin";
+
 static const char* ADMIN = "ADMIN";
 static const char* USER = "USER";
 static const char* ADD = "ADD";

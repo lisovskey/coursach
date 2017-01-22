@@ -17,6 +17,7 @@ int main(void) {
 }
 
 int userMode() {
+	getStudents();
 	bool correct;
 	// Основной цикл
 	while (true) {
@@ -42,6 +43,7 @@ int userMode() {
 }
 
 int adminMode() {
+	getStudents();
 	bool correct;
 	// Основной цикл
 	while (true) {
