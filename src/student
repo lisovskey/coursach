@@ -2,7 +2,7 @@
 
 int getStudents();
 int addStudent();
-void findStudent();
+int findStudent();
 int editStudent();
 int viewStudents();
 int saveChanges();

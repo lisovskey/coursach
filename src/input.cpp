@@ -24,7 +24,6 @@ unsigned int getNumber() {
 bool getBoolean() {
 	string line;
 	bool boolean;
-	//cin.ignore();
 
 	while (true) {
 		getline(cin, line);

@@ -34,12 +34,11 @@ typedef struct {
 typedef struct {
 	bool			budget		:1;
 	bool			activism	:1;
-	bool			poverty		:1;
+	bool			dormitory	:1;
 	bool			foreign		:1;
 } circumstances;
 
 typedef struct {
-	unsigned short	id;
 	char			name[32];
 	unsigned int	group;
 	marks			knowledge;
@@ -70,8 +69,14 @@ int getStudents() {
 unsigned short getId() {
 	system("cls");
 	cout << "Enter id: ";
-	// TODO
-	return (unsigned short)getNumber();
+	unsigned short id;
+	while (true) {
+		id = getNumber();
+		if (id > 0 && id <= students.size())
+			return id;
+		else
+			cout << "Invalid id: ";
+	}
 }
 
 void setName(student* s) {
@@ -157,8 +162,8 @@ void setCircs(student* s) {
 	s->privileges.budget = getBoolean();
 	cout << "Is activist: ";
 	s->privileges.activism = getBoolean();
-	cout << "Is in poverty: ";
-	s->privileges.poverty = getBoolean();
+	cout << "Is in dormitory: ";
+	s->privileges.dormitory = getBoolean();
 	cout << "Is foreign: ";
 	s->privileges.foreign = getBoolean();
 }
@@ -171,6 +176,8 @@ void calculateCash(student* s) {
 int createStudent() {
 	system("cls");
 	student s;
+
+	// Filling fields
 	setName(&s);
 	setGroup(&s);
 	setMarks(&s);
@@ -178,15 +185,13 @@ int createStudent() {
 	setCircs(&s);
 
 	calculateCash(&s);
-
-	// TODO
-
-	return 0;
+	students.push_back(s);
+	return students.size();
 }
 
 int generateStudent() {
-	return 0;
 	// TODO
+	return 0;
 }
 
 int addStudent() {
@@ -201,16 +206,36 @@ int addStudent() {
 	} while (true);
 }
 
-void findStudent() {
+int findStudent() {
+	if (students.size() == 0) {
+		cout << "There is nothing to look for\n" << endl;
+		cout << "press any key...";
+		_getwch();
+		return 0;
+	}
 	unsigned short id = getId();
 	// TODO
 }
 
+int deleteStudent(int id) {
+	students.erase(students.begin() + id - 2);
+	cout << "Student was deleted\n" << endl;
+	cout << "press any key...";
+	_getwch();
+	return -1;
+}
+
 int editStudent() {
+	if (students.size() == 0) {
+		cout << "There is nothing to edit\n" << endl;
+		cout << "press any key...";
+		_getwch();
+		return 0;
+	}
 	unsigned short id = getId();
 	bool correct;
 	while (true) {
-		drawMenu(6, NAME, GROUP, MARKS, CREDITS, CIRCS, BACK);
+		drawMenu(7, NAME, GROUP, MARKS, CREDITS, CIRCS, DELETE, BACK);
 		do {
 			correct = true;
 			switch (_getwch()) {
@@ -224,6 +249,8 @@ int editStudent() {
 			case '4': break;
 			// Льготы
 			case '5': break;
+			// Удалить
+			case '6': return deleteStudent(id);
 			// Вернуться
 			case '0': return 0;
 			// Неверный ввод
@@ -234,6 +261,12 @@ int editStudent() {
 }
 
 int viewStudents() {
+	if (students.size() == 0) {
+		cout << "There is nothing to show\n" << endl;
+		cout << "press any key...";
+		_getwch();
+		return 0;
+	}
 	drawMenu(5, BY_NO, BY_NAME, BY_CASH, BY_GPA, BACK);
 	do switch (_getwch()) {
 	// По номеру
@@ -250,6 +283,12 @@ int viewStudents() {
 }
 
 int saveChanges() {
+	if (students.size() == 0) {
+		cout << "There is nothing to save\n" << endl;
+		cout << "press any key...";
+		_getwch();
+		return 0;
+	}
 	ofstream fout(DATA, ios::binary | ios::out);
 	for (auto &person : students)
 		fout.write((char*)&person, sizeof(student));
