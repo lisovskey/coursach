@@ -39,6 +39,7 @@ typedef struct {
 } circumstances;
 
 typedef struct {
+	unsigned short	id;
 	char			name[32];
 	unsigned int	group;
 	marks			knowledge;
@@ -53,7 +54,7 @@ vector<student> students;
 int getStudents() {
 	ifstream fin(DATA, ios::binary | ios::in);
 	if (fin.is_open()) {
-		while (!fin.eof()) {
+		while (fin.peek() != EOF) {
 			student tmp;
 			fin.read((char*)&tmp, sizeof(student));
 			students.push_back(tmp);
@@ -67,7 +68,6 @@ int getStudents() {
 }
 
 unsigned short getId() {
-	system("cls");
 	cout << "Enter id: ";
 	unsigned short id;
 	while (true) {
@@ -177,7 +177,6 @@ int createStudent() {
 	system("cls");
 	student s;
 
-	// Filling fields
 	setName(&s);
 	setGroup(&s);
 	setMarks(&s);
@@ -185,8 +184,13 @@ int createStudent() {
 	setCircs(&s);
 
 	calculateCash(&s);
+	s.id = students.size() + 1;
 	students.push_back(s);
-	return students.size();
+	
+	cout << "\nStudent has been added\n" << endl;
+	cout << "press any key...";
+	_getwch();
+	return s.id;
 }
 
 int generateStudent() {
@@ -207,18 +211,33 @@ int addStudent() {
 }
 
 int findStudent() {
+	system("cls");
 	if (students.size() == 0) {
 		cout << "There is nothing to look for\n" << endl;
 		cout << "press any key...";
 		_getwch();
 		return 0;
 	}
-	unsigned short id = getId();
-	// TODO
+	char request[32];
+	cin.getline(request, 32);
+	cin.clear();
+	if (strlen(request) == 31)
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+	for (auto person : students) {
+		if (strstr(person.name, request) != NULL) {
+			// TODO
+			cout << "press any key...";
+			_getwch();
+			return person.id;
+		}
+	}
+	return 0;
 }
 
 int deleteStudent(int id) {
-	students.erase(students.begin() + id - 2);
+	system("cls");
+	students.erase(students.begin() + id - 1);
 	cout << "Student was deleted\n" << endl;
 	cout << "press any key...";
 	_getwch();
@@ -226,6 +245,7 @@ int deleteStudent(int id) {
 }
 
 int editStudent() {
+	system("cls");
 	if (students.size() == 0) {
 		cout << "There is nothing to edit\n" << endl;
 		cout << "press any key...";
@@ -240,15 +260,20 @@ int editStudent() {
 			correct = true;
 			switch (_getwch()) {
 			// Имя
-			case '1': break;
+			case '1': setName(&students[id - 1]);
+				break;
 			// Группу
-			case '2': break;
+			case '2': setGroup(&students[id - 1]);
+				break;
 			// Отметки
-			case '3': break;
+			case '3': setMarks(&students[id - 1]);
+				break;
 			// Зачеты
-			case '4': break;
+			case '4': setCredits(&students[id - 1]);
+				break;
 			// Льготы
-			case '5': break;
+			case '5': setCircs(&students[id - 1]);
+				break;
 			// Удалить
 			case '6': return deleteStudent(id);
 			// Вернуться
@@ -289,8 +314,8 @@ int saveChanges() {
 		_getwch();
 		return 0;
 	}
-	ofstream fout(DATA, ios::binary | ios::out);
-	for (auto &person : students)
+	ofstream fout(DATA, ios::binary | ios::out | ios_base::trunc);
+	for (auto person : students)
 		fout.write((char*)&person, sizeof(student));
 	fout.close();
 
