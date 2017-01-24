@@ -8,7 +8,6 @@
 #include <cstring>
 #include <vector>
 #include <regex>
-#include <limits>
 #include "constants"
 #include "olives"
 #include "input"
@@ -86,7 +85,7 @@ void setName(student* s) {
 		cin.getline(name, 32);
 		cin.clear();
 		if (strlen(name) == 31) {
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cin.ignore(10000, '\n');
 			cout << "Too long name: ";
 		}
 		else if (regex_match(name, regex("^[A-Z a-z]+$"))) {
@@ -222,7 +221,7 @@ int findStudent() {
 	cin.getline(request, 32);
 	cin.clear();
 	if (strlen(request) == 31)
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		cin.ignore(10000, '\n');
 
 	for (auto person : students) {
 		if (strstr(person.name, request) != NULL) {
@@ -255,7 +254,7 @@ int editStudent() {
 	unsigned short id = getId();
 	bool correct;
 	while (true) {
-		drawMenu(7, NAME, GROUP, MARKS, CREDITS, CIRCS, DELETE, BACK);
+		drawMenu(7, NAME, GROUP, MARKS, CREDITS, CIRCS, REMOVE, BACK);
 		do {
 			correct = true;
 			switch (_getwch()) {

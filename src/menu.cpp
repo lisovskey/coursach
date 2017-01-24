@@ -19,7 +19,6 @@ int drawMenu(int num, ...) {
 
 	FlushConsoleInputBuffer(hConsole);
 	SetConsoleTextAttribute(hConsole, 240);
-
 	va_list args;
 	system("cls");
 	int count = num;

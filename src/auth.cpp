@@ -1,4 +1,4 @@
-/*
+﻿/*
 * RitZEED inc.
 */
 
@@ -6,7 +6,7 @@
 #include <fstream>
 #include <string>
 #include <cstring>
-#include <limits>
+#include <windows.h>
 #include "constants"
 #include "auth"
 using namespace std;
@@ -17,6 +17,38 @@ typedef struct {
 	bool	admin;
 } account;
 
+string getPass() {
+	string result;
+
+	DWORD mode, count;
+	HANDLE ih = GetStdHandle(STD_INPUT_HANDLE);
+	HANDLE oh = GetStdHandle(STD_OUTPUT_HANDLE);
+	if (!GetConsoleMode(ih, &mode))
+		throw runtime_error(
+			"getPass: You must be connected to a console to use this program.\n"
+		);
+	SetConsoleMode(ih, mode & ~(ENABLE_ECHO_INPUT | ENABLE_LINE_INPUT));
+
+	char c;
+	char symbol[1];
+	symbol[0] = (char)250;
+	while (ReadConsoleA(ih, &c, 1, &count, NULL) && (c != '\r') && (c != '\n')) {
+		if (c == '\b') {
+			if (result.length()) {
+				WriteConsoleA(oh, "\b \b", 3, &count, NULL);
+				result.erase(result.end() - 1);
+			}
+		}
+		else {
+			WriteConsoleA(oh, symbol, 1, &count, NULL);
+			result.push_back(c);
+		}
+	}
+	SetConsoleMode(ih, mode);
+
+	return result;
+}
+
 bool auth() {
 	account user, input;
 	ifstream fin(ACCS, ios::binary | ios::in);
@@ -26,9 +58,9 @@ bool auth() {
 			cout << "login: ";
 			cin >> input.login;
 			cout << "pass: ";
-			cin >> input.pass;
+			strcpy_s(input.pass, getPass().c_str());
 			cin.clear();
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cin.ignore(10000, '\n');
 
 			while (!fin.eof()) {
 				fin.read((char*)&user, sizeof(account));

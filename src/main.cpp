@@ -10,7 +10,7 @@
 
 int userMode();
 int adminMode();
-int quit();
+bool quit();
 
 int main(void) {
 	return auth() ? adminMode() : userMode();
@@ -74,12 +74,12 @@ int adminMode() {
 	}
 }
 
-int quit() {
+bool quit() {
 	drawMenu(2, QUIT, BACK);
 	do switch (_getwch()) {
 	// Действительно выйти
-	case '1': return 1;
+	case '1': return true;
 	// Вернуться в меню
-	case '0': return 0;
+	case '0': return false;
 	} while (true);
 }

@@ -23,4 +23,4 @@ static const char* GROUP = "GROUP";
 static const char* MARKS = "MARKS";
 static const char* CREDITS = "CREDITS";
 static const char* CIRCS = "CIRCS";
-static const char* DELETE = "DELETE";
+static const char* REMOVE = "REMOVE";
