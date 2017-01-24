@@ -40,7 +40,6 @@ typedef struct {
 } circumstances;
 
 typedef struct {
-	unsigned short	id;
 	char			name[24];
 	unsigned int	group;
 	marks			knowledge;
@@ -188,13 +187,12 @@ int createStudent() {
 	setCircs(&s);
 
 	calculateCash(&s);
-	s.id = students.size() + 1;
 	students.push_back(s);
 	
 	cout << "\nStudent has been added\n" << endl;
 	cout << "press any key...";
 	_getwch();
-	return s.id;
+	return students.size();;
 }
 
 int generateStudent() {
@@ -215,7 +213,7 @@ int addStudent() {
 }
 
 void viewList(vector<student> list, int id = NULL) {
-	int i, to;
+	unsigned int i, to;
 	bool stop;
 	if (id == NULL) {
 		system("cls");
@@ -271,7 +269,7 @@ void viewList(vector<student> list, int id = NULL) {
 			circs += "-";
 
 		cout << endl << right << setfill('0') << setw(2)
-			<< person.id << left << setfill(' ')
+			<< i + 1 << left << setfill(' ')
 			<< (char)179 << setw(24) << person.name
 			<< (char)179 << setw(11) << person.group
 			<< (char)179 << setw(9) << person.gpa
@@ -302,20 +300,21 @@ int findStudent() {
 	cout << "search: ";
 	getline(cin, request);
 	cin.clear();
-	for (int i = 0; i < request.length(); ++i)
+	for (unsigned short i = 0; i < request.length(); ++i)
 		request[i] = tolower(request[i]);
 
 	system("cls");
 	string tmp;
-	for (auto person : students) {
+	for (unsigned short i = 0; i < students.size(); i++) {
+		student person = students[i];
 		tmp = person.name;
-		for (int i = 0; i < tmp.length(); ++i)
+		for (unsigned short i = 0; i < tmp.length(); ++i)
 			tmp[i] = tolower(tmp[i]);
 		if (tmp.find(request) != string::npos) {
-			viewList(students, person.id);
+			viewList(students, i + 1);
 			cout << "press any key...";
 			_getwch();
-			return person.id;
+			return i + 1;
 		}
 	}
 
@@ -399,12 +398,6 @@ int viewStudents() {
 }
 
 int saveChanges() {
-	if (students.size() == 0) {
-		cout << "There is nothing to save\n" << endl;
-		cout << "press any key...";
-		_getwch();
-		return 0;
-	}
 	ofstream fout(DATA, ios::binary | ios::out | ios_base::trunc);
 	for (auto person : students)
 		fout.write((char*)&person, sizeof(student));

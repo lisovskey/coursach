@@ -1,3 +1,7 @@
+/*
+* RitZEED inc.
+*/
+
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -28,7 +32,7 @@ bool getBoolean() {
 	while (true) {
 		getline(cin, line);
 		cin.clear();
-		for (int i = 0; i < line.length(); ++i)
+		for (unsigned short i = 0; i < line.length(); ++i)
 			line[i] = tolower(line[i]);
 
 		if (line == "yes" || line == "y" || line == "true")

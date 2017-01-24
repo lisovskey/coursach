@@ -1,3 +1,7 @@
+/*
+* RitZEED inc.
+*/
+
 #include <cstring>
 #include <cstdarg>
 #include <windows.h>
@@ -6,10 +10,18 @@
 int wordCount(char* str) {
 	int count = 0;
 	int len = strlen(str);
-	for (int i = 0; i <= len; i++)
-		if (str[i] == ' ' || str[i] == '\0')
-			if (str[i + 1] != ' ' || i == len)
+	for (int i = 0; i <= len; i++) {
+		if (str[i] == ' ') {
+			if (str[i + 1] != ' ') {
 				count++;
+			}
+		}
+		else if (str[i] == '\0') {
+			if (str[i - 1] != ' ') {
+				count++;
+			}
+		}
+	}
 	return count;
 }
 
