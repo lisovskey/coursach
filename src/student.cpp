@@ -1,13 +1,15 @@
-/*
+ï»¿/*
 * RitZEED inc.
 */
 
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <string>
 #include <cstring>
 #include <vector>
 #include <regex>
+#include <windows.h>
 #include "constants"
 #include "olives"
 #include "input"
@@ -39,7 +41,7 @@ typedef struct {
 
 typedef struct {
 	unsigned short	id;
-	char			name[32];
+	char			name[24];
 	unsigned int	group;
 	marks			knowledge;
 	double			gpa;
@@ -80,11 +82,11 @@ unsigned short getId() {
 
 void setName(student* s) {
 	cout << "Enter name: ";
-	static char name[32];
+	static char name[24];
 	while (true) {
-		cin.getline(name, 32);
+		cin.getline(name, 24);
 		cin.clear();
-		if (strlen(name) == 31) {
+		if (strlen(name) == 23) {
 			cin.ignore(10000, '\n');
 			cout << "Too long name: ";
 		}
@@ -131,7 +133,7 @@ unsigned short getMark() {
 
 void setMarks(student* s) {
 	double sum = 0;
-	cout << endl << "Enter math mark: ";
+	cout << "Enter math mark: ";
 	sum += s->knowledge.math = getMark();
 	cout << "Enter programming mark: ";
 	sum += s->knowledge.prog = getMark();
@@ -144,7 +146,7 @@ void setMarks(student* s) {
 }
 
 void setCredits(student* s) {
-	cout << endl << "Passed graphics credit: ";
+	cout << "Passed graphics credit: ";
 	s->passes.graphics = getBoolean();
 	cout << "Passed english credit: ";
 	s->passes.english = getBoolean();
@@ -157,7 +159,7 @@ void setCredits(student* s) {
 }
 
 void setCircs(student* s) {
-	cout << endl << "Is on budget: ";
+	cout << "Is on budget: ";
 	s->privileges.budget = getBoolean();
 	cout << "Is activist: ";
 	s->privileges.activism = getBoolean();
@@ -178,8 +180,11 @@ int createStudent() {
 
 	setName(&s);
 	setGroup(&s);
+	cout << endl;
 	setMarks(&s);
+	cout << endl;
 	setCredits(&s);
+	cout << endl;
 	setCircs(&s);
 
 	calculateCash(&s);
@@ -200,13 +205,89 @@ int generateStudent() {
 int addStudent() {
 	drawMenu(3, MANUAL, GENERATE, BACK);
 	do switch (_getwch()) {
-	// Äîáàâèòü âðó÷íóþ
+	// Ð”Ð¾Ð±Ð°Ð²Ð¸Ñ‚ÑŒ Ð²Ñ€ÑƒÑ‡Ð½ÑƒÑŽ
 	case '1': return createStudent();
-	// Ñãåíåðèðîâàòü
+	// Ð¡Ð³ÐµÐ½ÐµÑ€Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ
 	case '2': return generateStudent();
-	// Âåðíóòüñÿ
+	// Ð’ÐµÑ€Ð½ÑƒÑ‚ÑŒÑÑ
 	case '0': return 0;
 	} while (true);
+}
+
+void viewList(vector<student> list, int id = NULL) {
+	int i, to;
+	bool stop;
+	if (id == NULL) {
+		system("cls");
+		i = 0;
+		to = list.size();
+		stop = true;
+	}
+	else {
+		i = id - 1;
+		to = id;
+		stop = false;
+	}
+
+	HANDLE  hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	FlushConsoleInputBuffer(hConsole);
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << left << setw(2) << "id"
+		<< (char)179 << setw(24) << "name"
+		<< (char)179 << setw(11) << "group"
+		<< (char)179 << setw(9) << "gpa"
+		<< (char)179 << setw(9) << "passed"
+		<< (char)179 << setw(9) << "circs"
+		<< (char)179 << setw(11) << "cash";
+	SetConsoleTextAttribute(hConsole, 240);
+
+	while (i < to) {
+		student person = list[i];
+		string passes = "";
+		int count = 0;
+		if (person.passes.graphics)
+			count++;
+		if (person.passes.english)
+			count++;
+		if (person.passes.swimming)
+			count++;
+		if (person.passes.designing)
+			count++;
+		if (person.passes.history)
+			count++;
+		passes += '0' + count;
+		passes += "/5";
+
+		string circs = "";
+		if (person.privileges.budget)
+			circs += "b ";
+		if (person.privileges.activism)
+			circs += "a ";
+		if (person.privileges.dormitory)
+			circs += "d ";
+		if (person.privileges.foreign)
+			circs += "f";
+		if (circs.length() == 0)
+			circs += "-";
+
+		cout << endl << right << setfill('0') << setw(2)
+			<< person.id << left << setfill(' ')
+			<< (char)179 << setw(24) << person.name
+			<< (char)179 << setw(11) << person.group
+			<< (char)179 << setw(9) << person.gpa
+			<< (char)179 << setw(9) << passes
+			<< (char)179 << setw(9) << circs
+			<< (char)179 << setw(11) << fixed 
+			<< setprecision(2) << person.cash;
+
+		i++;
+	}
+	cout << endl << endl;
+
+	if (stop) {
+		cout << "press any key...";
+		_getwch();
+	}
 }
 
 int findStudent() {
@@ -217,20 +298,30 @@ int findStudent() {
 		_getwch();
 		return 0;
 	}
-	char request[32];
-	cin.getline(request, 32);
+	string request;
+	cout << "search: ";
+	getline(cin, request);
 	cin.clear();
-	if (strlen(request) == 31)
-		cin.ignore(10000, '\n');
+	for (int i = 0; i < request.length(); ++i)
+		request[i] = tolower(request[i]);
 
+	system("cls");
+	string tmp;
 	for (auto person : students) {
-		if (strstr(person.name, request) != NULL) {
-			// TODO
+		tmp = person.name;
+		for (int i = 0; i < tmp.length(); ++i)
+			tmp[i] = tolower(tmp[i]);
+		if (tmp.find(request) != string::npos) {
+			viewList(students, person.id);
 			cout << "press any key...";
 			_getwch();
 			return person.id;
 		}
 	}
+
+	cout << "Nothong found\n" << endl;
+	cout << "press any key...";
+	_getwch();
 	return 0;
 }
 
@@ -255,29 +346,30 @@ int editStudent() {
 	bool correct;
 	while (true) {
 		drawMenu(7, NAME, GROUP, MARKS, CREDITS, CIRCS, REMOVE, BACK);
+		viewList(students, id);
 		do {
 			correct = true;
 			switch (_getwch()) {
-			// Èìÿ
+			// Ð˜Ð¼Ñ
 			case '1': setName(&students[id - 1]);
 				break;
-			// Ãðóïïó
+			// Ð“Ñ€ÑƒÐ¿Ð¿Ñƒ
 			case '2': setGroup(&students[id - 1]);
 				break;
-			// Îòìåòêè
+			// ÐžÑ‚Ð¼ÐµÑ‚ÐºÐ¸
 			case '3': setMarks(&students[id - 1]);
 				break;
-			// Çà÷åòû
+			// Ð—Ð°Ñ‡ÐµÑ‚Ñ‹
 			case '4': setCredits(&students[id - 1]);
 				break;
-			// Ëüãîòû
+			// Ð›ÑŒÐ³Ð¾Ñ‚Ñ‹
 			case '5': setCircs(&students[id - 1]);
 				break;
-			// Óäàëèòü
+			// Ð£Ð´Ð°Ð»Ð¸Ñ‚ÑŒ
 			case '6': return deleteStudent(id);
-			// Âåðíóòüñÿ
+			// Ð’ÐµÑ€Ð½ÑƒÑ‚ÑŒÑÑ
 			case '0': return 0;
-			// Íåâåðíûé ââîä
+			// ÐÐµÐ²ÐµÑ€Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´
 			default: correct = false;
 			}
 		} while (!correct);
@@ -293,15 +385,15 @@ int viewStudents() {
 	}
 	drawMenu(5, BY_NO, BY_NAME, BY_CASH, BY_GPA, BACK);
 	do switch (_getwch()) {
-	// Ïî íîìåðó
-	case '1': return 1;
-	// Ïî èìåíè
+	// ÐŸÐ¾ Ð½Ð¾Ð¼ÐµÑ€Ñƒ
+	case '1': viewList(students);
+	// ÐŸÐ¾ Ð¸Ð¼ÐµÐ½Ð¸
 	case '2': return 2;
-	// Ïî ñòèïåíäèè
+	// ÐŸÐ¾ ÑÑ‚Ð¸Ð¿ÐµÐ½Ð´Ð¸Ð¸
 	case '3': return 3;
-	// Ïî ñðåäíåìó áàëëó
+	// ÐŸÐ¾ ÑÑ€ÐµÐ´Ð½ÐµÐ¼Ñƒ Ð±Ð°Ð»Ð»Ñƒ
 	case '4': return 4;
-	// Âåðíóòüñÿ
+	// Ð’ÐµÑ€Ð½ÑƒÑ‚ÑŒÑÑ
 	case '0': return 0;
 	} while (true);
 }

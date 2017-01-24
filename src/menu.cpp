@@ -12,7 +12,7 @@ using namespace std;
 HANDLE  hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
 int drawMenu(int num, ...) {
-	if (num > 10) {
+	if (num > 7) {
 		cerr << "Too many arguments" << endl;
 		exit(1);
 	}
@@ -34,7 +34,7 @@ int drawMenu(int num, ...) {
 				cout << " " << num - count << " ";
 			SetConsoleTextAttribute(hConsole, 240);
 
-			cout << " " << setfill(' ') << setw(11) << va_arg(args, char*);
+			cout << " " << setfill(' ') << setw(8) << va_arg(args, char*);
 		}
 		va_end(args);
 	}
