@@ -377,6 +377,7 @@ int editStudent() {
 
 int viewStudents() {
 	if (students.size() == 0) {
+		system("cls");
 		cout << "There is nothing to show\n" << endl;
 		cout << "press any key...";
 		_getwch();
