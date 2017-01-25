@@ -35,8 +35,10 @@ typedef struct {
 typedef struct {
 	bool			budget		:1;
 	bool			activism	:1;
-	bool			dormitory	:1;
+	bool			science		:1;
 	bool			foreign		:1;
+	bool			invalid		:1;
+	bool			dormitory	:1;
 } circumstances;
 
 typedef struct {
@@ -140,7 +142,6 @@ void setMarks(student* s) {
 	sum += s->knowledge.phys = getMark();
 	cout << "Enter philosophy mark: ";
 	sum += s->knowledge.phil = getMark();
-
 	s->gpa = sum / 4;
 }
 
@@ -162,15 +163,63 @@ void setCircs(student* s) {
 	s->privileges.budget = getBoolean();
 	cout << "Is activist: ";
 	s->privileges.activism = getBoolean();
-	cout << "Is in dormitory: ";
-	s->privileges.dormitory = getBoolean();
+	cout << "Do scince: ";
+	s->privileges.science = getBoolean();
 	cout << "Is foreign: ";
 	s->privileges.foreign = getBoolean();
+	cout << "Is invalid: ";
+	s->privileges.invalid = getBoolean();
+	cout << "Lives in dormitory: ";
+	s->privileges.dormitory = getBoolean();
 }
 
-void calculateCash(student* s) {
-	s->cash = 0;
-	// TODO
+bool calculateCash(student* s) {
+	double cash;
+	if (s->privileges.foreign) { 
+		cash = 167.74;
+	}
+	else if (s->privileges.budget) {
+		cash = 58.28;
+	}
+	else {
+		cash = 0;
+	}
+	
+	if (s->knowledge.math < 4 ||
+		s->knowledge.prog < 4 ||
+		s->knowledge.phys < 4 ||
+		s->knowledge.phil < 4) {
+		return false;
+	}
+
+	if (s->gpa < 5) {
+		cash *= 0.8;
+	}
+	else if (s->gpa > 5.99 && s->gpa < 8) {
+		cash *= 1.2;
+	}
+	else if (s->gpa > 7.99 && s->gpa < 9) {
+		cash *= 1.4;
+	}
+	else if (s->gpa > 8.99) {
+		cash *= 1.6;
+	}
+
+	if (s->privileges.invalid) {
+		cash *= 1.5;
+	}
+	if (s->privileges.activism) {
+		cash *= 1.1;
+	}
+	if (s->privileges.science) {
+		cash *= 1.1;
+	}
+	if (s->privileges.dormitory) {
+		cash -= 16.42;
+	}
+
+	s->cash = cash;
+	return true;
 }
 
 int createStudent() {
@@ -186,13 +235,18 @@ int createStudent() {
 	cout << endl;
 	setCircs(&s);
 
-	calculateCash(&s);
-	students.push_back(s);
-	
+	if (!calculateCash(&s)) {
+		cout << "\nStudent cannot study here\n" << endl;
+		cout << "press any key...";
+		_getwch();
+		return students.size();
+	}
+
+	students.push_back(s);	
 	cout << "\nStudent has been added\n" << endl;
 	cout << "press any key...";
 	_getwch();
-	return students.size();;
+	return students.size();
 }
 
 int generateStudent() {
@@ -233,9 +287,9 @@ void viewList(vector<student> list, int id = NULL) {
 	cout << left << setw(2) << "id"
 		<< (char)179 << setw(24) << "name"
 		<< (char)179 << setw(11) << "group"
-		<< (char)179 << setw(9) << "gpa"
-		<< (char)179 << setw(9) << "passed"
-		<< (char)179 << setw(9) << "circs"
+		<< (char)179 << setw(8) << "gpa"
+		<< (char)179 << setw(8) << "passed"
+		<< (char)179 << setw(11) << "circs"
 		<< (char)179 << setw(11) << "cash";
 	SetConsoleTextAttribute(hConsole, 240);
 
@@ -261,10 +315,14 @@ void viewList(vector<student> list, int id = NULL) {
 			circs += "b ";
 		if (person.privileges.activism)
 			circs += "a ";
-		if (person.privileges.dormitory)
-			circs += "d ";
+		if (person.privileges.science)
+			circs += "s ";
 		if (person.privileges.foreign)
-			circs += "f";
+			circs += "f ";
+		if (person.privileges.foreign)
+			circs += "i ";
+		if (person.privileges.dormitory)
+			circs += "d";
 		if (circs.length() == 0)
 			circs += "-";
 
@@ -272,9 +330,9 @@ void viewList(vector<student> list, int id = NULL) {
 			<< i + 1 << left << setfill(' ')
 			<< (char)179 << setw(24) << person.name
 			<< (char)179 << setw(11) << person.group
-			<< (char)179 << setw(9) << person.gpa
-			<< (char)179 << setw(9) << passes
-			<< (char)179 << setw(9) << circs
+			<< (char)179 << setw(8) << person.gpa
+			<< (char)179 << setw(8) << passes
+			<< (char)179 << setw(11) << circs
 			<< (char)179 << setw(11) << fixed 
 			<< setprecision(2) << person.cash;
 
@@ -318,7 +376,7 @@ int findStudent() {
 		}
 	}
 
-	cout << "Nothong found\n" << endl;
+	cout << "Nothing found\n" << endl;
 	cout << "press any key...";
 	_getwch();
 	return 0;
@@ -357,12 +415,18 @@ int editStudent() {
 				break;
 			// Отметки
 			case '3': setMarks(&students[id - 1]);
+				if (!calculateCash(&students[id - 1]))
+					return deleteStudent(id);
 				break;
 			// Зачеты
 			case '4': setCredits(&students[id - 1]);
+				if (!calculateCash(&students[id - 1]))
+					return deleteStudent(id);
 				break;
 			// Льготы
 			case '5': setCircs(&students[id - 1]);
+				if (!calculateCash(&students[id - 1])) 
+					return deleteStudent(id);
 				break;
 			// Удалить
 			case '6': return deleteStudent(id);
