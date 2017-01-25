@@ -32,12 +32,12 @@ bool getBoolean() {
 	while (true) {
 		getline(cin, line);
 		cin.clear();
-		for (unsigned short i = 0; i < line.length(); ++i)
+		for (unsigned short i = 0; i < line.length(); i++)
 			line[i] = tolower(line[i]);
 
 		if (line == "yes" || line == "y" || line == "true")
 			return true;
-		else if (line == "no" || line == "n" || line == "false")
+		if (line == "no" || line == "n" || line == "false")
 			return false;
 
 		stringstream ss(line);

@@ -1,0 +1,29 @@
+#pragma once
+
+static const char* NAMES[] = { "Alex", "Anton", "Alice", "Anastasia", "Alena", "Angella", 
+	"Alina", "Anatoly", "Andrew", "Alexander", "Alexandra", "Artur", "Boris", "Caroline", 
+	"Christine", "Dmitry", "Danila", "Denis", "Daria", "Evgeny", "Evgeniya", "Egor", 
+	"Elisabet", "Eveline", "Elya", "Eldar", "Fedor", "German", "Gleb", "Grigory", "Georgy", 
+	"Gennady", "Galina", "Hanna", "Helen", "Igor", "Irina", "Ira", "Kate", "Kseniya", 
+	"Karina", "Kirill", "Konstantin", "Leonid", "Lubov", "Larisa", "Ludmila", "Lina",  "Maxim", 
+	"Matvey", "Miron", "Margaret", "Mary", "Nikita", "Nikolai", "Nadejda", "Natali", "Nina", 
+	"Oleg", "Oksana", "Olga", "Olesya", "Peter", "Pavel", "Polina", "Roma", "Ruslan", "Rodion", 
+	"Rose", "Sergey", "Semen", "Sonya", "Sophie", "Svetlana", "Stanislav", "Timofey", "Timur", 
+	"Tatuyana", "Uluyana", "Vadim", "Valentin", "Valentina", "Valery", "Valeria", "Vitaly", 
+	"Victor", "Vladimir", "Vladislav", "Vasily", "Vyacheslav", "Vera", "Veronica", "Viktoriya", 
+	"Vlada", "Violett", "Varvara", "Yury", "Yan", "Yana", "Yaroslav", "Zoe", "Zlata" };
+
+static const char* SURNAMES[] = { "Black", "Gray", "White", "Green", "Brown" };
+
+static const unsigned int GROUPS[] = { 651001, 651002, 651003, 651004, 651005, 651006, 650501, 
+	650502, 650503, 650504, 650505, 662101, 644101, 661401, 630501, 653501, 653502, 653503, 
+	653504, 653505, 674001, 674002, 674003, 674004, 610901, 642801, 614301, 614302, 650701, 
+	660801, 660802, 672301, 672302, 672303, 673901, 673902, 673903, 673904, 610101, 634201, 
+	633701, 633702, 663101, 663102, 673601, 673602, 640301, 622401, 622102, 622403, 624401, 
+	624402, 643201, 621901, 620601, 620602, 620603, 620604, 641301, 640401, 621701, 621702, 
+	440809, 622402, 642791, 641591, 641291, 644691, 644692, 611801, 611101, 610201, 612601, 
+	613301, 613801, 613802, 600541, 602441, 603341, 603041, 600841, 600441, 600241, 693851, 
+	680561, 680562, 680961, 681061, 681062, 681063, 681064, 681065 };
+
+std::string generateName();
+unsigned int generateGroup();

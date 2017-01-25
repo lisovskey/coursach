@@ -14,6 +14,7 @@
 #include "olives"
 #include "input"
 #include "menu"
+#include "generator"
 #include "student"
 using namespace std;
 
@@ -53,12 +54,62 @@ typedef struct {
 
 vector<student> students;
 
+bool calculateCash(student* s) {
+	double cash;
+
+	if (s->knowledge.math < 4 ||
+		s->knowledge.prog < 4 ||
+		s->knowledge.phys < 4 ||
+		s->knowledge.phil < 4) {
+		return false;
+	}
+
+	if (s->privileges.foreign) {
+		cash = 167.74;
+	}
+	else if (s->privileges.budget) {
+		if (!(s->passes.graphics &&
+			s->passes.english &&
+			s->passes.swimming &&
+			s->passes.designing &&
+			s->passes.history)) {
+			cash = 0;
+		}
+		else cash = 58.28;
+	}
+	else cash = 0;
+
+	if (cash > 1) {
+		if (s->gpa < 5)
+			cash *= 0.8;
+		else if (s->gpa > 5.99 && s->gpa < 8)
+			cash *= 1.2;
+		else if (s->gpa > 7.99 && s->gpa < 9)
+			cash *= 1.4;
+		else if (s->gpa > 8.99)
+			cash *= 1.6;
+
+		if (s->privileges.invalid)
+			cash *= 1.5;
+		if (s->privileges.activism)
+			cash *= 1.1;
+		if (s->privileges.science)
+			cash *= 1.1;
+		if (s->privileges.dormitory)
+			cash -= 16.42;
+	}
+
+	s->cash = cash;
+	return true;
+}
+
 int getStudents() {
 	ifstream fin(DATA, ios::binary | ios::in);
 	if (fin.is_open()) {
 		while (fin.peek() != EOF) {
 			student tmp;
 			fin.read((char*)&tmp, sizeof(student));
+			calculateCash(&tmp);
 			students.push_back(tmp);
 		}
 		fin.close();
@@ -146,15 +197,15 @@ void setMarks(student* s) {
 }
 
 void setCredits(student* s) {
-	cout << "Passed graphics credit: ";
+	cout << "Passed graphics on time: ";
 	s->passes.graphics = getBoolean();
-	cout << "Passed english credit: ";
+	cout << "Passed english on time: ";
 	s->passes.english = getBoolean();
-	cout << "Passed swimming credit: ";
+	cout << "Passed swimming on time: ";
 	s->passes.swimming = getBoolean();
-	cout << "Passed designing credit: ";
+	cout << "Passed designing on time: ";
 	s->passes.designing = getBoolean();
-	cout << "Passed history credit: ";
+	cout << "Passed history on time: ";
 	s->passes.history = getBoolean();
 }
 
@@ -171,55 +222,6 @@ void setCircs(student* s) {
 	s->privileges.invalid = getBoolean();
 	cout << "Lives in dormitory: ";
 	s->privileges.dormitory = getBoolean();
-}
-
-bool calculateCash(student* s) {
-	double cash;
-	if (s->privileges.foreign) { 
-		cash = 167.74;
-	}
-	else if (s->privileges.budget) {
-		cash = 58.28;
-	}
-	else {
-		cash = 0;
-	}
-	
-	if (s->knowledge.math < 4 ||
-		s->knowledge.prog < 4 ||
-		s->knowledge.phys < 4 ||
-		s->knowledge.phil < 4) {
-		return false;
-	}
-
-	if (s->gpa < 5) {
-		cash *= 0.8;
-	}
-	else if (s->gpa > 5.99 && s->gpa < 8) {
-		cash *= 1.2;
-	}
-	else if (s->gpa > 7.99 && s->gpa < 9) {
-		cash *= 1.4;
-	}
-	else if (s->gpa > 8.99) {
-		cash *= 1.6;
-	}
-
-	if (s->privileges.invalid) {
-		cash *= 1.5;
-	}
-	if (s->privileges.activism) {
-		cash *= 1.1;
-	}
-	if (s->privileges.science) {
-		cash *= 1.1;
-	}
-	if (s->privileges.dormitory) {
-		cash -= 16.42;
-	}
-
-	s->cash = cash;
-	return true;
 }
 
 int createStudent() {
@@ -250,23 +252,26 @@ int createStudent() {
 }
 
 int generateStudent() {
+	system("cls");
+	student s;
+	strcpy_s(s.name, generateName().c_str());
+	s.group = generateGroup();
+
 	// TODO
+
 	return 0;
 }
 
-int addStudent() {
-	drawMenu(3, MANUAL, GENERATE, BACK);
-	do switch (_getwch()) {
-	// Добавить вручную
-	case '1': return createStudent();
-	// Сгенерировать
-	case '2': return generateStudent();
-	// Вернуться
-	case '0': return 0;
-	} while (true);
+int deleteStudent(int id) {
+	system("cls");
+	students.erase(students.begin() + id - 1);
+	cout << "Student was deleted\n" << endl;
+	cout << "press any key...";
+	_getwch();
+	return -1;
 }
 
-void viewList(vector<student> list, int id = NULL) {
+int viewList(vector<student> list, int id = NULL) {
 	unsigned int i, to;
 	bool stop;
 	if (id == NULL) {
@@ -344,6 +349,19 @@ void viewList(vector<student> list, int id = NULL) {
 		cout << "press any key...";
 		_getwch();
 	}
+	return 0;
+}
+
+int addStudent() {
+	drawMenu(3, MANUAL, GENERATE, BACK);
+	do switch (_getwch()) {
+	// Добавить вручную
+	case '1': return createStudent();
+	// Сгенерировать
+	case '2': return generateStudent();
+	// Вернуться
+	case '0': return 0;
+	} while (true);
 }
 
 int findStudent() {
@@ -358,7 +376,7 @@ int findStudent() {
 	cout << "search: ";
 	getline(cin, request);
 	cin.clear();
-	for (unsigned short i = 0; i < request.length(); ++i)
+	for (unsigned short i = 0; i < request.length(); i++)
 		request[i] = tolower(request[i]);
 
 	system("cls");
@@ -366,7 +384,7 @@ int findStudent() {
 	for (unsigned short i = 0; i < students.size(); i++) {
 		student person = students[i];
 		tmp = person.name;
-		for (unsigned short i = 0; i < tmp.length(); ++i)
+		for (unsigned short i = 0; i < tmp.length(); i++)
 			tmp[i] = tolower(tmp[i]);
 		if (tmp.find(request) != string::npos) {
 			viewList(students, i + 1);
@@ -380,15 +398,6 @@ int findStudent() {
 	cout << "press any key...";
 	_getwch();
 	return 0;
-}
-
-int deleteStudent(int id) {
-	system("cls");
-	students.erase(students.begin() + id - 1);
-	cout << "Student was deleted\n" << endl;
-	cout << "press any key...";
-	_getwch();
-	return -1;
 }
 
 int editStudent() {
@@ -450,13 +459,13 @@ int viewStudents() {
 	drawMenu(5, BY_NO, BY_NAME, BY_CASH, BY_GPA, BACK);
 	do switch (_getwch()) {
 	// По номеру
-	case '1': viewList(students);
+	case '1': return viewList(students);
 	// По имени
-	case '2': return 2;
+	case '2': return viewList(students);
 	// По стипендии
-	case '3': return 3;
+	case '3': return viewList(students);
 	// По среднему баллу
-	case '4': return 4;
+	case '4': return viewList(students);
 	// Вернуться
 	case '0': return 0;
 	} while (true);
@@ -464,7 +473,7 @@ int viewStudents() {
 
 int saveChanges() {
 	ofstream fout(DATA, ios::binary | ios::out | ios_base::trunc);
-	for (auto person : students)
+	for (student person : students)
 		fout.write((char*)&person, sizeof(student));
 	fout.close();
 
