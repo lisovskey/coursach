@@ -109,7 +109,9 @@ bool calculateCash(student* s) {
 }
 
 int getStudents() {
+	// Установка основы рандома
 	srand((unsigned int)time(NULL));
+	// Считывание из файла в вектор
 	ifstream fin(DATA, ios::binary | ios::in);
 	if (fin.is_open()) {
 		while (fin.peek() != EOF) {
@@ -127,6 +129,7 @@ int getStudents() {
 }
 
 unsigned short getId() {
+	// Проверка существования
 	cout << "Enter id: ";
 	unsigned short id;
 	while (true) {
@@ -139,6 +142,7 @@ unsigned short getId() {
 }
 
 void setName(student* s) {
+	// Имя из двух слов только из букв
 	cout << "Enter name: ";
 	static char name[24];
 	while (true) {
@@ -164,6 +168,7 @@ void setName(student* s) {
 }
 
 void setGroup(student* s) {
+	// Шестизначный номер группы
 	cout << "Enter group: ";
 	unsigned int group;
 	while (true) {
@@ -179,6 +184,7 @@ void setGroup(student* s) {
 }
 
 unsigned short getMark() {
+	// Валидная отметка
 	unsigned int mark;
 	while (true) {
 		mark = getNumber();
@@ -190,6 +196,7 @@ unsigned short getMark() {
 }
 
 void setMarks(student* s) {
+	// Установка отметок с расчетом среднего балла
 	double sum = 0;
 	cout << "Enter math mark: ";
 	sum += s->knowledge.math = getMark();
@@ -203,6 +210,7 @@ void setMarks(student* s) {
 }
 
 void setCredits(student* s) {
+	// Установка вовремя сданных зачетов
 	cout << "Passed graphics on time: ";
 	s->passes.graphics = getBoolean();
 	cout << "Passed english on time: ";
@@ -216,6 +224,7 @@ void setCredits(student* s) {
 }
 
 void setCircs(student* s) {
+	// Установка влияющих факторов
 	cout << "Is on budget: ";
 	s->privileges.budget = getBoolean();
 	cout << "Is activist: ";
@@ -231,6 +240,7 @@ void setCircs(student* s) {
 }
 
 int createStudent() {
+	// Создание студента
 	system("cls");
 	student s;
 
@@ -243,6 +253,7 @@ int createStudent() {
 	cout << endl;
 	setCircs(&s);
 
+	// В случае низких отметок
 	if (!calculateCash(&s)) {
 		cout << "\nStudent cannot study here\n" << endl;
 		cout << "press any key...";
@@ -250,6 +261,7 @@ int createStudent() {
 		return students.size();
 	}
 
+	// Добавление в вектор
 	students.push_back(s);
 	cout << "\nStudent has been added\n" << endl;
 	cout << "press any key...";
@@ -258,6 +270,7 @@ int createStudent() {
 }
 
 int generateStudent() {
+	// Генерация студента
 	system("cls");
 	student s;
 
@@ -286,6 +299,7 @@ int generateStudent() {
 	
 	calculateCash(&s);
 
+	// Добавление в вектор
 	students.push_back(s);
 	cout << "Student has been added\n" << endl;
 	cout << "press any key...";
@@ -294,6 +308,7 @@ int generateStudent() {
 }
 
 int deleteStudent(int id) {
+	// Удаление студента из вектора
 	system("cls");
 	students.erase(students.begin() + id - 1);
 	cout << "Student was deleted\n" << endl;
@@ -305,21 +320,25 @@ int deleteStudent(int id) {
 int viewList(vector<student> list, int id = NULL) {
 	unsigned int i, to;
 	bool stop;
+	// Без указания номера
 	if (id == NULL) {
 		system("cls");
 		i = 0;
 		to = list.size();
 		stop = true;
 	}
+	// Определенный студент
 	else {
 		i = id - 1;
 		to = id;
 		stop = false;
 	}
 
+	// Смена цвета консоли
 	HANDLE  hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	FlushConsoleInputBuffer(hConsole);
 	SetConsoleTextAttribute(hConsole, 15);
+	// Заголовки таблицы
 	cout << left << setw(2) << "id"
 		<< (char)179 << setw(24) << "name"
 		<< (char)179 << setw(11) << "group"
@@ -329,8 +348,11 @@ int viewList(vector<student> list, int id = NULL) {
 		<< (char)179 << setw(11) << "cash";
 	SetConsoleTextAttribute(hConsole, 240);
 
+	// Основная информация о каждом студенте
 	while (i < to) {
 		student person = list[i];
+
+		// Расчет зачетов
 		string passes = "";
 		int count = 0;
 		if (person.passes.graphics)
@@ -346,6 +368,7 @@ int viewList(vector<student> list, int id = NULL) {
 		passes += '0' + count;
 		passes += "/5";
 
+		// Другие факторы
 		string circs = "";
 		if (person.privileges.budget)
 			circs += "b ";
@@ -362,6 +385,7 @@ int viewList(vector<student> list, int id = NULL) {
 		if (circs.length() == 0)
 			circs += "-";
 
+		// Отображение
 		cout << endl << right << setfill('0') << setw(2)
 			<< i + 1 << left << setfill(' ')
 			<< (char)179 << setw(24) << person.name
@@ -376,6 +400,7 @@ int viewList(vector<student> list, int id = NULL) {
 	}
 	cout << endl << endl;
 
+	// Без указания номера
 	if (stop) {
 		cout << "press any key...";
 		_getwch();
@@ -397,12 +422,14 @@ int addStudent() {
 
 int findStudent() {
 	system("cls");
+	// Пустой вектор
 	if (students.size() == 0) {
 		cout << "There is nothing to look for\n" << endl;
 		cout << "press any key...";
 		_getwch();
 		return 0;
 	}
+	// Ввод запроса
 	string request;
 	cout << "search: ";
 	getline(cin, request);
@@ -410,6 +437,7 @@ int findStudent() {
 	for (unsigned short i = 0; i < request.length(); i++)
 		request[i] = tolower(request[i]);
 
+	// Сравнение с именем каждого студента в векторе
 	system("cls");
 	string tmp;
 	for (unsigned short i = 0; i < students.size(); i++) {
@@ -433,12 +461,14 @@ int findStudent() {
 
 int editStudent() {
 	system("cls");
+	// Пустой вектор
 	if (students.size() == 0) {
 		cout << "There is nothing to edit\n" << endl;
 		cout << "press any key...";
 		_getwch();
 		return 0;
 	}
+	// Запрос номера
 	unsigned short id = getId();
 	bool correct;
 	while (true) {
@@ -480,6 +510,7 @@ int editStudent() {
 }
 
 int viewStudents() {
+	// Пустой вектор
 	if (students.size() == 0) {
 		system("cls");
 		cout << "There is nothing to show\n" << endl;
@@ -503,6 +534,7 @@ int viewStudents() {
 }
 
 int saveChanges() {
+	// Запись из вектора в файл
 	ofstream fout(DATA, ios::binary | ios::out | ios_base::trunc);
 	for (student &person : students)
 		fout.write((char*)&person, sizeof(student));
