@@ -13,7 +13,10 @@ static const char* NAMES[] = { "Alex", "Anton", "Alice", "Anastasia", "Alena", "
 	"Victor", "Vladimir", "Vladislav", "Vasily", "Vyacheslav", "Vera", "Veronica", "Viktoriya", 
 	"Vlada", "Violett", "Varvara", "Yury", "Yan", "Yana", "Yaroslav", "Zoe", "Zlata" };
 
-static const char* SURNAMES[] = { "Black", "Gray", "White", "Green", "Brown" };
+static const char* SURNAMES[] = { "Black", "Gray", "White", "Green", "Brown", "Smith", "Martin", 
+	"Wilson", "Lee", "Johnson", "Williams", "Miller", "Jones", "Davis", "Anderson", "Taylor",
+	"Thomas", "Jackson", "Harris", "Lewis", "Robinson", "Walker", "Young", "Allen", "Nelson",
+	"Scott", "Hill", "King", "Mitchell", "Roberts", "Carter", "Adams", "Evans", "Turner", "Diaz" };
 
 static const unsigned int GROUPS[] = { 651001, 651002, 651003, 651004, 651005, 651006, 650501, 
 	650502, 650503, 650504, 650505, 662101, 644101, 661401, 630501, 653501, 653502, 653503, 
@@ -27,3 +30,5 @@ static const unsigned int GROUPS[] = { 651001, 651002, 651003, 651004, 651005, 6
 
 std::string generateName();
 unsigned int generateGroup();
+unsigned short generateMark();
+bool generateBool(int = 2);

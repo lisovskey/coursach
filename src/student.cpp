@@ -8,6 +8,7 @@
 #include <string>
 #include <cstring>
 #include <vector>
+#include <map>
 #include <regex>
 #include <windows.h>
 #include "constants"
@@ -77,7 +78,11 @@ bool calculateCash(student* s) {
 		}
 		else cash = 58.28;
 	}
-	else cash = 0;
+	else {
+		if (s->privileges.invalid)
+			cash = 58.28 * 0.8;
+		else cash = 0;
+	}
 
 	if (cash > 1) {
 		if (s->gpa < 5)
@@ -94,7 +99,7 @@ bool calculateCash(student* s) {
 		if (s->privileges.activism)
 			cash *= 1.1;
 		if (s->privileges.science)
-			cash *= 1.1;
+			cash *= 1.2;
 		if (s->privileges.dormitory)
 			cash -= 16.42;
 	}
@@ -104,6 +109,7 @@ bool calculateCash(student* s) {
 }
 
 int getStudents() {
+	srand((unsigned int)time(NULL));
 	ifstream fin(DATA, ios::binary | ios::in);
 	if (fin.is_open()) {
 		while (fin.peek() != EOF) {
@@ -244,7 +250,7 @@ int createStudent() {
 		return students.size();
 	}
 
-	students.push_back(s);	
+	students.push_back(s);
 	cout << "\nStudent has been added\n" << endl;
 	cout << "press any key...";
 	_getwch();
@@ -254,12 +260,37 @@ int createStudent() {
 int generateStudent() {
 	system("cls");
 	student s;
+
 	strcpy_s(s.name, generateName().c_str());
 	s.group = generateGroup();
 
-	// TODO
+	s.gpa = 0;
+	s.gpa += s.knowledge.math = generateMark();
+	s.gpa += s.knowledge.prog = generateMark();
+	s.gpa += s.knowledge.phys = generateMark();
+	s.gpa += s.knowledge.phil = generateMark();
+	s.gpa /= 4;
 
-	return 0;
+	s.passes.graphics = generateBool((int)s.gpa);
+	s.passes.designing = generateBool((int)s.gpa);
+	s.passes.english = generateBool((int)s.gpa);
+	s.passes.swimming = generateBool((int)s.gpa);
+	s.passes.history = generateBool((int)s.gpa);
+
+	s.privileges.budget = generateBool((int)s.gpa / 3);
+	s.privileges.activism = generateBool();
+	s.privileges.science = generateBool((int)s.gpa / 4);
+	s.privileges.foreign = generateBool(-4);
+	s.privileges.invalid = generateBool(-7);
+	s.privileges.dormitory = generateBool();
+	
+	calculateCash(&s);
+
+	students.push_back(s);
+	cout << "Student has been added\n" << endl;
+	cout << "press any key...";
+	_getwch();
+	return students.size();
 }
 
 int deleteStudent(int id) {
@@ -473,7 +504,7 @@ int viewStudents() {
 
 int saveChanges() {
 	ofstream fout(DATA, ios::binary | ios::out | ios_base::trunc);
-	for (student person : students)
+	for (student &person : students)
 		fout.write((char*)&person, sizeof(student));
 	fout.close();
 

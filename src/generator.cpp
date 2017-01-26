@@ -6,15 +6,21 @@
 using namespace std;
 
 string generateName() {
-	srand((unsigned int)time(NULL));
 	string name = "";
 	name += NAMES[rand() % 102];
 	name += " ";
-	name += SURNAMES[rand() % 5];
+	name += SURNAMES[rand() % 35];
 	return name;
 }
 
 unsigned int generateGroup() {
-	srand((unsigned int)time(NULL));
 	return GROUPS[rand() % 92];
+}
+
+unsigned short generateMark() {
+	return rand() % 7 + 4;
+}
+
+bool generateBool(int factor) {
+	return factor > 0 ? rand() % factor : !(rand() % -factor);
 }
