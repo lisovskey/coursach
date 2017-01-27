@@ -58,15 +58,16 @@ typedef struct {
 vector<student> students;
 
 bool calculateCash(student* s) {
+	// Расчет стипендии
 	double cash;
-
+	// Исключение
 	if (s->knowledge.math < 4 ||
 		s->knowledge.prog < 4 ||
 		s->knowledge.phys < 4 ||
 		s->knowledge.phil < 4) {
 		return false;
 	}
-
+	// Базовая стипендия
 	if (s->privileges.foreign) {
 		cash = 167.74;
 	}
@@ -85,7 +86,7 @@ bool calculateCash(student* s) {
 			cash = 58.28 * 0.8;
 		else cash = 0;
 	}
-
+	// Множители
 	if (cash > 1) {
 		if (s->gpa < 5)
 			cash *= 0.8;
@@ -105,7 +106,7 @@ bool calculateCash(student* s) {
 		if (s->privileges.dormitory)
 			cash -= 16.42;
 	}
-
+	// Не вылетает
 	s->cash = cash;
 	return true;
 }
@@ -283,6 +284,7 @@ int generateStudent() {
 	strcpy_s(s.name, generateName().c_str());
 	s.group = generateGroup();
 
+	// Отметки
 	s.gpa = 0;
 	s.gpa += s.knowledge.math = generateMark();
 	s.gpa += s.knowledge.prog = generateMark();
@@ -290,6 +292,7 @@ int generateStudent() {
 	s.gpa += s.knowledge.phil = generateMark();
 	s.gpa /= 4;
 
+	// Другие факторы
 	s.privileges.budget = generateBool((int)s.gpa / 3);
 	s.privileges.invalid = generateBool(-8);
 	s.privileges.activism = generateBool(-3 + s.privileges.budget);
@@ -297,6 +300,7 @@ int generateStudent() {
 	s.privileges.foreign = generateBool(-4 - 2 * s.privileges.invalid);
 	s.privileges.dormitory = generateBool(2 + s.privileges.invalid + s.privileges.activism);
 	
+	// Своевременные зачеты
 	s.passes.graphics = generateBool((int)s.gpa + 2 * s.privileges.budget);
 	s.passes.designing = generateBool((int)s.gpa + 2 * s.privileges.budget);
 	s.passes.english = generateBool((int)s.gpa + 2 * s.privileges.budget);
@@ -395,6 +399,7 @@ int viewStudent(student* s) {
 
 int viewList(vector<student> &list) {
 	system("cls");
+	// Заголовки
 	viewTitles();
 	// Основная информация о каждом студенте
 	for (student &s : list) {

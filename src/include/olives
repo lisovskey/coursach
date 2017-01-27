@@ -1,4 +1,3 @@
 #pragma once
 
 int wordCount(char*);
-double average(int num, ...);

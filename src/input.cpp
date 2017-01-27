@@ -27,23 +27,20 @@ unsigned int getNumber() {
 
 bool getBoolean() {
 	string line;
-	bool boolean;
-
 	while (true) {
 		getline(cin, line);
 		cin.clear();
 		for (unsigned short i = 0; i < line.length(); i++)
 			line[i] = tolower(line[i]);
 
-		if (line == "yes" || line == "y" || line == "true")
+		if (line == "yes" || line == "y" ||
+			line == "true" || line == "1") {
 			return true;
-		if (line == "no" || line == "n" || line == "false")
+		}
+		if (line == "no" || line == "n" ||
+			line == "false" || line == "0") {
 			return false;
-
-		stringstream ss(line);
-		if (ss >> boolean)
-			if (ss.eof())
-				return boolean;
+		}
 
 		cout << "Try again: ";
 	}
