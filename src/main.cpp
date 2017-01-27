@@ -21,7 +21,7 @@ int userMode() {
 	bool correct;
 	// Основной цикл
 	while (true) {
-		drawMenu(3, FIND, VIEW, QUIT);
+		drawMenu(4, FIND, VIEW, SORT, QUIT);
 		// Цикл выбора действия
 		do {
 			correct = true;
@@ -31,6 +31,9 @@ int userMode() {
 				break;
 			// Сортировать список
 			case '2': viewStudents();
+				break;
+			// Сортировать список
+			case '3': sortStudents();
 				break;
 			// Выйти из программы
 			case '0': if (quit()) return 0;
@@ -47,7 +50,7 @@ int adminMode() {
 	bool correct;
 	// Основной цикл
 	while (true) {
-		drawMenu(5, ADD, EDIT, VIEW, SAVE, QUIT);
+		drawMenu(6, ADD, EDIT, VIEW, SORT, SAVE, QUIT);
 		// Цикл выбора действия
 		do {
 			correct = true;
@@ -61,8 +64,11 @@ int adminMode() {
 			// Сортировать список
 			case '3': viewStudents();
 				break;
+			// Сортировать список
+			case '4': sortStudents();
+				break;
 			// Сохранить изменения
-			case '4': saveChanges();
+			case '5': saveChanges();
 				break;
 			// Выйти из программы
 			case '0': if (quit()) return 0;

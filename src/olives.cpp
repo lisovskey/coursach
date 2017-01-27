@@ -25,28 +25,8 @@ int wordCount(char* str) {
 	return count;
 }
 
-template <typename T>
-double average(int num, ...) {
-	va_list args;
-	if (num == 0) {
-		cerr << "No arguments" << endl;
-		exit(1);
-	}
-
-	double sum = 0;
-	__try {
-		va_start(args, num);
-		while (num--) {
-			sum += va_arg(args, T);
-		}
-		va_end(args);
-	}
-	__except (GetExceptionCode() == EXCEPTION_ACCESS_VIOLATION ?
-		EXCEPTION_EXECUTE_HANDLER :
-		EXCEPTION_CONTINUE_SEARCH) {
-		cerr << "Memory error" << endl;
-		exit(2);
-	}
-
-	return sum / num;
+int waitEscape() {
+	while (true)
+		if (GetAsyncKeyState(VK_ESCAPE))
+			return 0;
 }

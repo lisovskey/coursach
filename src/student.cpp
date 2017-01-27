@@ -8,8 +8,8 @@
 #include <string>
 #include <cstring>
 #include <vector>
-#include <map>
 #include <regex>
+#include <ctime>
 #include <algorithm>
 #include <windows.h>
 #include "constants"
@@ -290,22 +290,22 @@ int generateStudent() {
 	s.gpa += s.knowledge.prog = generateMark();
 	s.gpa += s.knowledge.phys = generateMark();
 	s.gpa += s.knowledge.phil = generateMark();
-	s.gpa /= 4;
+	s.gpa = s.gpa / 4;
 
 	// Другие факторы
 	s.privileges.budget = generateBool((int)s.gpa / 3);
-	s.privileges.invalid = generateBool(-8);
+	s.privileges.invalid = generateBool(-10);
 	s.privileges.activism = generateBool(-3 + s.privileges.budget);
 	s.privileges.science = generateBool((int)(s.gpa + s.privileges.invalid) / 4);
 	s.privileges.foreign = generateBool(-4 - 2 * s.privileges.invalid);
 	s.privileges.dormitory = generateBool(2 + s.privileges.invalid + s.privileges.activism);
 	
 	// Своевременные зачеты
-	s.passes.graphics = generateBool((int)s.gpa + 2 * s.privileges.budget);
-	s.passes.designing = generateBool((int)s.gpa + 2 * s.privileges.budget);
-	s.passes.english = generateBool((int)s.gpa + 2 * s.privileges.budget);
-	s.passes.swimming = generateBool((int)s.gpa + 2 * s.privileges.budget);
-	s.passes.history = generateBool((int)s.gpa + 2 * s.privileges.budget);
+	s.passes.graphics = generateBool((int)s.gpa + 4 * s.privileges.budget);
+	s.passes.designing = generateBool((int)s.gpa + 4 * s.privileges.budget);
+	s.passes.english = generateBool((int)s.gpa + 4 * s.privileges.budget);
+	s.passes.swimming = generateBool((int)s.gpa + 4 * s.privileges.budget);
+	s.passes.history = generateBool((int)s.gpa + 4 * s.privileges.budget);
 
 	s.id = (unsigned short)students.size() + 1;
 	calculateCash(&s);
@@ -336,16 +336,20 @@ void viewTitles() {
 	// Смена цвета консоли
 	HANDLE  hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	FlushConsoleInputBuffer(hConsole);
-	SetConsoleTextAttribute(hConsole, 15);
+	SetConsoleTextAttribute(hConsole,
+		BACKGROUND_RED | BACKGROUND_GREEN |
+		BACKGROUND_BLUE | BACKGROUND_INTENSITY);
 	// Заголовки таблицы
 	cout << left << setw(3) << "id"
 		<< (char)179 << setw(24) << "name"
-		<< (char)179 << setw(10) << "group"
+		<< (char)179 << setw(9) << "group"
 		<< (char)179 << setw(8) << "gpa"
 		<< (char)179 << setw(8) << "passed"
 		<< (char)179 << setw(11) << "circs"
 		<< (char)179 << setw(11) << "cash";
-	SetConsoleTextAttribute(hConsole, 240);
+	SetConsoleTextAttribute(hConsole,
+		FOREGROUND_RED | FOREGROUND_GREEN |
+		FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	cout << endl;
 }
 
@@ -387,7 +391,7 @@ int viewStudent(student* s) {
 	cout << right << setfill('0') << setw(2)
 		<< s->id << setfill(' ') << " " << left
 		<< (char)179 << setw(24) << s->name
-		<< (char)179 << setw(10) << s->group
+		<< (char)179 << setw(9) << s->group
 		<< (char)179 << setw(8) << s->gpa
 		<< (char)179 << setw(8) << passes
 		<< (char)179 << setw(11) << circs
@@ -543,16 +547,26 @@ int viewStudents() {
 		_getwch();
 		return 0;
 	}
-	drawMenu(5, BY_NO, BY_NAME, BY_CASH, BY_GPA, BACK);
+	return viewList(students);
+}
+
+int sortStudents() {
+	// Пустой вектор
+	if (students.size() == 0) {
+		system("cls");
+		cout << "There is nothing to sort\n" << endl;
+		cout << "press any key...";
+		_getwch();
+		return 0;
+	}
+	drawMenu(4, BY_NAME, BY_CASH, BY_GPA, BACK);
 	do switch (_getwch()) {
-	// По номеру
-	case '1': return viewList(students);
 	// По имени
-	case '2': return viewSortedList(students, byName);
+	case '1': return viewSortedList(students, byName);
 	// По стипендии
-	case '3': return viewSortedList(students, byCash);
+	case '2': return viewSortedList(students, byCash);
 	// По среднему баллу
-	case '4': return viewSortedList(students, byGPA);
+	case '3': return viewSortedList(students, byGPA);
 	// Вернуться
 	case '0': return 0;
 	} while (true);

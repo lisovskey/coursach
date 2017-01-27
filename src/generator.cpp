@@ -1,7 +1,6 @@
 #include <cstring>
 #include <string>
 #include <cstdlib>
-#include <ctime>
 #include "generator"
 using namespace std;
 

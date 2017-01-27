@@ -9,16 +9,14 @@
 #include "menu"
 using namespace std;
 
-HANDLE  hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
 int drawMenu(int num, ...) {
 	if (num > 7) {
 		cerr << "Too many arguments" << endl;
 		exit(1);
 	}
 
+	HANDLE  hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	FlushConsoleInputBuffer(hConsole);
-	SetConsoleTextAttribute(hConsole, 240);
 	va_list args;
 	system("cls");
 	int count = num;
@@ -27,14 +25,18 @@ int drawMenu(int num, ...) {
 	__try {
 		va_start(args, num);
 		while (count--) {
-			SetConsoleTextAttribute(hConsole, 15);
+			SetConsoleTextAttribute(hConsole, 
+				BACKGROUND_RED | BACKGROUND_GREEN |
+				BACKGROUND_BLUE | BACKGROUND_INTENSITY);
 			if (count == 0)
 				cout << " 0 ";
 			else
 				cout << " " << num - count << " ";
-			SetConsoleTextAttribute(hConsole, 240);
+			SetConsoleTextAttribute(hConsole, 
+				FOREGROUND_RED | FOREGROUND_GREEN |
+				FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 
-			cout << " " << setfill(' ') << setw(8) << va_arg(args, char*);
+			cout << " " << setfill(' ') << setw(7) << va_arg(args, char*);
 		}
 		va_end(args);
 	}
@@ -44,7 +46,7 @@ int drawMenu(int num, ...) {
 		cerr << "Memory error" << endl;
 		exit(2);
 	}
-	cout << endl;
+	cout << "\n" << endl;
 
 	return num;
 }
