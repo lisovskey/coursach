@@ -13,6 +13,22 @@ static const char* NAMES[] = { "Alex", "Anton", "Alice", "Anastasia", "Alena", "
 	"Victor", "Vladimir", "Vladislav", "Vasily", "Vyacheslav", "Vera", "Veronica", "Viktoriya", 
 	"Vlada", "Violett", "Varvara", "Yury", "Yan", "Yana", "Yaroslav", "Zoe", "Zlata" };
 
-static const char* SURNAMES[] = { "Black", "Gray", "White", "Green", "Brown" };
+static const char* SURNAMES[] = { "Black", "Gray", "White", "Green", "Brown", "Smith", "Martin", 
+	"Wilson", "Lee", "Johnson", "Williams", "Miller", "Jones", "Davis", "Anderson", "Taylor",
+	"Thomas", "Jackson", "Harris", "Lewis", "Robinson", "Walker", "Young", "Allen", "Nelson",
+	"Scott", "Hill", "King", "Mitchell", "Roberts", "Carter", "Adams", "Evans", "Turner", "Diaz" };
+
+static const unsigned int GROUPS[] = { 651001, 651002, 651003, 651004, 651005, 651006, 650501, 
+	650502, 650503, 650504, 650505, 662101, 644101, 661401, 630501, 653501, 653502, 653503, 
+	653504, 653505, 674001, 674002, 674003, 674004, 610901, 642801, 614301, 614302, 650701, 
+	660801, 660802, 672301, 672302, 672303, 673901, 673902, 673903, 673904, 610101, 634201, 
+	633701, 633702, 663101, 663102, 673601, 673602, 640301, 622401, 622102, 622403, 624401, 
+	624402, 643201, 621901, 620601, 620602, 620603, 620604, 641301, 640401, 621701, 621702, 
+	440809, 622402, 642791, 641591, 641291, 644691, 644692, 611801, 611101, 610201, 612601, 
+	613301, 613801, 613802, 600541, 602441, 603341, 603041, 600841, 600441, 600241, 693851, 
+	680561, 680562, 680961, 681061, 681062, 681063, 681064, 681065 };
 
 std::string generateName();
+unsigned int generateGroup();
+unsigned short generateMark();
+bool generateBool(int = 2);
