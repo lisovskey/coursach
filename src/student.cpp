@@ -10,6 +10,7 @@
 #include <vector>
 #include <map>
 #include <regex>
+#include <algorithm>
 #include <windows.h>
 #include "constants"
 #include "olives"
@@ -44,6 +45,7 @@ typedef struct {
 } circumstances;
 
 typedef struct {
+	unsigned short	id;
 	char			name[24];
 	unsigned int	group;
 	marks			knowledge;
@@ -114,10 +116,12 @@ int getStudents() {
 	// Считывание из файла в вектор
 	ifstream fin(DATA, ios::binary | ios::in);
 	if (fin.is_open()) {
+		int i = 0;
 		while (fin.peek() != EOF) {
 			student tmp;
 			fin.read((char*)&tmp, sizeof(student));
 			calculateCash(&tmp);
+			tmp.id = ++i;
 			students.push_back(tmp);
 		}
 		fin.close();
@@ -253,6 +257,8 @@ int createStudent() {
 	cout << endl;
 	setCircs(&s);
 
+	s.id = (unsigned short)students.size() + 1;
+
 	// В случае низких отметок
 	if (!calculateCash(&s)) {
 		cout << "\nStudent cannot study here\n" << endl;
@@ -266,7 +272,7 @@ int createStudent() {
 	cout << "\nStudent has been added\n" << endl;
 	cout << "press any key...";
 	_getwch();
-	return students.size();
+	return s.id;
 }
 
 int generateStudent() {
@@ -284,19 +290,20 @@ int generateStudent() {
 	s.gpa += s.knowledge.phil = generateMark();
 	s.gpa /= 4;
 
-	s.passes.graphics = generateBool((int)s.gpa);
-	s.passes.designing = generateBool((int)s.gpa);
-	s.passes.english = generateBool((int)s.gpa);
-	s.passes.swimming = generateBool((int)s.gpa);
-	s.passes.history = generateBool((int)s.gpa);
-
 	s.privileges.budget = generateBool((int)s.gpa / 3);
-	s.privileges.activism = generateBool();
-	s.privileges.science = generateBool((int)s.gpa / 4);
-	s.privileges.foreign = generateBool(-4);
-	s.privileges.invalid = generateBool(-7);
-	s.privileges.dormitory = generateBool();
+	s.privileges.invalid = generateBool(-8);
+	s.privileges.activism = generateBool(-3 + s.privileges.budget);
+	s.privileges.science = generateBool((int)(s.gpa + s.privileges.invalid) / 4);
+	s.privileges.foreign = generateBool(-4 - 2 * s.privileges.invalid);
+	s.privileges.dormitory = generateBool(2 + s.privileges.invalid + s.privileges.activism);
 	
+	s.passes.graphics = generateBool((int)s.gpa + 2 * s.privileges.budget);
+	s.passes.designing = generateBool((int)s.gpa + 2 * s.privileges.budget);
+	s.passes.english = generateBool((int)s.gpa + 2 * s.privileges.budget);
+	s.passes.swimming = generateBool((int)s.gpa + 2 * s.privileges.budget);
+	s.passes.history = generateBool((int)s.gpa + 2 * s.privileges.budget);
+
+	s.id = (unsigned short)students.size() + 1;
 	calculateCash(&s);
 
 	// Добавление в вектор
@@ -304,108 +311,118 @@ int generateStudent() {
 	cout << "Student has been added\n" << endl;
 	cout << "press any key...";
 	_getwch();
-	return students.size();
+	return s.id;
 }
 
 int deleteStudent(int id) {
 	// Удаление студента из вектора
 	system("cls");
 	students.erase(students.begin() + id - 1);
+	// Исправление номеров
+	for (unsigned short i = id - 1; i < students.size(); i++) {
+		students[i].id = i + 1;
+	}
 	cout << "Student was deleted\n" << endl;
 	cout << "press any key...";
 	_getwch();
 	return -1;
 }
 
-int viewList(vector<student> list, int id = NULL) {
-	unsigned int i, to;
-	bool stop;
-	// Без указания номера
-	if (id == NULL) {
-		system("cls");
-		i = 0;
-		to = list.size();
-		stop = true;
-	}
-	// Определенный студент
-	else {
-		i = id - 1;
-		to = id;
-		stop = false;
-	}
-
+void viewTitles() {
 	// Смена цвета консоли
 	HANDLE  hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	FlushConsoleInputBuffer(hConsole);
 	SetConsoleTextAttribute(hConsole, 15);
 	// Заголовки таблицы
-	cout << left << setw(2) << "id"
+	cout << left << setw(3) << "id"
 		<< (char)179 << setw(24) << "name"
-		<< (char)179 << setw(11) << "group"
+		<< (char)179 << setw(10) << "group"
 		<< (char)179 << setw(8) << "gpa"
 		<< (char)179 << setw(8) << "passed"
 		<< (char)179 << setw(11) << "circs"
 		<< (char)179 << setw(11) << "cash";
 	SetConsoleTextAttribute(hConsole, 240);
+	cout << endl;
+}
 
+int viewStudent(student* s) {
+	// Расчет зачетов
+	string passes = "";
+	int count = 0;
+	if (s->passes.graphics)
+		count++;
+	if (s->passes.english)
+		count++;
+	if (s->passes.swimming)
+		count++;
+	if (s->passes.designing)
+		count++;
+	if (s->passes.history)
+		count++;
+	passes += '0' + count;
+	passes += "/5";
+
+	// Другие факторы
+	string circs = "";
+	if (s->privileges.budget)
+		circs += "b ";
+	if (s->privileges.activism)
+		circs += "a ";
+	if (s->privileges.science)
+		circs += "s ";
+	if (s->privileges.foreign)
+		circs += "f ";
+	if (s->privileges.foreign)
+		circs += "i ";
+	if (s->privileges.dormitory)
+		circs += "d";
+	if (circs.length() == 0)
+		circs += "-";
+
+	// Отображение
+	cout << right << setfill('0') << setw(2)
+		<< s->id << setfill(' ') << " " << left
+		<< (char)179 << setw(24) << s->name
+		<< (char)179 << setw(10) << s->group
+		<< (char)179 << setw(8) << s->gpa
+		<< (char)179 << setw(8) << passes
+		<< (char)179 << setw(11) << circs
+		<< (char)179 << setw(11) << fixed
+		<< setprecision(2) << s->cash << endl;
+
+	return s->id;
+}
+
+int viewList(vector<student> &list) {
+	system("cls");
+	viewTitles();
 	// Основная информация о каждом студенте
-	while (i < to) {
-		student person = list[i];
-
-		// Расчет зачетов
-		string passes = "";
-		int count = 0;
-		if (person.passes.graphics)
-			count++;
-		if (person.passes.english)
-			count++;
-		if (person.passes.swimming)
-			count++;
-		if (person.passes.designing)
-			count++;
-		if (person.passes.history)
-			count++;
-		passes += '0' + count;
-		passes += "/5";
-
-		// Другие факторы
-		string circs = "";
-		if (person.privileges.budget)
-			circs += "b ";
-		if (person.privileges.activism)
-			circs += "a ";
-		if (person.privileges.science)
-			circs += "s ";
-		if (person.privileges.foreign)
-			circs += "f ";
-		if (person.privileges.foreign)
-			circs += "i ";
-		if (person.privileges.dormitory)
-			circs += "d";
-		if (circs.length() == 0)
-			circs += "-";
-
-		// Отображение
-		cout << endl << right << setfill('0') << setw(2)
-			<< i + 1 << left << setfill(' ')
-			<< (char)179 << setw(24) << person.name
-			<< (char)179 << setw(11) << person.group
-			<< (char)179 << setw(8) << person.gpa
-			<< (char)179 << setw(8) << passes
-			<< (char)179 << setw(11) << circs
-			<< (char)179 << setw(11) << fixed 
-			<< setprecision(2) << person.cash;
-
-		i++;
+	for (student &s : list) {
+		viewStudent(&s);
 	}
-	cout << endl << endl;
-
-	// Без указания номера
-	if (stop) {
-		cout << "press any key...";
-		_getwch();
-	}
+	cout << endl;
+	
+	cout << "press any key...";
+	_getwch();
 	return 0;
+}
+
+int viewSortedList(vector<student> list, bool (*compare)(student, student)) {
+	// Сортировка по переданной функции
+	sort(list.begin(), list.end(), compare);
+	return viewList(list);
+}
+
+bool byName(student a, student b) {
+	return strcmp(a.name, b.name) < 0;
+}
+
+bool byCash(student a, student b) {
+	return a.cash > b.cash;
+}
+
+bool byGPA(student a, student b) {
+	return a.gpa > b.gpa;
 }
 
 int addStudent() {
@@ -440,21 +457,24 @@ int findStudent() {
 	// Сравнение с именем каждого студента в векторе
 	system("cls");
 	string tmp;
+	bool found = false;
+	viewTitles();
 	for (unsigned short i = 0; i < students.size(); i++) {
 		student person = students[i];
 		tmp = person.name;
 		for (unsigned short i = 0; i < tmp.length(); i++)
 			tmp[i] = tolower(tmp[i]);
 		if (tmp.find(request) != string::npos) {
-			viewList(students, i + 1);
-			cout << "press any key...";
-			_getwch();
-			return i + 1;
+			viewStudent(&students[i]);
+			found = true;
 		}
 	}
 
-	cout << "Nothing found\n" << endl;
-	cout << "press any key...";
+	if (!found) {
+		system("cls");
+		cout << "Nothing found" << endl; 
+	}
+	cout << "\npress any key...";
 	_getwch();
 	return 0;
 }
@@ -473,7 +493,9 @@ int editStudent() {
 	bool correct;
 	while (true) {
 		drawMenu(7, NAME, GROUP, MARKS, CREDITS, CIRCS, REMOVE, BACK);
-		viewList(students, id);
+		viewTitles();
+		viewStudent(&students[id - 1]);
+		cout << endl;
 		do {
 			correct = true;
 			switch (_getwch()) {
@@ -490,13 +512,11 @@ int editStudent() {
 				break;
 			// Зачеты
 			case '4': setCredits(&students[id - 1]);
-				if (!calculateCash(&students[id - 1]))
-					return deleteStudent(id);
+				calculateCash(&students[id - 1]);
 				break;
 			// Льготы
 			case '5': setCircs(&students[id - 1]);
-				if (!calculateCash(&students[id - 1])) 
-					return deleteStudent(id);
+				calculateCash(&students[id - 1]);
 				break;
 			// Удалить
 			case '6': return deleteStudent(id);
@@ -523,11 +543,11 @@ int viewStudents() {
 	// По номеру
 	case '1': return viewList(students);
 	// По имени
-	case '2': return viewList(students);
+	case '2': return viewSortedList(students, byName);
 	// По стипендии
-	case '3': return viewList(students);
+	case '3': return viewSortedList(students, byCash);
 	// По среднему баллу
-	case '4': return viewList(students);
+	case '4': return viewSortedList(students, byGPA);
 	// Вернуться
 	case '0': return 0;
 	} while (true);
