@@ -46,7 +46,7 @@ typedef struct {
 typedef struct {
 	unsigned short	id;
 	char			name[24];
-	unsigned int	group;
+	unsigned		group;
 	marks			knowledge;
 	double			gpa;
 	credits			passes;
@@ -110,18 +110,18 @@ bool calculateCash(student* s) {
 	return true;
 }
 
-int getStudents() {
+unsigned getStudents() {
 	// Установка основы рандома
 	srand((unsigned int)time(NULL));
 	// Считывание из файла в вектор
 	ifstream fin(STUDLIST, ios::binary | ios::in);
 	if (fin.is_open()) {
-		int i = 0;
+		unsigned i = 1;
 		student tmp;
 		while (fin.peek() != EOF) {
 			fin.read((char*)&tmp, sizeof(student));
 			calculateCash(&tmp);
-			tmp.id = ++i;
+			tmp.id = i++;
 			students.push_back(tmp);
 		}
 		fin.close();
@@ -150,15 +150,15 @@ namespace {
 void setName(student* s) {
 	// Имя из двух слов только из букв
 	cout << "Enter name: ";
-	static char name[24];
+	static char name[25];
 	while (true) {
-		cin.getline(name, 24);
+		cin.getline(name, 25);
 		cin.clear();
-		if (strlen(name) == 23) {
+		if (strlen(name) == 24) {
 			cin.ignore(10000, '\n');
 			cout << "Too long name: ";
 		}
-		else if (regex_match(name, regex("^[A-Z a-z]+$"))) {
+		else if (regex_match(name, regex("[A-Z a-z]+"))) {
 			if (wordCount(name) == 2) {
 				strcpy_s(s->name, name);
 				return;
@@ -176,7 +176,7 @@ void setName(student* s) {
 void setGroup(student* s) {
 	// Шестизначный номер группы
 	cout << "Enter group: ";
-	unsigned int group;
+	unsigned group;
 	while (true) {
 		group = getNumber();
 		if (group > 99999 && group < 1000000) {
@@ -191,7 +191,7 @@ void setGroup(student* s) {
 
 unsigned short getMark() {
 	// Валидная отметка
-	unsigned int mark;
+	unsigned mark;
 	while (true) {
 		mark = getNumber();
 		if (mark > 0 && mark < 11)
@@ -245,12 +245,13 @@ void setCircs(student* s) {
 	s->privileges.dormitory = getBoolean();
 }
 
-int createStudent() {
+unsigned short createStudent() {
 	// Создание студента
 	system("cls");
 	student s;
 
 	setName(&s);
+	cout << endl;
 	setGroup(&s);
 	cout << endl;
 	setMarks(&s);
@@ -263,21 +264,19 @@ int createStudent() {
 
 	// В случае низких отметок
 	if (!calculateCash(&s)) {
-		cout << "\nStudent cannot study here\n" << endl;
-		cout << "press any key...";
-		_getwch();
-		return students.size();
+		cout << "\nStudent cannot study here" << endl;
+		waitAnyKey();
+		return 0;
 	}
 
 	// Добавление в вектор
 	students.push_back(s);
-	cout << "\nStudent has been added\n" << endl;
-	cout << "press any key...";
-	_getwch();
+	cout << "\nStudent has been added" << endl;
+	waitAnyKey();
 	return s.id;
 }
 
-int generateStudent() {
+unsigned short generateStudent() {
 	// Генерация студента
 	system("cls");
 	student s;
@@ -313,9 +312,8 @@ int generateStudent() {
 
 	// Добавление в вектор
 	students.push_back(s);
-	cout << "Student has been added\n" << endl;
-	cout << "press any key...";
-	_getwch();
+	cout << "Student has been added" << endl;
+	waitAnyKey();
 	return s.id;
 }
 
@@ -324,12 +322,11 @@ int deleteStudent(unsigned short id) {
 	system("cls");
 	students.erase(students.begin() + id - 1);
 	// Исправление номеров
-	for (unsigned short i = id - 1; i < students.size(); i++) {
+	for (unsigned i = id - 1; i < students.size(); i++) {
 		students[i].id = i + 1;
 	}
-	cout << "Student was deleted\n" << endl;
-	cout << "press any key...";
-	_getwch();
+	cout << "Student was deleted" << endl;
+	waitAnyKey();
 	return -1;
 }
 
@@ -381,7 +378,7 @@ unsigned short viewStudent(student* s) {
 	return s->id;
 }
 
-int viewList(vector<student> &list) {
+unsigned viewList(vector<student> &list) {
 	system("cls");
 	// Заголовки
 	drawTitles(7, 
@@ -391,14 +388,13 @@ int viewList(vector<student> &list) {
 	for (student &s : list) {
 		viewStudent(&s);
 	}
-	cout << endl;
-	
-	cout << "press any key...";
-	_getwch();
+	cout << endl;	
+	waitAnyKey();
+
 	return list.size();
 }
 
-int viewSortedList(vector<student> list, bool (*compare)(student, student)) {
+unsigned viewSortedList(vector<student> list, bool (*compare)(student, student)) {
 	// Сортировка по переданной функции
 	sort(list.begin(), list.end(), compare);
 	return viewList(list);
@@ -416,7 +412,7 @@ bool byGPA(student a, student b) {
 	return a.gpa > b.gpa;
 }
 
-int addStudent() {
+unsigned short addStudent() {
 	drawMenu(3, MANUAL, GENERATE, BACK);
 	do switch (_getwch()) {
 	// Добавить вручную
@@ -432,9 +428,8 @@ int findStudent() {
 	system("cls");
 	// Пустой вектор
 	if (students.size() == 0) {
-		cout << "There is nothing to look for\n" << endl;
-		cout << "press any key...";
-		_getwch();
+		cout << "There is nothing to look for" << endl;
+		waitAnyKey();
 		return 0;
 	}
 	// Ввод запроса
@@ -442,7 +437,7 @@ int findStudent() {
 	cout << "search: ";
 	getline(cin, request);
 	cin.clear();
-	for (unsigned short i = 0; i < request.length(); i++)
+	for (unsigned i = 0; i < request.length(); i++)
 		request[i] = tolower(request[i]);
 
 	// Сравнение с именем каждого студента в векторе
@@ -452,10 +447,10 @@ int findStudent() {
 	drawTitles(7,
 		3, "id", 24, "name", 9, "group", 8, "gpa",
 		8, "passed", 11, "circs", 11, "cash");
-	for (unsigned short i = 0; i < students.size(); i++) {
+	for (unsigned i = 0; i < students.size(); i++) {
 		student person = students[i];
 		tmp = person.name;
-		for (unsigned short i = 0; i < tmp.length(); i++)
+		for (unsigned i = 0; i < tmp.length(); i++)
 			tmp[i] = tolower(tmp[i]);
 		if (tmp.find(request) != string::npos) {
 			viewStudent(&students[i]);
@@ -467,8 +462,8 @@ int findStudent() {
 		system("cls");
 		cout << "Nothing found" << endl; 
 	}
-	cout << "\npress any key...";
-	_getwch();
+	else cout << endl;
+	waitAnyKey();
 	return 0;
 }
 
@@ -476,9 +471,8 @@ int editStudent() {
 	system("cls");
 	// Пустой вектор
 	if (students.size() == 0) {
-		cout << "There is nothing to edit\n" << endl;
-		cout << "press any key...";
-		_getwch();
+		cout << "There is nothing to edit" << endl;
+		waitAnyKey();
 		return 0;
 	}
 	// Запрос номера
@@ -524,25 +518,23 @@ int editStudent() {
 	}
 }
 
-int viewStudents() {
+unsigned viewStudents() {
 	// Пустой вектор
 	if (students.size() == 0) {
 		system("cls");
-		cout << "There is nothing to show\n" << endl;
-		cout << "press any key...";
-		_getwch();
+		cout << "There is nothing to show" << endl;
+		waitAnyKey();
 		return 0;
 	}
 	return viewList(students);
 }
 
-int sortStudents() {
+unsigned sortStudents() {
 	// Пустой вектор
 	if (students.size() == 0) {
 		system("cls");
-		cout << "There is nothing to sort\n" << endl;
-		cout << "press any key...";
-		_getwch();
+		cout << "There is nothing to sort" << endl;
+		waitAnyKey();
 		return 0;
 	}
 	drawMenu(4, BY_NAME, BY_CASH, BY_GPA, BACK);
@@ -558,7 +550,7 @@ int sortStudents() {
 	} while (true);
 }
 
-int saveStudents() {
+unsigned saveStudents() {
 	// Запись из вектора в файл
 	ofstream fout(STUDLIST, ios::binary | ios::out | ios_base::trunc);
 	for (student &person : students)
@@ -566,9 +558,8 @@ int saveStudents() {
 	fout.close();
 
 	system("cls");
-	cout << "All changes have been saved\n" << endl;
-	cout << "press any key...";
-	_getwch();
+	cout << "All changes have been saved" << endl;
+	waitAnyKey();
 
 	return students.size();
 }

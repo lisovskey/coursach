@@ -23,7 +23,7 @@ int drawMenu(unsigned num, ...) {
 
 	CONSOLE_SCREEN_BUFFER_INFO bckp;
 	GetConsoleScreenBufferInfo(hConsole, &bckp);
-	unsigned char prev_color = bckp.wAttributes;
+	unsigned char prev_color = (unsigned char)bckp.wAttributes;
 	unsigned char new_color = ~prev_color;
 
 	cout << left;
@@ -63,7 +63,7 @@ int drawTitles(unsigned num, ...) {
 
 	CONSOLE_SCREEN_BUFFER_INFO bckp;
 	GetConsoleScreenBufferInfo(hConsole, &bckp);
-	unsigned char prev_color = bckp.wAttributes;
+	unsigned char prev_color = (unsigned char)bckp.wAttributes;
 	unsigned char new_color = ~prev_color;
 	SetConsoleTextAttribute(hConsole, new_color);
 
@@ -86,5 +86,5 @@ int drawTitles(unsigned num, ...) {
 	SetConsoleTextAttribute(hConsole, prev_color);
 	cout << endl;
 
-	return num / 2;
+	return num;
 }

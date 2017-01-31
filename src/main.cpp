@@ -94,7 +94,7 @@ int administration() {
 			correct = true;
 			switch (_getwch()) {
 			// Добавить аккаунт
-			case '1': addAccount();
+			case '1': createAccount();
 				break;
 			// Сортировать список
 			case '2': editAccount();

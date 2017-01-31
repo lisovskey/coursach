@@ -4,6 +4,8 @@
 
 #include <cstring>
 #include <cstdarg>
+#include <iostream>
+#include <conio.h>
 #include <windows.h>
 #include "olives"
 
@@ -29,4 +31,9 @@ int waitEscape() {
 	while (true)
 		if (GetAsyncKeyState(VK_ESCAPE))
 			return 0;
+}
+
+void waitAnyKey() {
+	std::cout << "\npress any key...";
+	_getwch();
 }

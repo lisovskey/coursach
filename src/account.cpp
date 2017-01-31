@@ -3,12 +3,15 @@
 */
 
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <string>
 #include <cstring>
 #include <vector>
+#include <regex>
 #include <windows.h>
 #include "constants"
+#include "olives"
 #include "input"
 #include "drawer"
 #include "account"
@@ -58,9 +61,11 @@ string getPass() {
 bool getAccounts() {
 	ifstream fin(ACCLIST, ios::binary | ios::in);
 	if (fin.is_open()) {
+		unsigned i = 1;
 		account tmp;
 		while (fin.peek() != EOF) {
 			fin.read((char*)&tmp, sizeof(account));
+			tmp.id = i++;
 			accounts.push_back(tmp);
 		}
 	}
@@ -91,17 +96,15 @@ bool auth() {
 				strcmp(input.pass, user.pass) == 0) {
 				fin.close();
 				system("cls");
-				cout << "hello, " << user.login << "\n" << endl;
-				cout << "press any key...";
-				_getwch();
+				cout << "hello, " << user.login << endl;
+				waitAnyKey();
 
 				return user.admin;
 			}
 		}
 		system("cls");
-		cout << "Incorrect login or password\n" << endl;
-		cout << "press any key...";
-		_getwch();
+		cout << "Incorrect login or password" << endl;
+		waitAnyKey();
 	}
 }
 
@@ -121,34 +124,102 @@ namespace {
 }
 
 void setLogin(account* a) {
-
+	// Логин только из букв и цифр
+	cout << "Enter login: ";
+	static char login[21];
+	while (true) {
+		cin.getline(login, 21);
+		cin.clear();
+		if (strlen(login) == 20) {
+			cin.ignore(10000, '\n');
+			cout << "Too long login: ";
+		}
+		else if (regex_match(login, regex("[0-9A-Za-z]+"))) {
+			strcpy_s(a->login, login);
+			return;
+		}
+		else {
+			cout << "Only digits and letters: ";
+		}
+	}
 }
 
 void setPass(account* a) {
-
+	// Пароль только из букв и цифр
+	cout << "Enter pass: ";
+	static char pass[21];
+	while (true) {
+		cin.getline(pass, 21);
+		cin.clear();
+		if (strlen(pass) == 20) {
+			cin.ignore(10000, '\n');
+			cout << "Too long pass: ";
+		}
+		else if (regex_match(pass, regex("[0-9_A-Z-a-z]+"))) {
+			strcpy_s(a->pass, pass);
+			return;
+		}
+		else {
+			cout << "Don't use special chars: ";
+		}
+	}
 }
 
 void setRole(account* a) {
-
+	cout << "Is admin: ";
+	a->admin = getBoolean();
 }
 
 int deleteAccount(unsigned short id) {
+	// Удаление аккаунта из вектора
+	system("cls");
+	accounts.erase(accounts.begin() + id - 1);
+	// Исправление номеров
+	for (unsigned i = id - 1; i < accounts.size(); i++) {
+		accounts[i].id = i + 1;
+	}
+	cout << "Account was deleted" << endl;
+	waitAnyKey();
 	return -1;
 }
 
-int addAccount() {
+unsigned short createAccount() {
+	// Создание аккаунта
+	system("cls");
 	account a;
 
-	a.id = 1;
+	setLogin(&a);
+	cout << endl;
+	setPass(&a);
+	cout << endl;
+	setRole(&a);
+	a.id = (unsigned short)accounts.size() + 1;
 
+	accounts.push_back(a);
+	cout << "\nAccount has been added" << endl;
+	waitAnyKey();
 	return a.id;
 }
 
 unsigned short viewAccount(account* a) {
+	// Запись прав
+	string role;
+	if (a->admin) 
+		role = "admin";
+	else role = "user";
+	
+	// Отображение
+	cout << right << setfill('0') << setw(2)
+		<< a->id << setfill(' ') << " " << left
+		<< (char)179 << setw(25) << a->login
+		<< (char)179 << setw(25) << a->pass
+		<< (char)179 << setw(24) << role << endl;
+
 	return a->id;
 }
 
 int editAccount() {
+	system("cls");
 	unsigned short id = getId();
 	bool correct;
 	while (true) {
@@ -180,26 +251,31 @@ int editAccount() {
 	}
 }
 
-int viewAccounts() {
+unsigned viewAccounts() {
+	system("cls");
+	// Заголовки
 	drawTitles(4,
 		3, "id", 25, "login", 25, "password", 24, "role");
+	// Основная информация о каждом аккаунте
 	for (account &a : accounts) {
 		viewAccount(&a);
 	}
+	cout << endl;
+	waitAnyKey();
+
 	return accounts.size();
 }
 
-int saveAccounts() {
+unsigned saveAccounts() {
+	system("cls");
 	// Запись из вектора в файл
-	ofstream fout(STUDLIST, ios::binary | ios::out | ios_base::trunc);
+	ofstream fout(ACCLIST, ios::binary | ios::out | ios_base::trunc);
 	for (account &user : accounts)
 		fout.write((char*)&user, sizeof(account));
 	fout.close();
 
-	system("cls");
-	cout << "All changes have been saved\n" << endl;
-	cout << "press any key...";
-	_getwch();
+	cout << "All changes have been saved" << endl;
+	waitAnyKey();
 
 	return accounts.size();
 }

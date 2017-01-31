@@ -1,9 +1,9 @@
 #pragma once
 
-int getStudents();
-int addStudent();
+unsigned getStudents();
+unsigned short addStudent();
 int findStudent();
 int editStudent();
-int viewStudents();
-int sortStudents();
-int saveStudents();
+unsigned viewStudents();
+unsigned sortStudents();
+unsigned saveStudents();
