@@ -1,0 +1,7 @@
+#pragma once
+
+bool auth();
+int addAccount();
+int editAccount();
+int viewAccounts();
+int saveAccounts();

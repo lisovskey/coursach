@@ -1,3 +1,7 @@
+/*
+* RitZEED inc.
+*/
+
 #include <cstring>
 #include <string>
 #include <cstdlib>

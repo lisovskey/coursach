@@ -1,7 +1,7 @@
 #pragma once
 
-static const char* DATA = "students.bin";
-static const char* ACCS = "users.bin";
+static const char* STUDLIST = "students.bin";
+static const char* ACCLIST = "users.bin";
 
 static const char* ADMIN = "ADMIN";
 static const char* USER = "USER";
@@ -11,6 +11,7 @@ static const char* EDIT = "EDIT";
 static const char* VIEW = "VIEW";
 static const char* SORT = "SORT";
 static const char* SAVE = "SAVE";
+static const char* ACCS = "ACCS";
 static const char* QUIT = "QUIT";
 static const char* BACK = "BACK";
 static const char* MANUAL = "MANUAL";
@@ -24,3 +25,6 @@ static const char* MARKS = "MARKS";
 static const char* CREDITS = "CREDS";
 static const char* CIRCS = "CIRCS";
 static const char* REMOVE = "DEL.";
+static const char* LOGIN = "LOGIN";
+static const char* PASS = "PASS";
+static const char* ROLE = "ROLE";

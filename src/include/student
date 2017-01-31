@@ -6,4 +6,4 @@ int findStudent();
 int editStudent();
 int viewStudents();
 int sortStudents();
-int saveChanges();
+int saveStudents();

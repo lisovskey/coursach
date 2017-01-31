@@ -3,13 +3,14 @@
 */
 
 #include <conio.h>
-#include "auth"
 #include "constants"
-#include "menu"
+#include "account"
 #include "student"
+#include "drawer"
 
 int userMode();
 int adminMode();
+int administration();
 bool quit();
 
 int main(void) {
@@ -50,7 +51,7 @@ int adminMode() {
 	bool correct;
 	// Основной цикл
 	while (true) {
-		drawMenu(6, ADD, EDIT, VIEW, SORT, SAVE, QUIT);
+		drawMenu(7, ADD, EDIT, VIEW, SORT, SAVE, ACCS, QUIT);
 		// Цикл выбора действия
 		do {
 			correct = true;
@@ -68,11 +69,44 @@ int adminMode() {
 			case '4': sortStudents();
 				break;
 			// Сохранить изменения
-			case '5': saveChanges();
+			case '5': saveStudents();
+				break;
+			// Администрирование
+			case '6': administration();
 				break;
 			// Выйти из программы
 			case '0': if (quit()) return 0;
 				break;
+			// Неверный ввод
+			default: correct = false;
+			}
+		} while (!correct);
+	}
+}
+
+int administration() {
+	bool correct;
+	// Основной цикл
+	while (true) {
+		drawMenu(5, ADD, EDIT, VIEW, SAVE, BACK);
+		// Цикл выбора действия
+		do {
+			correct = true;
+			switch (_getwch()) {
+			// Добавить аккаунт
+			case '1': addAccount();
+				break;
+			// Сортировать список
+			case '2': editAccount();
+				break;
+			// Сортировать список
+			case '3': viewAccounts();
+				break;
+			// Сохранить изменения
+			case '4': saveAccounts();
+				break;
+			// Вернуться
+			case '0': return 0;
 			// Неверный ввод
 			default: correct = false;
 			}

@@ -11,11 +11,10 @@
 #include <regex>
 #include <ctime>
 #include <algorithm>
-#include <windows.h>
 #include "constants"
 #include "olives"
 #include "input"
-#include "menu"
+#include "drawer"
 #include "generator"
 #include "student"
 using namespace std;
@@ -115,11 +114,11 @@ int getStudents() {
 	// Установка основы рандома
 	srand((unsigned int)time(NULL));
 	// Считывание из файла в вектор
-	ifstream fin(DATA, ios::binary | ios::in);
+	ifstream fin(STUDLIST, ios::binary | ios::in);
 	if (fin.is_open()) {
 		int i = 0;
+		student tmp;
 		while (fin.peek() != EOF) {
-			student tmp;
 			fin.read((char*)&tmp, sizeof(student));
 			calculateCash(&tmp);
 			tmp.id = ++i;
@@ -133,16 +132,18 @@ int getStudents() {
 	}
 }
 
-unsigned short getId() {
-	// Проверка существования
-	cout << "Enter id: ";
-	unsigned short id;
-	while (true) {
-		id = getNumber();
-		if (id > 0 && id <= students.size())
-			return id;
-		else
-			cout << "Invalid id: ";
+namespace {
+	unsigned short getId() {
+		// Проверка существования
+		cout << "Enter id: ";
+		unsigned short id;
+		while (true) {
+			id = getNumber();
+			if (id > 0 && id <= students.size())
+				return id;
+			else
+				cout << "Invalid id: ";
+		}
 	}
 }
 
@@ -318,7 +319,7 @@ int generateStudent() {
 	return s.id;
 }
 
-int deleteStudent(int id) {
+int deleteStudent(unsigned short id) {
 	// Удаление студента из вектора
 	system("cls");
 	students.erase(students.begin() + id - 1);
@@ -332,28 +333,7 @@ int deleteStudent(int id) {
 	return -1;
 }
 
-void viewTitles() {
-	// Смена цвета консоли
-	HANDLE  hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	FlushConsoleInputBuffer(hConsole);
-	SetConsoleTextAttribute(hConsole,
-		BACKGROUND_RED | BACKGROUND_GREEN |
-		BACKGROUND_BLUE | BACKGROUND_INTENSITY);
-	// Заголовки таблицы
-	cout << left << setw(3) << "id"
-		<< (char)179 << setw(24) << "name"
-		<< (char)179 << setw(9) << "group"
-		<< (char)179 << setw(8) << "gpa"
-		<< (char)179 << setw(8) << "passed"
-		<< (char)179 << setw(11) << "circs"
-		<< (char)179 << setw(11) << "cash";
-	SetConsoleTextAttribute(hConsole,
-		FOREGROUND_RED | FOREGROUND_GREEN |
-		FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	cout << endl;
-}
-
-int viewStudent(student* s) {
+unsigned short viewStudent(student* s) {
 	// Расчет зачетов
 	string passes = "";
 	int count = 0;
@@ -404,7 +384,9 @@ int viewStudent(student* s) {
 int viewList(vector<student> &list) {
 	system("cls");
 	// Заголовки
-	viewTitles();
+	drawTitles(7, 
+		3, "id", 24, "name", 9, "group", 8, "gpa",
+		8, "passed", 11, "circs", 11, "cash");
 	// Основная информация о каждом студенте
 	for (student &s : list) {
 		viewStudent(&s);
@@ -413,7 +395,7 @@ int viewList(vector<student> &list) {
 	
 	cout << "press any key...";
 	_getwch();
-	return 0;
+	return list.size();
 }
 
 int viewSortedList(vector<student> list, bool (*compare)(student, student)) {
@@ -467,7 +449,9 @@ int findStudent() {
 	system("cls");
 	string tmp;
 	bool found = false;
-	viewTitles();
+	drawTitles(7,
+		3, "id", 24, "name", 9, "group", 8, "gpa",
+		8, "passed", 11, "circs", 11, "cash");
 	for (unsigned short i = 0; i < students.size(); i++) {
 		student person = students[i];
 		tmp = person.name;
@@ -502,7 +486,9 @@ int editStudent() {
 	bool correct;
 	while (true) {
 		drawMenu(7, NAME, GROUP, MARKS, CREDITS, CIRCS, REMOVE, BACK);
-		viewTitles();
+		drawTitles(7,
+			3, "id", 24, "name", 9, "group", 8, "gpa",
+			8, "passed", 11, "circs", 11, "cash");
 		viewStudent(&students[id - 1]);
 		cout << endl;
 		do {
@@ -572,9 +558,9 @@ int sortStudents() {
 	} while (true);
 }
 
-int saveChanges() {
+int saveStudents() {
 	// Запись из вектора в файл
-	ofstream fout(DATA, ios::binary | ios::out | ios_base::trunc);
+	ofstream fout(STUDLIST, ios::binary | ios::out | ios_base::trunc);
 	for (student &person : students)
 		fout.write((char*)&person, sizeof(student));
 	fout.close();

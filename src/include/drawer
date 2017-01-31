@@ -1,0 +1,4 @@
+#pragma once
+
+int drawMenu(unsigned num, ...);
+int drawTitles(unsigned num, ...);
