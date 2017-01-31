@@ -3,7 +3,6 @@
 */
 
 #include <cstring>
-#include <cstdarg>
 #include <iostream>
 #include <conio.h>
 #include <windows.h>

@@ -21,7 +21,7 @@ unsigned int generateGroup() {
 }
 
 unsigned short generateMark() {
-	return rand() % 7 + 4 != 0;
+	return rand() % 7 + 4;
 }
 
 bool generateBool(int factor) {

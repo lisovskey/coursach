@@ -9,11 +9,11 @@
 #include <cstring>
 #include <vector>
 #include <regex>
-#include <ctime>
 #include <algorithm>
 #include "constants"
 #include "olives"
 #include "input"
+#include "sort"
 #include "drawer"
 #include "generator"
 #include "student"
@@ -54,6 +54,7 @@ typedef struct {
 	double			cash;
 } student;
 
+// Вектор студентов
 vector<student> students;
 
 bool calculateCash(student* s) {
@@ -111,8 +112,6 @@ bool calculateCash(student* s) {
 }
 
 unsigned getStudents() {
-	// Установка основы рандома
-	srand((unsigned int)time(NULL));
 	// Считывание из файла в вектор
 	ifstream fin(STUDLIST, ios::binary | ios::in);
 	if (fin.is_open()) {
@@ -294,7 +293,7 @@ unsigned short generateStudent() {
 
 	// Другие факторы
 	s.privileges.budget = generateBool((int)s.gpa / 3);
-	s.privileges.invalid = generateBool(-10);
+	s.privileges.invalid = generateBool(-12);
 	s.privileges.activism = generateBool(-3 + s.privileges.budget);
 	s.privileges.science = generateBool((int)(s.gpa + s.privileges.invalid) / 4);
 	s.privileges.foreign = generateBool(-4 - 2 * s.privileges.invalid);
@@ -397,6 +396,7 @@ unsigned viewList(vector<student> &list) {
 unsigned viewSortedList(vector<student> list, bool (*compare)(student, student)) {
 	// Сортировка по переданной функции
 	sort(list.begin(), list.end(), compare);
+	//bsort(list, compare);
 	return viewList(list);
 }
 

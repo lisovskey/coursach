@@ -7,6 +7,8 @@
 #include <fstream>
 #include <string>
 #include <cstring>
+#include <cstdlib>
+#include <ctime>
 #include <vector>
 #include <regex>
 #include <windows.h>
@@ -24,9 +26,11 @@ typedef struct {
 	bool			admin;
 } account;
 
+// Вектор аккаунтов
 vector<account> accounts;
 
 string getPass() {
+	// Скрытие ввода пароля
 	string result;
 
 	DWORD mode, count;
@@ -34,7 +38,7 @@ string getPass() {
 	HANDLE oh = GetStdHandle(STD_OUTPUT_HANDLE);
 	if (!GetConsoleMode(ih, &mode))
 		throw runtime_error(
-			"getPass: You must be connected to a console to use this program.\n"
+			"getPass: You must be connected to a console\n"
 		);
 	SetConsoleMode(ih, mode & ~(ENABLE_ECHO_INPUT | ENABLE_LINE_INPUT));
 
@@ -58,7 +62,8 @@ string getPass() {
 	return result;
 }
 
-bool getAccounts() {
+unsigned getAccounts() {
+	// Считывание из файла в вектор
 	ifstream fin(ACCLIST, ios::binary | ios::in);
 	if (fin.is_open()) {
 		unsigned i = 1;
@@ -68,19 +73,25 @@ bool getAccounts() {
 			tmp.id = i++;
 			accounts.push_back(tmp);
 		}
+		fin.close();
 	}
 	else {
-		cout << "File is not avalible" << endl;
-		return false;
+		// 
+		account admin;
+		admin.id = 1;
+		strcpy_s(admin.login, "admin");
+		strcpy_s(admin.pass, "admin");
+		admin.admin = true;
+		accounts.push_back(admin);
 	}
-	fin.close();
-	return true;
+	// Установка основы рандома
+	srand((unsigned int)time(NULL));
+
+	return accounts.size();
 }
 
 bool auth() {
-	// Ни одного аккаунта не найдено
-	if (!getAccounts()) abort();
-
+	getAccounts();
 	// Авторизация
 	account input;
 	ifstream fin(ACCLIST, ios::binary | ios::in);
@@ -212,7 +223,8 @@ unsigned short viewAccount(account* a) {
 	string role;
 	if (a->admin) 
 		role = "admin";
-	else role = "user";
+	else 
+		role = "user";
 	
 	// Отображение
 	cout << right << setfill('0') << setw(2)
