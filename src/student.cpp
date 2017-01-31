@@ -13,7 +13,6 @@
 #include "constants"
 #include "olives"
 #include "input"
-#include "sort"
 #include "drawer"
 #include "generator"
 #include "student"
@@ -292,19 +291,19 @@ unsigned short generateStudent() {
 	s.gpa = s.gpa / 4;
 
 	// Другие факторы
-	s.privileges.budget = generateBool((int)s.gpa / 3);
+	s.privileges.budget = generateBool((int)(s.gpa + 2) / 3);
 	s.privileges.invalid = generateBool(-12);
 	s.privileges.activism = generateBool(-3 + s.privileges.budget);
 	s.privileges.science = generateBool((int)(s.gpa + s.privileges.invalid) / 4);
-	s.privileges.foreign = generateBool(-4 - 2 * s.privileges.invalid);
+	s.privileges.foreign = generateBool(-5 - 2 * s.privileges.invalid);
 	s.privileges.dormitory = generateBool(2 + s.privileges.invalid + s.privileges.activism);
 	
 	// Своевременные зачеты
-	s.passes.graphics = generateBool((int)s.gpa + 4 * s.privileges.budget);
-	s.passes.designing = generateBool((int)s.gpa + 4 * s.privileges.budget);
-	s.passes.english = generateBool((int)s.gpa + 4 * s.privileges.budget);
-	s.passes.swimming = generateBool((int)s.gpa + 4 * s.privileges.budget);
-	s.passes.history = generateBool((int)s.gpa + 4 * s.privileges.budget);
+	s.passes.graphics = generateBool((int)s.gpa + 5 * s.privileges.budget);
+	s.passes.designing = generateBool((int)s.gpa + 5 * s.privileges.budget);
+	s.passes.english = generateBool((int)s.gpa + 5 * s.privileges.budget);
+	s.passes.swimming = generateBool((int)s.gpa + 5 * s.privileges.budget);
+	s.passes.history = generateBool((int)s.gpa + 5 * s.privileges.budget);
 
 	s.id = (unsigned short)students.size() + 1;
 	calculateCash(&s);
