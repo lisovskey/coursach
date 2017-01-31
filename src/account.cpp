@@ -78,11 +78,14 @@ bool getAccounts() {
 }
 
 bool auth() {
+	// Ни одного аккаунта не найдено
 	if (!getAccounts()) abort();
 
+	// Авторизация
 	account input;
 	ifstream fin(ACCLIST, ios::binary | ios::in);
 	while (true) {
+		// Ввод данных
 		system("cls");
 		cout << "login: ";
 		cin >> input.login;
@@ -91,6 +94,7 @@ bool auth() {
 		cin.clear();
 		cin.ignore(10000, '\n');
 
+		// Проверка на совпадение с каждым аккаунтом
 		for (account &user : accounts) {
 			if (strcmp(input.login, user.login) == 0 &&
 				strcmp(input.pass, user.pass) == 0) {
@@ -166,6 +170,7 @@ void setPass(account* a) {
 }
 
 void setRole(account* a) {
+	// Администратор или пользователь
 	cout << "Is admin: ";
 	a->admin = getBoolean();
 }
@@ -195,6 +200,7 @@ unsigned short createAccount() {
 	setRole(&a);
 	a.id = (unsigned short)accounts.size() + 1;
 
+	// Добавление в вектор
 	accounts.push_back(a);
 	cout << "\nAccount has been added" << endl;
 	waitAnyKey();
