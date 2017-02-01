@@ -53,8 +53,10 @@ string getPass() {
 			}
 		}
 		else {
-			WriteConsoleA(oh, symbol, 1, &count, NULL);
-			result.push_back(c);
+			if (result.length() < 19) {
+				WriteConsoleA(oh, symbol, 1, &count, NULL);
+				result.push_back(c);
+			}
 		}
 	}
 	SetConsoleMode(ih, mode);
@@ -76,7 +78,7 @@ unsigned getAccounts() {
 		fin.close();
 	}
 	else {
-		// 
+		// Создание аккаунта администратора
 		account admin;
 		admin.id = 1;
 		strcpy_s(admin.login, "admin");
@@ -94,7 +96,6 @@ bool auth() {
 	getAccounts();
 	// Авторизация
 	account input;
-	ifstream fin(ACCLIST, ios::binary | ios::in);
 	while (true) {
 		// Ввод данных
 		system("cls");
@@ -109,7 +110,6 @@ bool auth() {
 		for (account &user : accounts) {
 			if (strcmp(input.login, user.login) == 0 &&
 				strcmp(input.pass, user.pass) == 0) {
-				fin.close();
 				system("cls");
 				cout << "hello, " << user.login << endl;
 				waitAnyKey();
