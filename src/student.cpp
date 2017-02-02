@@ -395,7 +395,6 @@ unsigned viewList(vector<student> &list) {
 unsigned viewSortedList(vector<student> list, bool (*compare)(student, student)) {
 	// Сортировка по переданной функции
 	sort(list.begin(), list.end(), compare);
-	//bsort(list, compare);
 	return viewList(list);
 }
 
@@ -443,24 +442,24 @@ int findStudent() {
 	system("cls");
 	string tmp;
 	bool found = false;
-	drawTitles(7,
-		3, "id", 24, "name", 9, "group", 8, "gpa",
-		8, "passed", 11, "circs", 11, "cash");
 	for (unsigned i = 0; i < students.size(); i++) {
 		student person = students[i];
 		tmp = person.name;
 		for (unsigned i = 0; i < tmp.length(); i++)
 			tmp[i] = tolower(tmp[i]);
 		if (tmp.find(request) != string::npos) {
+			if (!found) {
+				drawTitles(7,
+					3, "id", 24, "name", 9, "group", 8, "gpa",
+					8, "passed", 11, "circs", 11, "cash");
+				found = true;
+			}
 			viewStudent(&students[i]);
-			found = true;
 		}
 	}
 
-	if (!found) {
-		system("cls");
+	if (!found)
 		cout << "Nothing found" << endl; 
-	}
 	else cout << endl;
 	waitAnyKey();
 	return 0;

@@ -29,9 +29,10 @@ typedef struct {
 // Вектор аккаунтов
 vector<account> accounts;
 
-string getPass() {
+string getPass(const unsigned size) {
 	// Скрытие ввода пароля
-	string result;
+	char* result = new char[size];
+	memset(result, '\0', sizeof(char) * size);
 
 	DWORD mode, count;
 	HANDLE ih = GetStdHandle(STD_INPUT_HANDLE);
@@ -45,23 +46,28 @@ string getPass() {
 	char c;
 	char symbol[1];
 	symbol[0] = (char)250;
+	unsigned length = 0;
 	while (ReadConsoleA(ih, &c, 1, &count, NULL) && (c != '\r') && (c != '\n')) {
 		if (c == '\b') {
-			if (result.length()) {
+			if (length != 0) {
 				WriteConsoleA(oh, "\b \b", 3, &count, NULL);
-				result.erase(result.end() - 1);
+				if (length-- < size) {
+					result[length] = '\0';
+				}
 			}
 		}
 		else {
-			if (result.length() < 19) {
-				WriteConsoleA(oh, symbol, 1, &count, NULL);
-				result.push_back(c);
+			WriteConsoleA(oh, symbol, 1, &count, NULL);
+			if (length++ < size - 1) {
+				result[length - 1] = c;
 			}
 		}
 	}
 	SetConsoleMode(ih, mode);
 
-	return result;
+	string pass = result;
+	delete[] result;
+	return pass;
 }
 
 unsigned getAccounts() {
@@ -100,9 +106,9 @@ bool auth() {
 		// Ввод данных
 		system("cls");
 		cout << "login: ";
-		cin >> input.login;
+		cin.getline(input.login, 20);
 		cout << "pass: ";
-		strcpy_s(input.pass, getPass().c_str());
+		strcpy_s(input.pass, getPass(20).c_str());
 		cin.clear();
 		cin.ignore(10000, '\n');
 
