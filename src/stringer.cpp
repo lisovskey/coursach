@@ -2,11 +2,9 @@
 * RitZEED inc.
 */
 
+#include <string>
 #include <cstring>
-#include <iostream>
-#include <conio.h>
-#include <windows.h>
-#include "olives"
+#include "stringer"
 
 int wordCount(char* str) {
 	int count = 0;
@@ -26,13 +24,9 @@ int wordCount(char* str) {
 	return count;
 }
 
-int waitEscape() {
-	while (true)
-		if (GetAsyncKeyState(VK_ESCAPE))
-			return 0;
-}
-
-void waitAnyKey() {
-	std::cout << "\npress any key...";
-	_getwch();
+std::string lower(std::string str) {
+	for (unsigned i = 0; i < str.length(); i++) {
+		str[i] = tolower(str[i]);
+	}
+	return str;
 }

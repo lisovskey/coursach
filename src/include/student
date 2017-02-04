@@ -2,7 +2,7 @@
 
 unsigned getStudents();
 unsigned short addStudent();
-int findStudent();
+unsigned findStudent();
 int editStudent();
 unsigned viewStudents();
 unsigned sortStudents();

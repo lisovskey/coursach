@@ -13,7 +13,8 @@
 #include <regex>
 #include <windows.h>
 #include "constants"
-#include "olives"
+#include "stringer"
+#include "presser"
 #include "input"
 #include "drawer"
 #include "account"
@@ -244,6 +245,11 @@ unsigned short viewAccount(account* a) {
 
 int editAccount() {
 	system("cls");
+	if (accounts.size() == 0) {
+		cout << "There is nothing to edit" << endl;
+		waitAnyKey();
+		return 0;
+	}
 	unsigned short id = getId();
 	bool correct;
 	while (true) {
@@ -277,6 +283,11 @@ int editAccount() {
 
 unsigned viewAccounts() {
 	system("cls");
+	if (accounts.size() == 0) {
+		cout << "There is nothing to show" << endl;
+		waitAnyKey();
+		return 0;
+	}
 	// Заголовки
 	drawTitles(4,
 		3, "id", 25, "login", 25, "password", 24, "role");

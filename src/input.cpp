@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <limits>
+#include "stringer"
 #include "input"
 using namespace std;
 
@@ -30,8 +30,7 @@ bool getBoolean() {
 	while (true) {
 		getline(cin, line);
 		cin.clear();
-		for (unsigned short i = 0; i < line.length(); i++)
-			line[i] = tolower(line[i]);
+		line = lower(line);
 
 		if (line == "yes" || line == "y" ||
 			line == "true" || line == "1") {

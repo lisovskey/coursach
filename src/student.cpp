@@ -11,7 +11,8 @@
 #include <regex>
 #include <algorithm>
 #include "constants"
-#include "olives"
+#include "stringer"
+#include "presser"
 #include "input"
 #include "drawer"
 #include "generator"
@@ -288,14 +289,14 @@ unsigned short generateStudent() {
 	s.gpa += s.knowledge.prog = generateMark();
 	s.gpa += s.knowledge.phys = generateMark();
 	s.gpa += s.knowledge.phil = generateMark();
-	s.gpa = s.gpa / 4;
+	s.gpa /= 4;
 
 	// Другие факторы
 	s.privileges.budget = generateBool((int)(s.gpa + 2) / 3);
-	s.privileges.invalid = generateBool(-12);
+	s.privileges.invalid = generateBool(-16);
 	s.privileges.activism = generateBool(-3 + s.privileges.budget);
 	s.privileges.science = generateBool((int)(s.gpa + s.privileges.invalid) / 4);
-	s.privileges.foreign = generateBool(-5 - 2 * s.privileges.invalid);
+	s.privileges.foreign = generateBool(-6 - 4 * s.privileges.invalid);
 	s.privileges.dormitory = generateBool(2 + s.privileges.invalid + s.privileges.activism);
 	
 	// Своевременные зачеты
@@ -422,7 +423,7 @@ unsigned short addStudent() {
 	} while (true);
 }
 
-int findStudent() {
+unsigned findStudent() {
 	system("cls");
 	// Пустой вектор
 	if (students.size() == 0) {
@@ -440,18 +441,18 @@ int findStudent() {
 
 	// Сравнение с именем каждого студента в векторе
 	system("cls");
-	string tmp;
+	string name;
+	unsigned count = 0;
 	bool found = false;
 	for (unsigned i = 0; i < students.size(); i++) {
 		student person = students[i];
-		tmp = person.name;
-		for (unsigned i = 0; i < tmp.length(); i++)
-			tmp[i] = tolower(tmp[i]);
-		if (tmp.find(request) != string::npos) {
+		name = lower(person.name);
+		if (name.find(request) != string::npos) {
 			if (!found) {
 				drawTitles(7,
 					3, "id", 24, "name", 9, "group", 8, "gpa",
 					8, "passed", 11, "circs", 11, "cash");
+				count++;
 				found = true;
 			}
 			viewStudent(&students[i]);
@@ -462,7 +463,7 @@ int findStudent() {
 		cout << "Nothing found" << endl; 
 	else cout << endl;
 	waitAnyKey();
-	return 0;
+	return count;
 }
 
 int editStudent() {

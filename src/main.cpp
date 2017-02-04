@@ -2,7 +2,7 @@
 * RitZEED inc.
 */
 
-#include <conio.h>
+#include "presser"
 #include "constants"
 #include "account"
 #include "student"
@@ -13,7 +13,7 @@ int adminMode();
 int administration();
 bool quit();
 
-int main(void) {
+int main() {
 	return auth() ? adminMode() : userMode();
 }
 
@@ -26,7 +26,7 @@ int userMode() {
 		// Цикл выбора действия
 		do {
 			correct = true;
-			switch (_getwch()) {
+			switch (getPress()) {
 			// Найти студента
 			case '1': findStudent();
 				break;
@@ -55,7 +55,7 @@ int adminMode() {
 		// Цикл выбора действия
 		do {
 			correct = true;
-			switch (_getwch()) {
+			switch (getPress()) {
 			// Добавить студента
 			case '1': addStudent();
 				break;
@@ -92,7 +92,7 @@ int administration() {
 		// Цикл выбора действия
 		do {
 			correct = true;
-			switch (_getwch()) {
+			switch (getPress()) {
 			// Добавить аккаунт
 			case '1': createAccount();
 				break;
@@ -116,7 +116,7 @@ int administration() {
 
 bool quit() {
 	drawMenu(2, QUIT, BACK);
-	do switch (_getwch()) {
+	do switch (getPress()) {
 	// Действительно выйти
 	case '1': return true;
 	// Вернуться в меню

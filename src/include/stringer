@@ -1,0 +1,4 @@
+#pragma once
+
+int wordCount(char*);
+std::string lower(std::string str);
