@@ -49,12 +49,10 @@ string getPass(const unsigned size) {
 	symbol[0] = (char)250;
 	unsigned length = 0;
 	while (ReadConsoleA(ih, &c, 1, &count, NULL) && (c != '\r') && (c != '\n')) {
-		if (c == '\b') {
-			if (length != 0) {
-				WriteConsoleA(oh, "\b \b", 3, &count, NULL);
-				if (length-- < size) {
-					result[length] = '\0';
-				}
+		if (c == '\b' && length != 0) {
+			WriteConsoleA(oh, "\b \b", 3, &count, NULL);
+			if (length-- < size) {
+				result[length] = '\0';
 			}
 		}
 		else {
