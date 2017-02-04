@@ -3,13 +3,12 @@
 */
 
 #include <string>
-#include <cstring>
 #include "stringer"
 
-int wordCount(char* str) {
-	int count = 0;
-	int len = strlen(str);
-	for (int i = 0; i <= len; i++) {
+unsigned wordCount(std::string str) {
+	unsigned count = 0;
+	unsigned len = str.length();
+	for (unsigned i = 0; i <= len; i++) {
 		if (str[i] == ' ') {
 			if (str[i + 1] != ' ') {
 				count++;

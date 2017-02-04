@@ -9,7 +9,7 @@
 #include "drawer"
 using namespace std;
 
-HANDLE  hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
 int drawMenu(unsigned num, ...) {
 	if (num > 7) {
@@ -19,7 +19,7 @@ int drawMenu(unsigned num, ...) {
 
 	va_list args;
 	system("cls");
-	int count = num;
+	unsigned count = num;
 
 	CONSOLE_SCREEN_BUFFER_INFO bckp;
 	GetConsoleScreenBufferInfo(hConsole, &bckp);
@@ -59,7 +59,7 @@ int drawTitles(unsigned num, ...) {
 	}
 
 	va_list args;
-	int count = num;
+	unsigned count = num;
 
 	CONSOLE_SCREEN_BUFFER_INFO bckp;
 	GetConsoleScreenBufferInfo(hConsole, &bckp);

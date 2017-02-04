@@ -1,4 +1,4 @@
 #pragma once
 
-int wordCount(char*);
-std::string lower(std::string str);
+unsigned wordCount(std::string);
+std::string lower(std::string);

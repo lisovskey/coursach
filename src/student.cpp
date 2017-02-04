@@ -59,31 +59,33 @@ vector<student> students;
 
 bool calculateCash(student* s) {
 	// Расчет стипендии
-	double cash;
+	double cash, start_cash = 58.28;
+	bool satisfactory_marks = s->knowledge.math >= 4 &&
+							  s->knowledge.prog >= 4 &&
+							  s->knowledge.phys >= 4 &&
+							  s->knowledge.phil >= 4;
+	bool passed_all_credits = s->passes.graphics &&
+							  s->passes.english &&
+							  s->passes.swimming &&
+							  s->passes.designing &&
+							  s->passes.history;
 	// Исключение
-	if (s->knowledge.math < 4 ||
-		s->knowledge.prog < 4 ||
-		s->knowledge.phys < 4 ||
-		s->knowledge.phil < 4) {
+	if (!satisfactory_marks) {
 		return false;
 	}
 	// Базовая стипендия
 	if (s->privileges.foreign) {
-		cash = 167.74;
+		cash = start_cash * 2;
 	}
 	else if (s->privileges.budget) {
-		if (!(s->passes.graphics &&
-			s->passes.english &&
-			s->passes.swimming &&
-			s->passes.designing &&
-			s->passes.history)) {
+		if (!passed_all_credits) {
 			cash = 0;
 		}
-		else cash = 58.28;
+		else cash = start_cash;
 	}
 	else {
 		if (s->privileges.invalid)
-			cash = 58.28 * 0.8;
+			cash = start_cash * 0.8;
 		else cash = 0;
 	}
 	// Множители
@@ -365,7 +367,7 @@ unsigned short viewStudent(student* s) {
 
 	// Отображение
 	cout << right << setfill('0') << setw(2)
-		<< s->id << setfill(' ') << " " << left
+		<< s->id << setfill(' ') << setw(1) << "" << left
 		<< (char)179 << setw(24) << s->name
 		<< (char)179 << setw(9) << s->group
 		<< (char)179 << setw(8) << s->gpa
