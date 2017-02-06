@@ -284,11 +284,11 @@ namespace {
 			s.privileges.invalid + s.privileges.activism + s.privileges.foreign);
 
 		// Своевременные зачеты
-		s.passes.graphics = generateBool((int)s.gpa + 6 * s.privileges.budget);
-		s.passes.designing = generateBool((int)s.gpa + 6 * s.privileges.budget);
-		s.passes.english = generateBool((int)s.gpa + 6 * s.privileges.budget);
-		s.passes.swimming = generateBool((int)s.gpa + 6 * s.privileges.budget);
-		s.passes.history = generateBool((int)s.gpa + 6 * s.privileges.budget);
+		s.passes.graphics = generateBool((int)s.gpa + 6 * s.privileges.budget - 1);
+		s.passes.designing = generateBool((int)s.gpa + 6 * s.privileges.budget - 1);
+		s.passes.english = generateBool((int)s.gpa + 6 * s.privileges.budget - 1);
+		s.passes.swimming = generateBool((int)s.gpa + 6 * s.privileges.budget - 1);
+		s.passes.history = generateBool((int)s.gpa + 6 * s.privileges.budget - 1);
 
 		s.id = students.size() + 1;
 		calculateCash(&s);
