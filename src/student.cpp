@@ -242,7 +242,7 @@ namespace {
 		cout << endl;
 		setCircs(&s);
 
-		s.id = (size_t)students.size() + 1;
+		s.id = students.size() + 1;
 
 		// В случае низких отметок
 		if (!calculateCash(&s)) {
@@ -275,21 +275,22 @@ namespace {
 		s.gpa /= 4;
 
 		// Другие факторы
-		s.privileges.budget = generateBool((int)(s.gpa + 2) / 3);
 		s.privileges.invalid = generateBool(-16);
-		s.privileges.activism = generateBool(-3 + s.privileges.budget);
-		s.privileges.science = generateBool((int)(s.gpa + s.privileges.invalid) / 4);
-		s.privileges.foreign = generateBool(-6 - 4 * s.privileges.invalid);
-		s.privileges.dormitory = generateBool(2 + s.privileges.invalid + s.privileges.activism);
+		s.privileges.budget = generateBool((int)s.gpa / 4);
+		s.privileges.foreign = generateBool(-8 - 4 * s.privileges.invalid);
+		s.privileges.activism = generateBool(-2 + s.privileges.budget);
+		s.privileges.science = generateBool(-5 + (int)(s.gpa + s.privileges.invalid) / 3);
+		s.privileges.dormitory = generateBool(1 - 3 * !s.privileges.budget + 
+			s.privileges.invalid + s.privileges.activism + s.privileges.foreign);
 
 		// Своевременные зачеты
-		s.passes.graphics = generateBool((int)s.gpa + 5 * s.privileges.budget);
-		s.passes.designing = generateBool((int)s.gpa + 5 * s.privileges.budget);
-		s.passes.english = generateBool((int)s.gpa + 5 * s.privileges.budget);
-		s.passes.swimming = generateBool((int)s.gpa + 5 * s.privileges.budget);
-		s.passes.history = generateBool((int)s.gpa + 5 * s.privileges.budget);
+		s.passes.graphics = generateBool((int)s.gpa + 6 * s.privileges.budget);
+		s.passes.designing = generateBool((int)s.gpa + 6 * s.privileges.budget);
+		s.passes.english = generateBool((int)s.gpa + 6 * s.privileges.budget);
+		s.passes.swimming = generateBool((int)s.gpa + 6 * s.privileges.budget);
+		s.passes.history = generateBool((int)s.gpa + 6 * s.privileges.budget);
 
-		s.id = (size_t)students.size() + 1;
+		s.id = students.size() + 1;
 		calculateCash(&s);
 
 		// Добавление в вектор
@@ -339,7 +340,7 @@ namespace {
 			circs += "s ";
 		if (s->privileges.foreign)
 			circs += "f ";
-		if (s->privileges.foreign)
+		if (s->privileges.invalid)
 			circs += "i ";
 		if (s->privileges.dormitory)
 			circs += "d";

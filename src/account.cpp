@@ -234,7 +234,7 @@ size_t createAccount() {
 	setPass(&a);
 	cout << endl;
 	setRole(&a);
-	a.id = (size_t)accounts.size() + 1;
+	a.id = accounts.size() + 1;
 
 	// Добавление в вектор
 	accounts.push_back(a);
