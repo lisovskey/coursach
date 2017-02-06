@@ -4,11 +4,12 @@
 
 #include <string>
 #include "stringer"
+using namespace std;
 
-unsigned wordCount(std::string str) {
-	unsigned count = 0;
-	unsigned len = str.length();
-	for (unsigned i = 0; i <= len; i++) {
+size_t wordCount(string str) {
+	size_t count = 0;
+	size_t len = str.length();
+	for (size_t i = 0; i <= len; i++) {
 		if (str[i] == ' ') {
 			if (str[i + 1] != ' ') {
 				count++;
@@ -23,8 +24,8 @@ unsigned wordCount(std::string str) {
 	return count;
 }
 
-std::string lower(std::string str) {
-	for (unsigned i = 0; i < str.length(); i++) {
+string lower(string str) {
+	for (size_t i = 0; i < str.length(); i++) {
 		str[i] = tolower(str[i]);
 	}
 	return str;

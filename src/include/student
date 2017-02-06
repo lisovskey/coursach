@@ -1,9 +1,9 @@
 #pragma once
 
-unsigned getStudents();
-unsigned short addStudent();
-unsigned findStudent();
-int editStudent();
-unsigned viewStudents();
-unsigned sortStudents();
-unsigned saveStudents();
+size_t getStudents();
+size_t addStudent();
+size_t findStudent();
+size_t editStudent();
+size_t viewStudents();
+size_t sortStudents();
+size_t saveStudents();

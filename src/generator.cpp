@@ -5,20 +5,21 @@
 #include <string>
 #include <cstdlib>
 #include "generator"
+using namespace std;
 
-std::string generateName() {
-	std::string name = "";
+string generateName() {
+	string name = "";
 	name += NAMES[rand() % 102];
 	name += " ";
 	name += SURNAMES[rand() % 35];
 	return name;
 }
 
-unsigned generateGroup() {
+size_t generateGroup() {
 	return GROUPS[rand() % 92];
 }
 
-unsigned short generateMark() {
+size_t generateMark() {
 	return rand() % 7 + 4;
 }
 

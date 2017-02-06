@@ -1,7 +1,7 @@
 #pragma once
 
 bool auth();
-unsigned short createAccount();
-int editAccount();
-unsigned viewAccounts();
-unsigned saveAccounts();
+size_t createAccount();
+size_t editAccount();
+size_t viewAccounts();
+size_t saveAccounts();

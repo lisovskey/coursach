@@ -29,6 +29,6 @@ static const unsigned int GROUPS[] = { 651001, 651002, 651003, 651004, 651005, 6
 	680561, 680562, 680961, 681061, 681062, 681063, 681064, 681065 };
 
 std::string generateName();
-unsigned int generateGroup();
-unsigned short generateMark();
+size_t generateGroup();
+size_t generateMark();
 bool generateBool(int = 2);

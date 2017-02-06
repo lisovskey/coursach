@@ -1,4 +1,4 @@
 #pragma once
 
-unsigned int getNumber();
+size_t getNumber();
 bool getBoolean();

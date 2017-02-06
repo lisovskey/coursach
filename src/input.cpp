@@ -9,9 +9,9 @@
 #include "input"
 using namespace std;
 
-unsigned getNumber() {
+size_t getNumber() {
 	string line;
-	unsigned number;
+	size_t number;
 
 	while (true) {
 		getline(cin, line);

@@ -1,4 +1,4 @@
 #pragma once
 
-unsigned wordCount(std::string);
+size_t wordCount(std::string);
 std::string lower(std::string);

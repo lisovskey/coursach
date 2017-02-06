@@ -11,7 +11,7 @@ using namespace std;
 
 HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
-int drawMenu(unsigned num, ...) {
+size_t drawMenu(size_t num, ...) {
 	if (num > 7) {
 		cerr << "Too many arguments" << endl;
 		exit(1);
@@ -19,7 +19,7 @@ int drawMenu(unsigned num, ...) {
 
 	va_list args;
 	system("cls");
-	unsigned count = num;
+	size_t count = num;
 
 	CONSOLE_SCREEN_BUFFER_INFO bckp;
 	GetConsoleScreenBufferInfo(hConsole, &bckp);
@@ -52,14 +52,14 @@ int drawMenu(unsigned num, ...) {
 	return num;
 }
 
-int drawTitles(unsigned num, ...) {
+size_t drawTitles(size_t num, ...) {
 	if (num > 10) {
 		cerr << "Too many arguments" << endl;
 		exit(1);
 	}
 
 	va_list args;
-	unsigned count = num;
+	size_t count = num;
 
 	CONSOLE_SCREEN_BUFFER_INFO bckp;
 	GetConsoleScreenBufferInfo(hConsole, &bckp);
@@ -69,10 +69,10 @@ int drawTitles(unsigned num, ...) {
 
 	__try {
 		va_start(args, num);
-		unsigned width = va_arg(args, unsigned);
+		size_t width = va_arg(args, size_t);
 		cout << left << setw(width) << va_arg(args, char*);
 		while (--count) {
-			width = va_arg(args, unsigned);
+			width = va_arg(args, size_t);
 			cout << (char)179 << setw(width) << va_arg(args, char*);
 		}
 		va_end(args);
