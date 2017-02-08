@@ -202,6 +202,8 @@ bool auth() {
 		// Ввод данных
 		TConsole tc;
 		tc.Window(80, 40);
+		tc.TextColor(COLOR_WHITE);
+		tc.BackgroundColor(COLOR_BLACK);
 		system("cls");
 		cout << "login: ";
 		if (!cin.getline(input.login, 20)) {
