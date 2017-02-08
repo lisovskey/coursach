@@ -13,6 +13,7 @@
 #include <regex>
 #include <windows.h>
 #include "constants"
+#include "console"
 #include "stringer"
 #include "presser"
 #include "input"
@@ -199,6 +200,8 @@ bool auth() {
 	account input;
 	while (true) {
 		// Ввод данных
+		TConsole tc;
+		tc.Window(80, 40);
 		system("cls");
 		cout << "login: ";
 		if (!cin.getline(input.login, 20)) {
