@@ -1,0 +1,43 @@
+#pragma once
+
+#define COLOR_BLACK 0
+#define COLOR_BLUE 1
+#define COLOR_GREEN 2
+#define COLOR_CYAN 3
+#define COLOR_RED 4
+#define COLOR_MAGENTA 5
+#define COLOR_BROWN 6
+#define COLOR_LIGHTGRAY 7
+#define COLOR_DARKGRAY 8
+#define COLOR_LIGHTBLUE 9
+#define COLOR_LIGHTGREEN 10
+#define COLOR_LIGHTRED 12
+#define COLOR_LIGHTMAGENTA 13
+#define COLOR_YELLOW 14
+#define COLOR_WHITE 15
+
+class TConsole
+{
+private:
+	HANDLE InputHandle;
+	HANDLE OutputHandle;
+	CONSOLE_SCREEN_BUFFER_INFO ScreenBufInfo;
+public:
+	std::ostream& Out;
+	std::istream& In;
+	TConsole();
+	void ClrEol();                  //функция удаления символов от курсора до конца строки
+	void ClrScr();                  //функция очистки экрана
+	void Delay(WORD MS);            //функция задержки выполнения
+	void DelLine();                 //функция удаления строки
+	void GotoXY(int X, int Y);      //функция перемещения курсора
+	void InsLine();                 //функция добавления строки
+	bool KeyPressed();              //функция проверки нажатия клавиши
+	WCHAR ReadKey();                //функция чтения символа с клавиатуры
+	void BackgroundColor(BYTE Color);//функция задания цвета фона
+	void TextColor(BYTE Color);     //функция задания цвета текста
+	void InvertColors();
+	int WhereX();                   //функция получения текущей координаты X курсора
+	int WhereY();                   //функция получения текущей координаты Y курсора
+	void Window(BYTE X, BYTE Y);    //функция задания размеров окна
+};

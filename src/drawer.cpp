@@ -6,12 +6,13 @@
 #include <iomanip>
 #include <cstdarg>
 #include <windows.h>
+#include "console"
 #include "drawer"
 using namespace std;
 
-HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+TConsole tc;
 
-size_t drawMenu(size_t num, ...) {
+void drawMenu(size_t num, ...) {
 	if (num > 7) {
 		cerr << "Too many arguments" << endl;
 		exit(1);
@@ -21,21 +22,18 @@ size_t drawMenu(size_t num, ...) {
 	system("cls");
 	size_t count = num;
 
-	CONSOLE_SCREEN_BUFFER_INFO bckp;
-	GetConsoleScreenBufferInfo(hConsole, &bckp);
-	unsigned char prev_color = (unsigned char)bckp.wAttributes;
-	unsigned char new_color = ~prev_color;
-
 	cout << left;
 	__try {
 		va_start(args, num);
 		while (count--) {
-			SetConsoleTextAttribute(hConsole, new_color);
+			tc.InvertColors();
+
 			if (count == 0)
 				cout << " 0 ";
 			else
 				cout << " " << num - count << " ";
-			SetConsoleTextAttribute(hConsole, prev_color);
+
+			tc.InvertColors();
 
 			cout << " " << setfill(' ') << setw(7) << va_arg(args, char*);
 		}
@@ -48,11 +46,9 @@ size_t drawMenu(size_t num, ...) {
 		exit(2);
 	}
 	cout << "\n" << endl;
-
-	return num;
 }
 
-size_t drawTitles(size_t num, ...) {
+void drawTitles(size_t num, ...) {
 	if (num > 10) {
 		cerr << "Too many arguments" << endl;
 		exit(1);
@@ -61,13 +57,8 @@ size_t drawTitles(size_t num, ...) {
 	va_list args;
 	size_t count = num;
 
-	CONSOLE_SCREEN_BUFFER_INFO bckp;
-	GetConsoleScreenBufferInfo(hConsole, &bckp);
-	unsigned char prev_color = (unsigned char)bckp.wAttributes;
-	unsigned char new_color = ~prev_color;
-	SetConsoleTextAttribute(hConsole, new_color);
-
 	__try {
+		tc.InvertColors();
 		va_start(args, num);
 		size_t width = va_arg(args, size_t);
 		cout << left << setw(width) << va_arg(args, char*);
@@ -76,15 +67,14 @@ size_t drawTitles(size_t num, ...) {
 			cout << (char)179 << setw(width) << va_arg(args, char*);
 		}
 		va_end(args);
+		tc.InvertColors();
+		cout << endl;
 	}
 	__except (GetExceptionCode() == EXCEPTION_ACCESS_VIOLATION ?
 		EXCEPTION_EXECUTE_HANDLER :
 		EXCEPTION_CONTINUE_SEARCH) {
+		tc.InvertColors();
 		cerr << "Memory error" << endl;
 		exit(2);
 	}
-	SetConsoleTextAttribute(hConsole, prev_color);
-	cout << endl;
-
-	return num;
 }
