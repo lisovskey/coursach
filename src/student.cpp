@@ -394,6 +394,48 @@ namespace {
 	bool byGPA(student a, student b) {
 		return a.gpa > b.gpa;
 	}
+
+	size_t viewFoundStudents(bool(*condition)(student, string)) {
+		system("cls");
+		// Ввод запроса
+		string request;
+		cout << "search: ";
+		getline(cin, request);
+		cin.clear();
+		request = lower(request);
+
+		// Сравнение с именем каждого студента в векторе		
+		size_t count = 0;
+		bool found = false;
+		system("cls");
+		for (size_t i = 0; i < students.size(); i++) {
+			student s = students[i];
+			if (condition(s, request)) {
+				if (!found) {
+					drawTitles(7,
+						3, "id", 24, "name", 9, "group", 8, "gpa",
+						8, "passed", 11, "circs", 11, "cash");
+					count++;
+					found = true;
+				}
+				viewStudent(&students[i]);
+			}
+		}
+
+		if (!found)
+			cout << "Nothing found" << endl;
+		else cout << endl;
+		waitAnyKey();
+		return count;
+	}
+
+	bool byName(student s, string request) {
+		return lower(s.name).find(request) != string::npos;
+	}
+
+	bool byGroup(student s, string request) {
+		return to_string(s.group).find(request) != string::npos;
+	}
 }
 
 size_t getStudents() {
@@ -418,7 +460,7 @@ size_t getStudents() {
 
 size_t addStudent() {
 	drawMenu(3, MANUAL, GENERATE, BACK);
-	do switch (_getwch()) {
+	do switch (getPress()) {
 	// Добавить вручную
 	case '1': return createStudent();
 	// Сгенерировать
@@ -429,46 +471,22 @@ size_t addStudent() {
 }
 
 size_t findStudent() {
-	system("cls");
 	// Пустой вектор
 	if (students.size() == 0) {
+		system("cls");
 		cout << "There is nothing to look for" << endl;
 		waitAnyKey();
 		return 0;
 	}
-	// Ввод запроса
-	string request;
-	cout << "search: ";
-	getline(cin, request);
-	cin.clear();
-	for (size_t i = 0; i < request.length(); i++)
-		request[i] = tolower(request[i]);
-
-	// Сравнение с именем каждого студента в векторе
-	system("cls");
-	string name;
-	size_t count = 0;
-	bool found = false;
-	for (size_t i = 0; i < students.size(); i++) {
-		student person = students[i];
-		name = lower(person.name);
-		if (name.find(request) != string::npos) {
-			if (!found) {
-				drawTitles(7,
-					3, "id", 24, "name", 9, "group", 8, "gpa",
-					8, "passed", 11, "circs", 11, "cash");
-				count++;
-				found = true;
-			}
-			viewStudent(&students[i]);
-		}
-	}
-
-	if (!found)
-		cout << "Nothing found" << endl; 
-	else cout << endl;
-	waitAnyKey();
-	return count;
+	drawMenu(3, BY_NAME, BY_GROUP, BACK);
+	do switch (getPress()) {
+	// По имени
+	case '1': return viewFoundStudents(byName);
+	// По группе
+	case '2': return viewFoundStudents(byGroup);
+	// Вернуться
+	case '0': return 0;
+	} while (true);
 }
 
 size_t editStudent() {
@@ -491,7 +509,7 @@ size_t editStudent() {
 		cout << endl;
 		do {
 			correct = true;
-			switch (_getwch()) {
+			switch (getPress()) {
 			// Имя
 			case '1': setName(&students[id - 1]);
 				break;
@@ -542,7 +560,7 @@ size_t sortStudents() {
 		return 0;
 	}
 	drawMenu(4, BY_NAME, BY_CASH, BY_GPA, BACK);
-	do switch (_getwch()) {
+	do switch (getPress()) {
 	// По имени
 	case '1': return viewSortedList(students, byName);
 	// По стипендии
