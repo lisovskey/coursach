@@ -33,7 +33,7 @@ namespace {
 	// Вектор аккаунтов
 	vector<account> accounts;
 
-	string getPass(const size_t size) {
+	string getPass(size_t size) {
 		// Скрытие ввода пароля
 		char* result = new char[size];
 		memset(result, '\0', sizeof(char) * size);
@@ -201,11 +201,12 @@ bool auth() {
 		// Ввод данных
 		system("cls");
 		cout << "login: ";
-		cin.getline(input.login, 20);
+		if (!cin.getline(input.login, 20)) {
+			cin.clear();
+			cin.ignore(10000, '\n');
+		}
 		cout << "pass: ";
-		strcpy_s(input.pass, getPass(20).c_str());
-		cin.clear();
-		cin.ignore(10000, '\n');
+		strcpy_s(input.pass, getPass(20).c_str());		
 
 		// Проверка на совпадение с каждым аккаунтом
 		for (account &user : accounts) {
@@ -260,7 +261,7 @@ size_t editAccount() {
 		cout << endl;
 		do {
 			correct = true;
-			switch (_getwch()) {
+			switch (getPress()) {
 			// Логин
 			case '1': setLogin(&accounts[id - 1]);
 				break;

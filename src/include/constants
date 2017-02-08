@@ -19,6 +19,7 @@ static const char* GENERATE = "GEN.";
 static const char* BY_NAME = "NAME";
 static const char* BY_CASH = "CASH";
 static const char* BY_GPA = "GPA";
+static const char* BY_GROUP = "GROUP";
 static const char* NAME = "NAME";
 static const char* GROUP = "GROUP";
 static const char* MARKS = "MARKS";

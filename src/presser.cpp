@@ -3,8 +3,8 @@
 #include "presser"
 using namespace std;
 
-char getPress() {
-	return (char)_getwch();
+int getPress() {
+	return _getwch();
 }
 
 void waitAnyKey() {

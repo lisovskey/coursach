@@ -1,4 +1,4 @@
 #pragma once
 
-size_t drawMenu(size_t, ...);
-size_t drawTitles(size_t, ...);
+void drawMenu(size_t, ...);
+void drawTitles(size_t, ...);

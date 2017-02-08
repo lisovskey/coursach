@@ -1,4 +1,4 @@
 #pragma once
 
-char getPress();
+int getPress();
 void waitAnyKey();
