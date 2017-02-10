@@ -193,16 +193,16 @@ namespace {
 
 bool auth() {
 	getAccounts();
+	TConsole tc;
+	SetConsoleTitle("coursach");
+	tc.Window(WINDOW_WIDTH, WINDOW_HEIGHT);
+	tc.TextColor(COLOR_WHITE);
+	tc.BackgroundColor(COLOR_BLACK);
+	system("cls");
 	// Авторизация
 	account input;
 	while (true) {
 		// Ввод данных
-		TConsole tc;
-		SetConsoleTitle("coursach");
-		tc.Window(WINDOW_WIDTH, WINDOW_HEIGHT);
-		tc.TextColor(COLOR_WHITE);
-		tc.BackgroundColor(COLOR_BLACK);
-		system("cls");
 		drawPreCentered("login: ", WINDOW_HEIGHT / 2 - 1);
 		if (!cin.getline(input.login, 20)) {
 			cin.clear();
