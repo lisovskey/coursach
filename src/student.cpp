@@ -121,7 +121,7 @@ namespace {
 		cout << "Enter id: ";
 		size_t id;
 		while (true) {
-			id = getNumber();
+			id = getPositiveNumber();
 			if (id > 0 && id <= students.size())
 				return id;
 			else
@@ -160,7 +160,7 @@ namespace {
 		cout << "Enter group: ";
 		size_t group;
 		while (true) {
-			group = getNumber();
+			group = getPositiveNumber();
 			if (group > 99999 && group < 1000000) {
 				s->group = group;
 				return;
@@ -175,7 +175,7 @@ namespace {
 		// Валидная отметка
 		size_t mark;
 		while (true) {
-			mark = getNumber();
+			mark = getPositiveNumber();
 			if (mark > 0 && mark < 11)
 				return mark;
 			else
@@ -227,92 +227,6 @@ namespace {
 		s->privileges.dormitory = getBoolean();
 	}
 
-	size_t createStudent() {
-		// Создание студента
-		system("cls");
-		student s;
-
-		setName(&s);
-		cout << endl;
-		setGroup(&s);
-		cout << endl;
-		setMarks(&s);
-		cout << endl;
-		setCredits(&s);
-		cout << endl;
-		setCircs(&s);
-
-		s.id = students.size() + 1;
-
-		// В случае низких отметок
-		if (!calculateCash(&s)) {
-			cout << "\nStudent cannot study here" << endl;
-			waitAnyKey();
-			return 0;
-		}
-
-		// Добавление в вектор
-		students.push_back(s);
-		cout << "\nStudent has been added" << endl;
-		waitAnyKey();
-		return s.id;
-	}
-
-	size_t generateStudent() {
-		// Генерация студента
-		system("cls");
-		student s;
-
-		strcpy_s(s.name, generateName().c_str());
-		s.group = generateGroup();
-
-		// Отметки
-		s.gpa = 0;
-		s.gpa += s.knowledge.math = generateMark();
-		s.gpa += s.knowledge.prog = generateMark();
-		s.gpa += s.knowledge.phys = generateMark();
-		s.gpa += s.knowledge.phil = generateMark();
-		s.gpa /= 4;
-
-		// Другие факторы
-		s.privileges.invalid = generateBool(-16);
-		s.privileges.budget = generateBool((int)s.gpa / 4);
-		s.privileges.foreign = generateBool(-8 - 4 * s.privileges.invalid);
-		s.privileges.activism = generateBool(-2 + s.privileges.budget);
-		s.privileges.science = generateBool(-5 + (int)(s.gpa + s.privileges.invalid) / 3);
-		s.privileges.dormitory = generateBool(1 - 3 * !s.privileges.budget + 
-			s.privileges.invalid + s.privileges.activism + s.privileges.foreign);
-
-		// Своевременные зачеты
-		s.passes.graphics = generateBool((int)s.gpa + 6 * s.privileges.budget - 1);
-		s.passes.designing = generateBool((int)s.gpa + 6 * s.privileges.budget - 1);
-		s.passes.english = generateBool((int)s.gpa + 6 * s.privileges.budget - 1);
-		s.passes.swimming = generateBool((int)s.gpa + 6 * s.privileges.budget - 1);
-		s.passes.history = generateBool((int)s.gpa + 6 * s.privileges.budget - 1);
-
-		s.id = students.size() + 1;
-		calculateCash(&s);
-
-		// Добавление в вектор
-		students.push_back(s);
-		cout << "Student has been added" << endl;
-		waitAnyKey();
-		return s.id;
-	}
-
-	size_t deleteStudent(size_t id) {
-		// Удаление студента из вектора
-		system("cls");
-		students.erase(students.begin() + id - 1);
-		// Исправление номеров
-		for (size_t i = id - 1; i < students.size(); i++) {
-			students[i].id = i + 1;
-		}
-		cout << "Student was deleted" << endl;
-		waitAnyKey();
-		return students.size();
-	}
-
 	size_t viewStudent(student* s) {
 		// Расчет зачетов
 		string passes = "";
@@ -361,6 +275,102 @@ namespace {
 		return s->id;
 	}
 
+	size_t createStudent() {
+		// Создание студента
+		system("cls");
+		student s;
+
+		setName(&s);
+		cout << endl;
+		setGroup(&s);
+		cout << endl;
+		setMarks(&s);
+		cout << endl;
+		setCredits(&s);
+		cout << endl;
+		setCircs(&s);
+
+		s.id = students.size() + 1;
+
+		system("cls");
+		// В случае низких отметок
+		if (!calculateCash(&s)) {
+			drawCentered("Student cannot study here");
+			waitAnyKey();
+			return 0;
+		}
+
+		// Добавление в вектор
+		students.push_back(s);
+		drawTitles(7,
+			3, "id", 24, "name", 9, "group", 8, "gpa",
+			8, "passed", 11, "circs", 11, "cash");
+		viewStudent(&s);
+		drawCentered("Student has been added");
+		waitAnyKey();
+		return s.id;
+	}
+
+	size_t generateStudent() {
+		// Генерация студента
+		system("cls");
+		student s;
+
+		strcpy_s(s.name, generateName().c_str());
+		s.group = generateGroup();
+
+		// Отметки
+		s.gpa = 0;
+		s.gpa += s.knowledge.math = generateMark();
+		s.gpa += s.knowledge.prog = generateMark();
+		s.gpa += s.knowledge.phys = generateMark();
+		s.gpa += s.knowledge.phil = generateMark();
+		s.gpa /= 4;
+
+		// Другие факторы
+		s.privileges.invalid = generateBool(-16);
+		s.privileges.budget = generateBool((int)s.gpa / 4);
+		s.privileges.foreign = generateBool(-8 - 4 * s.privileges.invalid);
+		s.privileges.activism = generateBool(-2 + s.privileges.budget);
+		s.privileges.science = generateBool(-5 + (int)(s.gpa + s.privileges.invalid) / 3);
+		s.privileges.dormitory = generateBool(1 - 3 * !s.privileges.budget + 
+			s.privileges.invalid + s.privileges.activism + s.privileges.foreign);
+
+		// Своевременные зачеты
+		s.passes.graphics = generateBool((int)s.gpa + 6 * s.privileges.budget - 1);
+		s.passes.designing = generateBool((int)s.gpa + 6 * s.privileges.budget - 1);
+		s.passes.english = generateBool((int)s.gpa + 6 * s.privileges.budget - 1);
+		s.passes.swimming = generateBool((int)s.gpa + 6 * s.privileges.budget - 1);
+		s.passes.history = generateBool((int)s.gpa + 6 * s.privileges.budget - 1);
+
+		s.id = students.size() + 1;
+		calculateCash(&s);
+
+		// Добавление в вектор
+		students.push_back(s);
+		system("cls");
+		drawTitles(7,
+			3, "id", 24, "name", 9, "group", 8, "gpa",
+			8, "passed", 11, "circs", 11, "cash");
+		viewStudent(&s);
+		drawCentered("Student has been generated");
+		waitAnyKey();
+		return s.id;
+	}
+
+	size_t deleteStudent(size_t id) {
+		// Удаление студента из вектора
+		system("cls");
+		students.erase(students.begin() + id - 1);
+		// Исправление номеров
+		for (size_t i = id - 1; i < students.size(); i++) {
+			students[i].id = i + 1;
+		}
+		drawCentered("Student was deleted");
+		waitAnyKey();
+		return students.size();
+	}
+
 	size_t viewList(vector<student> &list) {
 		system("cls");
 		// Заголовки
@@ -371,7 +381,7 @@ namespace {
 		for (student &s : list) {
 			viewStudent(&s);
 		}
-		cout << endl;
+		cout << "\n" << endl;
 		waitAnyKey();
 
 		return list.size();
@@ -422,9 +432,10 @@ namespace {
 			}
 		}
 
-		if (!found)
-			cout << "Nothing found" << endl;
-		else cout << endl;
+		if (!found) {
+			drawCentered("Student was deleted");
+		}
+		else cout << "\n" << endl;
 		waitAnyKey();
 		return count;
 	}
@@ -474,7 +485,7 @@ size_t findStudent() {
 	// Пустой вектор
 	if (students.size() == 0) {
 		system("cls");
-		cout << "There is nothing to look for" << endl;
+		drawCentered("There is nothing to look for");
 		waitAnyKey();
 		return 0;
 	}
@@ -493,7 +504,7 @@ size_t editStudent() {
 	system("cls");
 	// Пустой вектор
 	if (students.size() == 0) {
-		cout << "There is nothing to edit" << endl;
+		drawCentered("There is nothing to edit");
 		waitAnyKey();
 		return 0;
 	}
@@ -544,7 +555,7 @@ size_t viewStudents() {
 	// Пустой вектор
 	if (students.size() == 0) {
 		system("cls");
-		cout << "There is nothing to show" << endl;
+		drawCentered("There is nothing to show");
 		waitAnyKey();
 		return 0;
 	}
@@ -555,7 +566,7 @@ size_t sortStudents() {
 	// Пустой вектор
 	if (students.size() == 0) {
 		system("cls");
-		cout << "There is nothing to sort" << endl;
+		drawCentered("There is nothing to sort");
 		waitAnyKey();
 		return 0;
 	}
@@ -580,7 +591,7 @@ size_t saveStudents() {
 	fout.close();
 
 	system("cls");
-	cout << "All changes have been saved" << endl;
+	drawCentered("All changes have been saved");
 	waitAnyKey();
 
 	return students.size();

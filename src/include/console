@@ -26,18 +26,18 @@ public:
 	std::ostream& Out;
 	std::istream& In;
 	TConsole();
-	void ClrEol();                  //функция удаления символов от курсора до конца строки
-	void ClrScr();                  //функция очистки экрана
-	void Delay(WORD MS);            //функция задержки выполнения
-	void DelLine();                 //функция удаления строки
-	void GotoXY(int X, int Y);      //функция перемещения курсора
-	void InsLine();                 //функция добавления строки
-	bool KeyPressed();              //функция проверки нажатия клавиши
-	WCHAR ReadKey();                //функция чтения символа с клавиатуры
-	void BackgroundColor(BYTE Color);//функция задания цвета фона
-	void TextColor(BYTE Color);     //функция задания цвета текста
-	void InvertColors();
-	int WhereX();                   //функция получения текущей координаты X курсора
-	int WhereY();                   //функция получения текущей координаты Y курсора
-	void Window(BYTE X, BYTE Y);    //функция задания размеров окна
+	void ClrEol();						// функция удаления символов от курсора до конца строки
+	void ClrScr();						// функция очистки экрана
+	void Delay(WORD MS);				// функция задержки выполнения
+	void DelLine();						// функция удаления строки
+	void GotoXY(int X, int Y);			// функция перемещения курсора
+	void InsLine();						// функция добавления строки
+	bool KeyPressed();					// функция проверки нажатия клавиши
+	WCHAR ReadKey();					// функция чтения символа с клавиатуры
+	void BackgroundColor(BYTE Color);	// функция задания цвета фона
+	void TextColor(BYTE Color);			// функция задания цвета текста
+	void InvertColors();				// функция инвертирования цветов
+	int WhereX();						// функция получения текущей координаты X курсора
+	int WhereY();						// функция получения текущей координаты Y курсора
+	void Window(BYTE X, BYTE Y);		// функция задания размеров окна
 };

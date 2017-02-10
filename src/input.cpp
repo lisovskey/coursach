@@ -9,7 +9,7 @@
 #include "input"
 using namespace std;
 
-size_t getNumber() {
+size_t getPositiveNumber() {
 	string line;
 	size_t number;
 

@@ -1,5 +1,5 @@
 #include <conio.h>
-#include <iostream>
+#include "drawer"
 #include "presser"
 using namespace std;
 
@@ -8,6 +8,6 @@ int getPress() {
 }
 
 void waitAnyKey() {
-	std::cout << "\npress any key...";
+	drawPressAnyKey();
 	getPress();
 }

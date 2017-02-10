@@ -2,3 +2,7 @@
 
 void drawMenu(size_t, ...);
 void drawTitles(size_t, ...);
+void drawPressAnyKey();
+void drawCentered(const char*);
+void drawColumn(size_t);
+void drawPreCentered(const char*, size_t);

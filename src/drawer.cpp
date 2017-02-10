@@ -5,27 +5,45 @@
 #include <iostream>
 #include <iomanip>
 #include <cstdarg>
+#include <cstring>
 #include <windows.h>
+#include "constants"
 #include "console"
 #include "drawer"
 using namespace std;
 
 TConsole tc;
 
+void drawVerticalLine(size_t length, size_t x, size_t y) {
+	while (length--) {
+		tc.GotoXY(x, y++);
+		cout << (char)179;		
+	}
+}
+
+void drawColumn(size_t width) {
+	if (width % 2) width++;
+	drawVerticalLine(WINDOW_HEIGHT, WINDOW_WIDTH / 2 - width / 2, 0);
+	drawVerticalLine(WINDOW_HEIGHT, WINDOW_WIDTH / 2 + width / 2 - 1, 0);
+}
+
 void drawMenu(size_t num, ...) {
-	if (num > 7) {
+	if (num > 10) {
 		cerr << "Too many arguments" << endl;
 		exit(1);
 	}
 
 	va_list args;
 	system("cls");
+	size_t x = WINDOW_WIDTH / 2 - 5;
+	size_t y = WINDOW_HEIGHT / 2 - num;
 	size_t count = num;
 
 	cout << left;
 	__try {
 		va_start(args, num);
 		while (count--) {
+			tc.GotoXY(x, y);
 			tc.InvertColors();
 
 			if (count == 0)
@@ -35,9 +53,11 @@ void drawMenu(size_t num, ...) {
 
 			tc.InvertColors();
 
-			cout << " " << setfill(' ') << setw(7) << va_arg(args, char*);
+			cout << " " << setfill(' ') << setw(8) << va_arg(args, char*);
+			y += 2;
 		}
 		va_end(args);
+		tc.GotoXY(WINDOW_WIDTH - 1, WINDOW_HEIGHT - 1);
 	}
 	__except (GetExceptionCode() == EXCEPTION_ACCESS_VIOLATION ? 
 		EXCEPTION_EXECUTE_HANDLER : 
@@ -45,7 +65,6 @@ void drawMenu(size_t num, ...) {
 		cerr << "Memory error" << endl;
 		exit(2);
 	}
-	cout << "\n" << endl;
 }
 
 void drawTitles(size_t num, ...) {
@@ -77,4 +96,21 @@ void drawTitles(size_t num, ...) {
 		cerr << "Memory error" << endl;
 		exit(2);
 	}
+}
+
+void drawPressAnyKey() {
+	tc.GotoXY(WINDOW_WIDTH / 2 - 8, WINDOW_HEIGHT - 2);
+	cout << "press any key...";
+	tc.GotoXY(WINDOW_WIDTH - 1, WINDOW_HEIGHT - 1);
+}
+
+void drawCentered(const char* str) {
+	tc.GotoXY(WINDOW_WIDTH / 2 - strlen(str) / 2, WINDOW_HEIGHT / 2);
+	cout << str;
+	tc.GotoXY(WINDOW_WIDTH - 1, WINDOW_HEIGHT - 1);
+}
+
+void drawPreCentered(const char* str, size_t y) {
+	tc.GotoXY(WINDOW_WIDTH / 2 - strlen(str), y);
+	cout << str;
 }

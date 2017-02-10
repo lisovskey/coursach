@@ -1,4 +1,4 @@
 #pragma once
 
-size_t getNumber();
+size_t getPositiveNumber();
 bool getBoolean();

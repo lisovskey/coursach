@@ -95,9 +95,6 @@ namespace {
 			admin.admin = true;
 			accounts.push_back(admin);
 		}
-		// Установка основы рандома
-		srand((size_t)time(NULL));
-
 		return accounts.size();
 	}
 
@@ -106,7 +103,7 @@ namespace {
 		cout << "Enter id: ";
 		size_t id;
 		while (true) {
-			id = getNumber();
+			id = getPositiveNumber();
 			if (id > 0 && id <= accounts.size())
 				return id;
 			else
@@ -170,7 +167,7 @@ namespace {
 		for (size_t i = id - 1; i < accounts.size(); i++) {
 			accounts[i].id = i + 1;
 		}
-		cout << "Account was deleted" << endl;
+		drawCentered("Account was deleted");
 		waitAnyKey();
 		return accounts.size();
 	}
@@ -201,31 +198,33 @@ bool auth() {
 	while (true) {
 		// Ввод данных
 		TConsole tc;
-		tc.Window(80, 40);
+		SetConsoleTitle("coursach");
+		tc.Window(WINDOW_WIDTH, WINDOW_HEIGHT);
 		tc.TextColor(COLOR_WHITE);
 		tc.BackgroundColor(COLOR_BLACK);
 		system("cls");
-		cout << "login: ";
+		drawPreCentered("login: ", WINDOW_HEIGHT / 2 - 1);
 		if (!cin.getline(input.login, 20)) {
 			cin.clear();
 			cin.ignore(10000, '\n');
 		}
-		cout << "pass: ";
+		drawPreCentered("password: ", WINDOW_HEIGHT / 2);
 		strcpy_s(input.pass, getPass(20).c_str());		
+		system("cls");
 
 		// Проверка на совпадение с каждым аккаунтом
-		for (account &user : accounts) {
-			if (strcmp(input.login, user.login) == 0 &&
-				strcmp(input.pass, user.pass) == 0) {
-				system("cls");
-				cout << "hello, " << user.login << endl;
+		for (account &account : accounts) {
+			if (strcmp(input.login, account.login) == 0 &&
+				strcmp(input.pass, account.pass) == 0) {
+				string greeting = account.login;
+				greeting = "hello, " + greeting;
+				drawCentered(greeting.c_str());
 				waitAnyKey();
 
-				return user.admin;
+				return account.admin;
 			}
 		}
-		system("cls");
-		cout << "Incorrect login or password" << endl;
+		drawCentered("Incorrect login or password");
 		waitAnyKey();
 	}
 }
@@ -244,7 +243,11 @@ size_t createAccount() {
 
 	// Добавление в вектор
 	accounts.push_back(a);
-	cout << "\nAccount has been added" << endl;
+	system("cls");
+	drawTitles(4,
+		3, "id", 25, "login", 25, "password", 24, "role");
+	viewAccount(&a);
+	drawCentered("Account has been added");
 	waitAnyKey();
 	return a.id;
 }
@@ -252,7 +255,7 @@ size_t createAccount() {
 size_t editAccount() {
 	system("cls");
 	if (accounts.size() == 0) {
-		cout << "There is nothing to edit" << endl;
+		drawCentered("There is nothing to edit");
 		waitAnyKey();
 		return 0;
 	}
@@ -290,7 +293,7 @@ size_t editAccount() {
 size_t viewAccounts() {
 	system("cls");
 	if (accounts.size() == 0) {
-		cout << "There is nothing to show" << endl;
+		drawCentered("There is nothing to show");
 		waitAnyKey();
 		return 0;
 	}
@@ -301,7 +304,7 @@ size_t viewAccounts() {
 	for (account &a : accounts) {
 		viewAccount(&a);
 	}
-	cout << endl;
+	cout << "\n" << endl;
 	waitAnyKey();
 
 	return accounts.size();
@@ -315,7 +318,7 @@ size_t saveAccounts() {
 		fout.write((char*)&user, sizeof(account));
 	fout.close();
 
-	cout << "All changes have been saved" << endl;
+	drawCentered("All changes have been saved");
 	waitAnyKey();
 
 	return accounts.size();
