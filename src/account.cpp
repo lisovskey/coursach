@@ -100,63 +100,82 @@ namespace {
 
 	size_t getId() {
 		// Проверка существования
-		cout << "Enter id: ";
+		drawPreCentered("Enter id: ", WINDOW_HEIGHT / 2);
 		size_t id;
 		while (true) {
-			id = getPositiveNumber();
+			id = getPositiveNumber(WINDOW_HEIGHT / 2);
 			if (id > 0 && id <= accounts.size())
 				return id;
-			else
-				cout << "Invalid id: ";
+			else {
+				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_HEIGHT / 2);
+				drawPreCentered("Invalid id: ", WINDOW_HEIGHT / 2);
+			}
 		}
 	}
 
-	void setLogin(account* a) {
+	void setLogin(account* a, size_t y) {
 		// Логин только из букв и цифр
-		cout << "Enter login: ";
+		drawPreCentered("Enter login: ", y);
 		static char login[21];
 		while (true) {
 			cin.getline(login, 21);
 			cin.clear();
+			bool already_taken = false;
+			for (account &user : accounts) {
+				if (strcmp(user.login, login) == 0) {
+					if (user.id != a->id) {
+						already_taken = true;
+						break;
+					}
+				}
+			}
 			if (strlen(login) == 20) {
 				cin.ignore(10000, '\n');
-				cout << "Too long login: ";
+				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+				drawPreCentered("Too long login: ", y);
 			}
-			else if (regex_match(login, regex("[0-9A-Za-z]+"))) {
-				strcpy_s(a->login, login);
-				return;
+			else if (!regex_match(login, regex("[0-9A-Za-z]+"))) {
+				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+				drawPreCentered("Only digits and letters: ", y);
+			}
+			else if (already_taken) {
+				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+				drawPreCentered("Already taken: ", y);
 			}
 			else {
-				cout << "Only digits and letters: ";
+				strcpy_s(a->login, login);
+				return;
 			}
 		}
 	}
 
-	void setPass(account* a) {
+	void setPass(account* a, size_t y) {
 		// Пароль только из букв и цифр
-		cout << "Enter pass: ";
+		drawPreCentered("Enter pass: ", y);
 		static char pass[21];
 		while (true) {
 			cin.getline(pass, 21);
 			cin.clear();
 			if (strlen(pass) == 20) {
 				cin.ignore(10000, '\n');
-				cout << "Too long pass: ";
+				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+				drawPreCentered("Too long pass: ", y);
 			}
 			else if (regex_match(pass, regex("[0-9_A-Z-a-z]+"))) {
 				strcpy_s(a->pass, pass);
 				return;
 			}
 			else {
-				cout << "Don't use special chars: ";
+				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+				drawPreCentered("Don't use special chars: ", y);
 			}
 		}
 	}
 
-	void setRole(account* a) {
+	void setRole(account* a, size_t y) {
 		// Администратор или пользователь
-		cout << "Is admin: ";
-		a->admin = getBoolean();
+		drawPreCentered("Is admin: ", y);
+		a->admin = getBoolean(y);
 	}
 
 	size_t deleteAccount(size_t id) {
@@ -192,16 +211,12 @@ namespace {
 }
 
 bool auth() {
+	initWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "coursach");
 	getAccounts();
-	TConsole tc;
-	SetConsoleTitle("coursach");
-	tc.Window(WINDOW_WIDTH, WINDOW_HEIGHT);
-	tc.TextColor(COLOR_WHITE);
-	tc.BackgroundColor(COLOR_BLACK);
-	system("cls");
 	// Авторизация
 	account input;
 	while (true) {
+		system("cls");
 		// Ввод данных
 		drawPreCentered("login: ", WINDOW_HEIGHT / 2 - 1);
 		if (!cin.getline(input.login, 20)) {
@@ -234,16 +249,15 @@ size_t createAccount() {
 	system("cls");
 	account a;
 
-	setLogin(&a);
-	cout << endl;
-	setPass(&a);
-	cout << endl;
-	setRole(&a);
 	a.id = accounts.size() + 1;
+	setLogin(&a, WINDOW_HEIGHT / 2 - 2);
+	cout << endl;
+	setPass(&a, WINDOW_HEIGHT / 2);
+	cout << endl;
+	setRole(&a, WINDOW_HEIGHT / 2 + 2);
 
 	// Добавление в вектор
 	accounts.push_back(a);
-	system("cls");
 	drawTitles(4,
 		3, "id", 25, "login", 25, "password", 24, "role");
 	viewAccount(&a);
@@ -262,22 +276,24 @@ size_t editAccount() {
 	size_t id = getId();
 	bool correct;
 	while (true) {
-		drawMenu(5, LOGIN, PASS, ROLE, REMOVE, BACK);
 		drawTitles(4,
 			3, "id", 25, "login", 25, "password", 24, "role");
 		viewAccount(&accounts[id - 1]);
-		cout << endl;
+		drawMenu(5, LOGIN, PASS, ROLE, REMOVE, BACK);
 		do {
 			correct = true;
 			switch (getPress()) {
 			// Логин
-			case '1': setLogin(&accounts[id - 1]);
+			case '1': clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
+				setLogin(&accounts[id - 1], WINDOW_HEIGHT / 2);
 				break;
 			// Пароль
-			case '2': setPass(&accounts[id - 1]);
-			break;
+			case '2': clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
+				setPass(&accounts[id - 1], WINDOW_HEIGHT / 2);
+				break;
 			// Уровень доступа
-			case '3': setRole(&accounts[id - 1]);
+			case '3': clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
+				setRole(&accounts[id - 1], WINDOW_HEIGHT / 2);
 				break;
 			// Удалить
 			case '4': return deleteAccount(id);
@@ -291,8 +307,8 @@ size_t editAccount() {
 }
 
 size_t viewAccounts() {
-	system("cls");
 	if (accounts.size() == 0) {
+		system("cls");
 		drawCentered("There is nothing to show");
 		waitAnyKey();
 		return 0;

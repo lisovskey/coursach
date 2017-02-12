@@ -5,11 +5,14 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include "constants"
+#include "drawer"
+#include "console"
 #include "stringer"
 #include "input"
 using namespace std;
 
-size_t getPositiveNumber() {
+size_t getPositiveNumber(size_t y) {
 	string line;
 	size_t number;
 
@@ -21,11 +24,12 @@ size_t getPositiveNumber() {
 			if (ss.eof())
 				return number;
 
-		cout << "Try again: ";
+		clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+		drawPreCentered("Try again: ", y);
 	}
 }
 
-bool getBoolean() {
+bool getBoolean(size_t y) {
 	string line;
 	while (true) {
 		getline(cin, line);
@@ -41,6 +45,7 @@ bool getBoolean() {
 			return false;
 		}
 
-		cout << "Try again: ";
+		clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+		drawPreCentered("Try again: ", y);
 	}
 }

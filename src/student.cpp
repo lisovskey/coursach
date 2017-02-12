@@ -12,6 +12,7 @@
 #include <algorithm>
 #include "constants"
 #include "stringer"
+#include "console"
 #include "presser"
 #include "input"
 #include "drawer"
@@ -118,27 +119,31 @@ namespace {
 
 	size_t getId() {
 		// Проверка существования
-		cout << "Enter id: ";
+		drawPreCentered("Enter id: ", WINDOW_HEIGHT / 2);
 		size_t id;
 		while (true) {
-			id = getPositiveNumber();
+			id = getPositiveNumber(WINDOW_HEIGHT / 2);
 			if (id > 0 && id <= students.size())
 				return id;
-			else
-				cout << "Invalid id: ";
+			else {
+				system("cls");
+				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_HEIGHT / 2);
+				drawPreCentered("Invalid id: ", WINDOW_HEIGHT / 2);
+			}
 		}
 	}
 
-	void setName(student* s) {
+	void setName(student* s, size_t y) {
 		// Имя из двух слов только из букв
-		cout << "Enter name: ";
+		drawPreCentered("Enter name: ", y);
 		static char name[25];
 		while (true) {
 			cin.getline(name, 25);
 			cin.clear();
 			if (strlen(name) == 24) {
 				cin.ignore(10000, '\n');
-				cout << "Too long name: ";
+				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+				drawPreCentered("Too long name: ", y);
 			}
 			else if (regex_match(name, regex("[A-Z a-z]+"))) {
 				if (wordCount(name) == 2) {
@@ -146,85 +151,91 @@ namespace {
 					return;
 				}
 				else {
-					cout << "Name and surname: ";
+					clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+					drawPreCentered("Name and surname: ", y);
 				}
 			}
 			else {
-				cout << "Invalid name: ";
+				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+				drawPreCentered("Invalid name: ", y);
 			}
 		}
 	}
 
-	void setGroup(student* s) {
+	void setGroup(student* s, size_t y) {
 		// Шестизначный номер группы
-		cout << "Enter group: ";
+		drawPreCentered("Enter group: ", y);
 		size_t group;
 		while (true) {
-			group = getPositiveNumber();
+			group = getPositiveNumber(y);
 			if (group > 99999 && group < 1000000) {
 				s->group = group;
 				return;
 			}
 			else {
-				cout << "Invalid group: ";
+				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+				drawPreCentered("Invalid group: ", y);
 			}
 		}
 	}
 
-	size_t getMark() {
+	size_t getMark(size_t y) {
 		// Валидная отметка
 		size_t mark;
 		while (true) {
-			mark = getPositiveNumber();
-			if (mark > 0 && mark < 11)
+			mark = getPositiveNumber(y);
+			if (mark > 0 && mark < 11) {
 				return mark;
-			else
-				cout << "Invalid mark: ";
+			}
+			else {
+				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+				drawPreCentered("Invalid mark: ", y);
+			}
 		}
 	}
 
-	void setMarks(student* s) {
+	void setMarks(student* s, size_t y) {
 		// Установка отметок с расчетом среднего балла
 		double sum = 0;
-		cout << "Enter math mark: ";
-		sum += s->knowledge.math = getMark();
-		cout << "Enter programming mark: ";
-		sum += s->knowledge.prog = getMark();
-		cout << "Enter physics mark: ";
-		sum += s->knowledge.phys = getMark();
-		cout << "Enter philosophy mark: ";
-		sum += s->knowledge.phil = getMark();
+		drawPreCentered("Enter math mark: ", y);
+		sum += s->knowledge.math = getMark(y);
+		drawPreCentered("Enter programming mark: ", y + 1);
+		sum += s->knowledge.prog = getMark(y + 1);
+		drawPreCentered("Enter physics mark: ", y + 2);
+		sum += s->knowledge.phys = getMark(y + 2);
+		drawPreCentered("Enter philosophy mark: ", y + 3);
+		sum += s->knowledge.phil = getMark(y + 3);
 		s->gpa = sum / 4;
 	}
 
-	void setCredits(student* s) {
+	void setCredits(student* s, size_t y) {
 		// Установка вовремя сданных зачетов
-		cout << "Passed graphics on time: ";
-		s->passes.graphics = getBoolean();
-		cout << "Passed english on time: ";
-		s->passes.english = getBoolean();
-		cout << "Passed swimming on time: ";
-		s->passes.swimming = getBoolean();
-		cout << "Passed designing on time: ";
-		s->passes.designing = getBoolean();
-		cout << "Passed history on time: ";
-		s->passes.history = getBoolean();
+		drawPreCentered("Passed graphics on time: ", y);
+		s->passes.graphics = getBoolean(y);
+		drawPreCentered("Passed english on time: ", y + 1);
+		s->passes.english = getBoolean(y + 1);
+		drawPreCentered("Passed swimming on time: ", y + 2);
+		s->passes.swimming = getBoolean(y + 2);
+		drawPreCentered("Passed designing on time: ", y + 3);
+		s->passes.designing = getBoolean(y + 3);
+		drawPreCentered("Passed history on time: ", y + 4);
+		s->passes.history = getBoolean(y + 4);
 	}
 
-	void setCircs(student* s) {
+	void setCircs(student* s, size_t y) {
 		// Установка влияющих факторов
-		cout << "Is on budget: ";
-		s->privileges.budget = getBoolean();
-		cout << "Is activist: ";
-		s->privileges.activism = getBoolean();
-		cout << "Do scince: ";
-		s->privileges.science = getBoolean();
-		cout << "Is foreign: ";
-		s->privileges.foreign = getBoolean();
-		cout << "Is invalid: ";
-		s->privileges.invalid = getBoolean();
-		cout << "Lives in dormitory: ";
-		s->privileges.dormitory = getBoolean();
+		drawPreCentered("Is on budget: ", y);
+		s->privileges.budget = getBoolean(y);
+		drawPreCentered("Is activist: ", y + 1);
+		s->privileges.activism = getBoolean(y + 1);
+		drawPreCentered("Do scince: ", y + 2);
+		s->privileges.science = getBoolean(y + 2);
+		drawPreCentered("Is foreign: ", y + 3);
+		s->privileges.foreign = getBoolean(y + 3);
+		drawPreCentered("Is invalid: ", y + 4);
+		s->privileges.invalid = getBoolean(y + 4);
+		drawPreCentered("Lives in dormitory: ", y + 5);
+		s->privileges.dormitory = getBoolean(y + 5);
 	}
 
 	size_t viewStudent(student* s) {
@@ -279,22 +290,21 @@ namespace {
 		// Создание студента
 		system("cls");
 		student s;
-
-		setName(&s);
-		cout << endl;
-		setGroup(&s);
-		cout << endl;
-		setMarks(&s);
-		cout << endl;
-		setCredits(&s);
-		cout << endl;
-		setCircs(&s);
-
 		s.id = students.size() + 1;
 
-		system("cls");
+		setName(&s, WINDOW_HEIGHT / 2 - 10);
+		cout << endl;
+		setGroup(&s, WINDOW_HEIGHT / 2 - 8);
+		cout << endl;
+		setMarks(&s, WINDOW_HEIGHT / 2 - 6);
+		cout << endl;
+		setCredits(&s, WINDOW_HEIGHT / 2 - 1);
+		cout << endl;
+		setCircs(&s, WINDOW_HEIGHT / 2 + 5);
+
 		// В случае низких отметок
 		if (!calculateCash(&s)) {
+			system("cls");
 			drawCentered("Student cannot study here");
 			waitAnyKey();
 			return 0;
@@ -315,6 +325,7 @@ namespace {
 		// Генерация студента
 		system("cls");
 		student s;
+		s.id = students.size() + 1;
 
 		strcpy_s(s.name, generateName().c_str());
 		s.group = generateGroup();
@@ -343,12 +354,10 @@ namespace {
 		s.passes.swimming = generateBool((int)s.gpa + 6 * s.privileges.budget - 1);
 		s.passes.history = generateBool((int)s.gpa + 6 * s.privileges.budget - 1);
 
-		s.id = students.size() + 1;
 		calculateCash(&s);
 
 		// Добавление в вектор
 		students.push_back(s);
-		system("cls");
 		drawTitles(7,
 			3, "id", 24, "name", 9, "group", 8, "gpa",
 			8, "passed", 11, "circs", 11, "cash");
@@ -372,7 +381,6 @@ namespace {
 	}
 
 	size_t viewList(vector<student> &list) {
-		system("cls");
 		// Заголовки
 		drawTitles(7,
 			3, "id", 24, "name", 9, "group", 8, "gpa",
@@ -409,7 +417,7 @@ namespace {
 		system("cls");
 		// Ввод запроса
 		string request;
-		cout << "search: ";
+		drawPreCentered("search: ", WINDOW_HEIGHT / 2);
 		getline(cin, request);
 		cin.clear();
 		request = lower(request);
@@ -417,7 +425,6 @@ namespace {
 		// Сравнение с именем каждого студента в векторе		
 		size_t count = 0;
 		bool found = false;
-		system("cls");
 		for (size_t i = 0; i < students.size(); i++) {
 			student s = students[i];
 			if (condition(s, request)) {
@@ -433,7 +440,8 @@ namespace {
 		}
 
 		if (!found) {
-			drawCentered("Student was deleted");
+			system("cls");
+			drawCentered("Nothing found");
 		}
 		else cout << "\n" << endl;
 		waitAnyKey();
@@ -470,6 +478,7 @@ size_t getStudents() {
 }
 
 size_t addStudent() {
+	system("cls");
 	drawMenu(3, MANUAL, GENERATE, BACK);
 	do switch (getPress()) {
 	// Добавить вручную
@@ -482,9 +491,9 @@ size_t addStudent() {
 }
 
 size_t findStudent() {
+	system("cls");
 	// Пустой вектор
 	if (students.size() == 0) {
-		system("cls");
 		drawCentered("There is nothing to look for");
 		waitAnyKey();
 		return 0;
@@ -512,32 +521,36 @@ size_t editStudent() {
 	size_t id = getId();
 	bool correct;
 	while (true) {
-		drawMenu(7, NAME, GROUP, MARKS, CREDITS, CIRCS, REMOVE, BACK);
 		drawTitles(7,
 			3, "id", 24, "name", 9, "group", 8, "gpa",
 			8, "passed", 11, "circs", 11, "cash");
 		viewStudent(&students[id - 1]);
-		cout << endl;
+		drawMenu(7, NAME, GROUP, MARKS, CREDITS, CIRCS, REMOVE, BACK);
 		do {
 			correct = true;
 			switch (getPress()) {
 			// Имя
-			case '1': setName(&students[id - 1]);
+			case '1': clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
+				setName(&students[id - 1], WINDOW_HEIGHT / 2);
 				break;
 			// Группу
-			case '2': setGroup(&students[id - 1]);
+			case '2': clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
+				setGroup(&students[id - 1], WINDOW_HEIGHT / 2);
 				break;
 			// Отметки
-			case '3': setMarks(&students[id - 1]);
+			case '3': clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
+				setMarks(&students[id - 1], WINDOW_HEIGHT / 2 - 2);
 				if (!calculateCash(&students[id - 1]))
 					return deleteStudent(id);
 				break;
 			// Зачеты
-			case '4': setCredits(&students[id - 1]);
+			case '4': clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
+				setCredits(&students[id - 1], WINDOW_HEIGHT / 2 - 2);
 				calculateCash(&students[id - 1]);
 				break;
 			// Льготы
-			case '5': setCircs(&students[id - 1]);
+			case '5': clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
+				setCircs(&students[id - 1], WINDOW_HEIGHT / 2 - 3);
 				calculateCash(&students[id - 1]);
 				break;
 			// Удалить
@@ -563,9 +576,9 @@ size_t viewStudents() {
 }
 
 size_t sortStudents() {
+	system("cls");
 	// Пустой вектор
 	if (students.size() == 0) {
-		system("cls");
 		drawCentered("There is nothing to sort");
 		waitAnyKey();
 		return 0;

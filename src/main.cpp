@@ -2,6 +2,7 @@
 * RitZEED inc.
 */
 
+#include <cstdlib>
 #include "presser"
 #include "constants"
 #include "account"
@@ -22,6 +23,7 @@ int userMode() {
 	bool correct;
 	// Основной цикл
 	while (true) {
+		system("cls");
 		drawMenu(4, FIND, VIEW, SORT, QUIT);
 		// Цикл выбора действия
 		do {
@@ -51,6 +53,7 @@ int adminMode() {
 	bool correct;
 	// Основной цикл
 	while (true) {
+		system("cls");
 		drawMenu(7, ADD, EDIT, VIEW, SORT, SAVE, ACCS, QUIT);
 		// Цикл выбора действия
 		do {
@@ -88,6 +91,7 @@ int administration() {
 	bool correct;
 	// Основной цикл
 	while (true) {
+		system("cls");
 		drawMenu(5, ADD, EDIT, VIEW, SAVE, BACK);
 		// Цикл выбора действия
 		do {
@@ -115,6 +119,7 @@ int administration() {
 }
 
 bool quit() {
+	system("cls");
 	drawMenu(2, QUIT, BACK);
 	do switch (getPress()) {
 	// Действительно выйти

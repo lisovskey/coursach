@@ -34,7 +34,6 @@ void drawMenu(size_t num, ...) {
 	}
 
 	va_list args;
-	system("cls");
 	size_t x = WINDOW_WIDTH / 2 - 5;
 	size_t y = WINDOW_HEIGHT / 2 - num;
 	size_t count = num;
@@ -53,7 +52,7 @@ void drawMenu(size_t num, ...) {
 
 			tc.InvertColors();
 
-			cout << " " << setfill(' ') << setw(8) << va_arg(args, char*);
+			cout << " " << va_arg(args, char*);
 			y += 2;
 		}
 		va_end(args);
@@ -73,6 +72,7 @@ void drawTitles(size_t num, ...) {
 		exit(1);
 	}
 
+	system("cls");
 	va_list args;
 	size_t count = num;
 
@@ -111,6 +111,6 @@ void drawCentered(const char* str) {
 }
 
 void drawPreCentered(const char* str, size_t y) {
-	tc.GotoXY(WINDOW_WIDTH / 2 - strlen(str), y);
-	cout << str;
+	tc.GotoXY(0, y);
+	cout << setw(WINDOW_WIDTH / 2) << setfill(' ') << right << str;
 }

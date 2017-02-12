@@ -1,5 +1,6 @@
 #include <windows.h>
 #include <iostream>
+#include <iomanip>
 #include "console"
 
 TConsole::TConsole() :In(std::cin), Out(std::cout) {
@@ -145,4 +146,28 @@ void TConsole::Window(BYTE X, BYTE Y) {
 	SetConsoleScreenBufferSize(OutputHandle, BufSize);
 	SetConsoleWindowInfo(OutputHandle, TRUE, &ConsoleRect);
 	GotoXY(0, 0);
+}
+
+void initWindow(BYTE width, BYTE height, const char* title) {
+	if (width + height > 255) {
+		std::cerr << "Too big window" << std::endl;
+		exit(1);
+	}
+	TConsole tc;
+	tc.Window(width, height);
+	tc.Window(width, height);
+	SetConsoleTitle(title);
+	tc.BackgroundColor(COLOR_BLACK);
+	tc.TextColor(COLOR_WHITE);
+}
+
+void clsUnder(BYTE width, BYTE height, size_t y) {
+	TConsole tc;
+	tc.GotoXY(0, y);
+	int count = height - y;
+	if (count > 0) {
+		while (count--) {
+			std::cout << std::setw(width) << std::setfill(' ') << "";
+		}
+	}
 }
