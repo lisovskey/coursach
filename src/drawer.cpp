@@ -107,7 +107,6 @@ void drawPressAnyKey() {
 void drawCentered(const char* str) {
 	tc.GotoXY(WINDOW_WIDTH / 2 - strlen(str) / 2, WINDOW_HEIGHT / 2);
 	cout << str;
-	tc.GotoXY(WINDOW_WIDTH - 1, WINDOW_HEIGHT - 1);
 }
 
 void drawPreCentered(const char* str, size_t y) {

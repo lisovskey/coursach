@@ -29,7 +29,7 @@ static const char* REMOVE = "DELETE";
 static const char* LOGIN = "LOGIN";
 static const char* PASS = "PASSWORD";
 static const char* ROLE = "ROLE";
-static const char* FAQ = "HELP";
+static const char* HELP = "HELP";
 
 static const size_t WINDOW_WIDTH = 80;
 static const size_t WINDOW_HEIGHT = 40;

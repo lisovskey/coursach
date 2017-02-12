@@ -146,18 +146,16 @@ namespace {
 				drawPreCentered("Too long name: ", y);
 			}
 			else if (regex_match(name, regex("[A-Z a-z]+"))) {
-				if (wordCount(name) == 2) {
-					strcpy_s(s->name, name);
-					return;
-				}
-				else {
-					clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
-					drawPreCentered("Name and surname: ", y);
-				}
+				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+				drawPreCentered("Name and surname: ", y);
 			}
-			else {
+			else if (wordCount(name) != 2) {
 				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
 				drawPreCentered("Invalid name: ", y);
+			}
+			else {
+				strcpy_s(s->name, name);
+				return;
 			}
 		}
 	}
@@ -498,15 +496,23 @@ size_t findStudent() {
 		waitAnyKey();
 		return 0;
 	}
-	drawMenu(3, BY_NAME, BY_GROUP, BACK);
-	do switch (getPress()) {
-	// По имени
-	case '1': return viewFoundStudents(byName);
-	// По группе
-	case '2': return viewFoundStudents(byGroup);
-	// Вернуться
-	case '0': return 0;
-	} while (true);
+	bool correct;
+	while (true) {
+		drawMenu(3, BY_NAME, BY_GROUP, BACK);
+		do {
+			correct = true;
+			switch (getPress()) {
+			// По имени
+			case '1': return viewFoundStudents(byName);
+			// По группе
+			case '2': return viewFoundStudents(byGroup);
+			// Вернуться
+			case '0': return 0;
+			// Неверный ввод
+			default: correct = false;
+			}
+		} while (true);
+	}
 }
 
 size_t editStudent() {

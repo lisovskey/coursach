@@ -1,3 +1,7 @@
+/*
+* RitZEED inc.
+*/
+
 #include <conio.h>
 #include "drawer"
 #include "presser"

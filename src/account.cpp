@@ -8,7 +8,6 @@
 #include <string>
 #include <cstring>
 #include <cstdlib>
-#include <ctime>
 #include <vector>
 #include <regex>
 #include <windows.h>
