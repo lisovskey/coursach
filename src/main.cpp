@@ -24,6 +24,7 @@ int userMode() {
 	// Основной цикл
 	while (true) {
 		system("cls");
+		drawCentered(MENU, 1);
 		drawMenu(4, FIND, VIEW, SORT, QUIT);
 		// Цикл выбора действия
 		do {
@@ -54,6 +55,7 @@ int adminMode() {
 	// Основной цикл
 	while (true) {
 		system("cls");
+		drawCentered(MENU, 1);
 		drawMenu(7, ADD, EDIT, VIEW, SORT, SAVE, ACCS, QUIT);
 		// Цикл выбора действия
 		do {
@@ -92,6 +94,7 @@ int administration() {
 	// Основной цикл
 	while (true) {
 		system("cls");
+		drawCentered(ADMINING, 1);
 		drawMenu(5, ADD, EDIT, VIEW, SAVE, BACK);
 		// Цикл выбора действия
 		do {
@@ -120,6 +123,7 @@ int administration() {
 
 bool quit() {
 	system("cls");
+	drawCentered(QUIT_OR_NO, 1);
 	drawMenu(2, QUIT, BACK);
 	do switch (getPress()) {
 	// Действительно выйти

@@ -14,19 +14,6 @@ using namespace std;
 
 TConsole tc;
 
-void drawVerticalLine(size_t length, size_t x, size_t y) {
-	while (length--) {
-		tc.GotoXY(x, y++);
-		cout << (char)179;		
-	}
-}
-
-void drawColumn(size_t width) {
-	if (width % 2) width++;
-	drawVerticalLine(WINDOW_HEIGHT, WINDOW_WIDTH / 2 - width / 2, 0);
-	drawVerticalLine(WINDOW_HEIGHT, WINDOW_WIDTH / 2 + width / 2 - 1, 0);
-}
-
 void drawMenu(size_t num, ...) {
 	if (num > 10) {
 		cerr << "Too many arguments" << endl;
@@ -99,13 +86,12 @@ void drawTitles(size_t num, ...) {
 }
 
 void drawPressAnyKey() {
-	tc.GotoXY(WINDOW_WIDTH / 2 - 8, WINDOW_HEIGHT - 2);
-	cout << "press any key...";
+	drawCentered("press any key...", WINDOW_HEIGHT - 2);
 	tc.GotoXY(WINDOW_WIDTH - 1, WINDOW_HEIGHT - 1);
 }
 
-void drawCentered(const char* str) {
-	tc.GotoXY(WINDOW_WIDTH / 2 - strlen(str) / 2, WINDOW_HEIGHT / 2);
+void drawCentered(const char* str, size_t y) {
+	tc.GotoXY(WINDOW_WIDTH / 2 - strlen(str) / 2, y);
 	cout << str;
 }
 

@@ -145,7 +145,7 @@ namespace {
 				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
 				drawPreCentered("Too long name: ", y);
 			}
-			else if (regex_match(name, regex("[A-Z a-z]+"))) {
+			else if (!regex_match(name, regex("[A-Z a-z]+"))) {
 				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
 				drawPreCentered("Name and surname: ", y);
 			}
@@ -287,6 +287,7 @@ namespace {
 	size_t createStudent() {
 		// Создание студента
 		system("cls");
+		drawCentered(STUD_CREATING, 1);
 		student s;
 		s.id = students.size() + 1;
 
@@ -303,7 +304,7 @@ namespace {
 		// В случае низких отметок
 		if (!calculateCash(&s)) {
 			system("cls");
-			drawCentered("Student cannot study here");
+			drawCentered("Student cannot study here", WINDOW_HEIGHT / 2);
 			waitAnyKey();
 			return 0;
 		}
@@ -314,7 +315,7 @@ namespace {
 			3, "id", 24, "name", 9, "group", 8, "gpa",
 			8, "passed", 11, "circs", 11, "cash");
 		viewStudent(&s);
-		drawCentered("Student has been added");
+		drawCentered("Student has been added", WINDOW_HEIGHT / 2);
 		waitAnyKey();
 		return s.id;
 	}
@@ -360,7 +361,7 @@ namespace {
 			3, "id", 24, "name", 9, "group", 8, "gpa",
 			8, "passed", 11, "circs", 11, "cash");
 		viewStudent(&s);
-		drawCentered("Student has been generated");
+		drawCentered("Student has been generated", WINDOW_HEIGHT / 2);
 		waitAnyKey();
 		return s.id;
 	}
@@ -373,7 +374,7 @@ namespace {
 		for (size_t i = id - 1; i < students.size(); i++) {
 			students[i].id = i + 1;
 		}
-		drawCentered("Student was deleted");
+		drawCentered("Student was deleted", WINDOW_HEIGHT / 2);
 		waitAnyKey();
 		return students.size();
 	}
@@ -439,7 +440,7 @@ namespace {
 
 		if (!found) {
 			system("cls");
-			drawCentered("Nothing found");
+			drawCentered("Nothing found", WINDOW_HEIGHT / 2);
 		}
 		else cout << "\n" << endl;
 		waitAnyKey();
@@ -477,6 +478,7 @@ size_t getStudents() {
 
 size_t addStudent() {
 	system("cls");
+	drawCentered(ADDING, 1);
 	drawMenu(3, MANUAL, GENERATE, BACK);
 	do switch (getPress()) {
 	// Добавить вручную
@@ -492,12 +494,13 @@ size_t findStudent() {
 	system("cls");
 	// Пустой вектор
 	if (students.size() == 0) {
-		drawCentered("There is nothing to look for");
+		drawCentered("There is nothing to look for", WINDOW_HEIGHT / 2);
 		waitAnyKey();
 		return 0;
 	}
 	bool correct;
 	while (true) {
+		drawCentered(SEARCHING, 1);
 		drawMenu(3, BY_NAME, BY_GROUP, BACK);
 		do {
 			correct = true;
@@ -519,7 +522,7 @@ size_t editStudent() {
 	system("cls");
 	// Пустой вектор
 	if (students.size() == 0) {
-		drawCentered("There is nothing to edit");
+		drawCentered("There is nothing to edit", WINDOW_HEIGHT / 2);
 		waitAnyKey();
 		return 0;
 	}
@@ -574,7 +577,7 @@ size_t viewStudents() {
 	// Пустой вектор
 	if (students.size() == 0) {
 		system("cls");
-		drawCentered("There is nothing to show");
+		drawCentered("There is nothing to show", WINDOW_HEIGHT / 2);
 		waitAnyKey();
 		return 0;
 	}
@@ -585,10 +588,11 @@ size_t sortStudents() {
 	system("cls");
 	// Пустой вектор
 	if (students.size() == 0) {
-		drawCentered("There is nothing to sort");
+		drawCentered("There is nothing to sort", WINDOW_HEIGHT / 2);
 		waitAnyKey();
 		return 0;
 	}
+	drawCentered(SORTING, 1);
 	drawMenu(4, BY_NAME, BY_CASH, BY_GPA, BACK);
 	do switch (getPress()) {
 	// По имени
@@ -610,7 +614,7 @@ size_t saveStudents() {
 	fout.close();
 
 	system("cls");
-	drawCentered("All changes have been saved");
+	drawCentered("All changes have been saved", WINDOW_HEIGHT / 2);
 	waitAnyKey();
 
 	return students.size();

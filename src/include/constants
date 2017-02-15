@@ -30,6 +30,15 @@ static const char* LOGIN = "LOGIN";
 static const char* PASS = "PASSWORD";
 static const char* ROLE = "ROLE";
 static const char* HELP = "HELP";
+static const char* MENU = "MAIN MENU";
+static const char* ADMINING = "ADMINISTRATION MENU";
+static const char* QUIT_OR_NO = "QUIT PROGRAM?";
+static const char* ACC_CREATING = "CREATING AN ACCOUNT";
+static const char* STUD_CREATING = "CREATING A STUDENT";
+static const char* AUTHORIZATION = "AUTHORIZATION";
+static const char* SORTING = "SORTING STUDENTS";
+static const char* SEARCHING = "SEARCHING FOR STUDENTS";
+static const char* ADDING = "ADDING A STUDENT";
 
 static const size_t WINDOW_WIDTH = 80;
 static const size_t WINDOW_HEIGHT = 40;

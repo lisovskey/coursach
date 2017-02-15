@@ -185,7 +185,7 @@ namespace {
 		for (size_t i = id - 1; i < accounts.size(); i++) {
 			accounts[i].id = i + 1;
 		}
-		drawCentered("Account was deleted");
+		drawCentered("Account was deleted", WINDOW_HEIGHT / 2);
 		waitAnyKey();
 		return accounts.size();
 	}
@@ -216,6 +216,7 @@ bool auth() {
 	account input;
 	while (true) {
 		system("cls");
+		drawCentered(AUTHORIZATION, 1);
 		// Ввод данных
 		drawPreCentered("login: ", WINDOW_HEIGHT / 2 - 1);
 		if (!cin.getline(input.login, 20)) {
@@ -232,13 +233,13 @@ bool auth() {
 				strcmp(input.pass, account.pass) == 0) {
 				string greeting = account.login;
 				greeting = "hello, " + greeting;
-				drawCentered(greeting.c_str());
+				drawCentered(greeting.c_str(), WINDOW_HEIGHT / 2);
 				waitAnyKey();
 
 				return account.admin;
 			}
 		}
-		drawCentered("Incorrect login or password");
+		drawCentered("Incorrect login or password", WINDOW_HEIGHT / 2);
 		waitAnyKey();
 	}
 }
@@ -246,6 +247,7 @@ bool auth() {
 size_t createAccount() {
 	// Создание аккаунта
 	system("cls");
+	drawCentered(ACC_CREATING, 1);
 	account a;
 
 	a.id = accounts.size() + 1;
@@ -260,7 +262,7 @@ size_t createAccount() {
 	drawTitles(4,
 		3, "id", 25, "login", 25, "password", 24, "role");
 	viewAccount(&a);
-	drawCentered("Account has been added");
+	drawCentered("Account has been added", WINDOW_HEIGHT / 2);
 	waitAnyKey();
 	return a.id;
 }
@@ -268,7 +270,7 @@ size_t createAccount() {
 size_t editAccount() {
 	system("cls");
 	if (accounts.size() == 0) {
-		drawCentered("There is nothing to edit");
+		drawCentered("There is nothing to edit", WINDOW_HEIGHT / 2);
 		waitAnyKey();
 		return 0;
 	}
@@ -308,7 +310,7 @@ size_t editAccount() {
 size_t viewAccounts() {
 	if (accounts.size() == 0) {
 		system("cls");
-		drawCentered("There is nothing to show");
+		drawCentered("There is nothing to show", WINDOW_HEIGHT / 2);
 		waitAnyKey();
 		return 0;
 	}
@@ -333,7 +335,7 @@ size_t saveAccounts() {
 		fout.write((char*)&user, sizeof(account));
 	fout.close();
 
-	drawCentered("All changes have been saved");
+	drawCentered("All changes have been saved", WINDOW_HEIGHT / 2);
 	waitAnyKey();
 
 	return accounts.size();
