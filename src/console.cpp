@@ -9,32 +9,6 @@ TConsole::TConsole() :In(std::cin), Out(std::cout) {
 	GetConsoleScreenBufferInfo(OutputHandle, &ScreenBufInfo);
 }
 
-void TConsole::ClrEol() {
-	GetConsoleScreenBufferInfo(OutputHandle, &ScreenBufInfo);
-	LPDWORD NOAW;
-	ZeroMemory(&NOAW, sizeof(NOAW));
-	DWORD Count, Size;
-	Size = ScreenBufInfo.srWindow.Right - ScreenBufInfo.dwCursorPosition.X;
-	FillConsoleOutputAttribute(OutputHandle, ScreenBufInfo.wAttributes, Size, ScreenBufInfo.dwCursorPosition, &Count);
-	FillConsoleOutputCharacter(OutputHandle, ' ',
-		ScreenBufInfo.dwSize.X - ScreenBufInfo.dwCursorPosition.X,
-		ScreenBufInfo.dwCursorPosition, NOAW);
-}
-
-void TConsole::ClrScr() {
-	LPDWORD NOAW;
-	ZeroMemory(&NOAW, sizeof(NOAW));
-	ScreenBufInfo.dwCursorPosition.X = 0;
-	ScreenBufInfo.dwCursorPosition.Y = 0;
-	FillConsoleOutputCharacter(OutputHandle, ' ', ScreenBufInfo.dwSize.X*ScreenBufInfo.dwSize.Y,
-		ScreenBufInfo.dwCursorPosition, NOAW);
-	GotoXY(0, 0);
-}
-
-void TConsole::Delay(WORD MS) {
-	SleepEx(MS, FALSE);
-}
-
 void TConsole::DelLine() {
 	GetConsoleScreenBufferInfo(OutputHandle, &ScreenBufInfo);
 	CHAR_INFO CI;
@@ -57,24 +31,6 @@ void TConsole::GotoXY(int X, int Y) {
 		GotoXY(0, 0);
 		DelLine();
 	}
-}
-
-void TConsole::InsLine() {
-	GetConsoleScreenBufferInfo(OutputHandle, &ScreenBufInfo);
-	SMALL_RECT ScreenRect = ScreenBufInfo.srWindow;
-	ScreenRect.Top = ScreenBufInfo.dwCursorPosition.Y - 1 + ScreenBufInfo.srWindow.Top;
-	ScreenRect.Bottom = ScreenBufInfo.srWindow.Bottom - 1;
-	CHAR_INFO CI;
-	CI.Char.UnicodeChar = ' ';
-	CI.Attributes = ScreenBufInfo.wAttributes;
-	COORD Coord;
-	Coord.X = ScreenRect.Left;
-	Coord.Y = ScreenRect.Top + 1;
-	DWORD dwSize = ScreenRect.Right - ScreenRect.Left + 1;
-	ScrollConsoleScreenBuffer(OutputHandle, &ScreenRect, 0, Coord, &CI);
-	Coord.Y--;
-	DWORD dwCount;
-	FillConsoleOutputAttribute(OutputHandle, ScreenBufInfo.wAttributes, dwSize, Coord, &dwCount);
 }
 
 bool TConsole::KeyPressed() {

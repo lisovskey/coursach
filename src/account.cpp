@@ -33,45 +33,6 @@ namespace {
 	// Вектор аккаунтов
 	vector<account> accounts;
 
-	string getPass(size_t size) {
-		// Скрытие ввода пароля
-		char* result = new char[size];
-		memset(result, '\0', sizeof(char) * size);
-
-		DWORD mode, count;
-		HANDLE ih = GetStdHandle(STD_INPUT_HANDLE);
-		HANDLE oh = GetStdHandle(STD_OUTPUT_HANDLE);
-		if (!GetConsoleMode(ih, &mode))
-			throw runtime_error(
-				"getPass: You must be connected to a console\n"
-			);
-		SetConsoleMode(ih, mode & ~(ENABLE_ECHO_INPUT | ENABLE_LINE_INPUT));
-
-		char c;
-		char symbol[1];
-		symbol[0] = (char)250;
-		size_t length = 0;
-		while (ReadConsoleA(ih, &c, 1, &count, NULL) && (c != '\r') && (c != '\n')) {
-			if (c == '\b' && length != 0) {
-				WriteConsoleA(oh, "\b \b", 3, &count, NULL);
-				if (length-- < size) {
-					result[length] = '\0';
-				}
-			}
-			else {
-				WriteConsoleA(oh, symbol, 1, &count, NULL);
-				if (length++ < size - 1) {
-					result[length - 1] = c;
-				}
-			}
-		}
-		SetConsoleMode(ih, mode);
-
-		string pass = result;
-		delete[] result;
-		return pass;
-	}
-
 	size_t getAccounts() {
 		// Считывание из файла в вектор
 		ifstream fin(ACCLIST, ios::binary | ios::in);
@@ -84,15 +45,6 @@ namespace {
 				accounts.push_back(tmp);
 			}
 			fin.close();
-		}
-		else {
-			// Создание аккаунта администратора
-			account admin;
-			admin.id = 1;
-			strcpy_s(admin.login, "admin");
-			strcpy_s(admin.pass, "admin");
-			admin.admin = true;
-			accounts.push_back(admin);
 		}
 		return accounts.size();
 	}
@@ -211,7 +163,22 @@ namespace {
 
 bool auth() {
 	initWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "coursach");
-	getAccounts();
+	if (getAccounts() == 0) {
+		drawCentered(REGISTRATION, 1);
+		// Создание аккаунта администратора
+		account admin;
+		admin.id = 1;
+		setLogin(&admin, WINDOW_HEIGHT / 2 - 1);
+		setPass(&admin, WINDOW_HEIGHT / 2);
+		admin.admin = true;
+		accounts.push_back(admin);
+
+		drawTitles(4,
+			3, "id", 25, "login", 25, "password", 24, "role");
+		viewAccount(&admin);
+		drawCentered("Admin account has been created", WINDOW_HEIGHT / 2);
+		waitAnyKey();
+	}
 	// Авторизация
 	account input;
 	while (true) {
@@ -247,10 +214,16 @@ bool auth() {
 size_t createAccount() {
 	// Создание аккаунта
 	system("cls");
-	drawCentered(ACC_CREATING, 1);
 	account a;
-
 	a.id = accounts.size() + 1;
+
+	if (a.id > 99) {
+		drawCentered("Too much accounts", WINDOW_HEIGHT / 2);
+		waitAnyKey();
+		return 0;
+	}
+
+	drawCentered(ACC_CREATING, 1);
 	setLogin(&a, WINDOW_HEIGHT / 2 - 2);
 	cout << endl;
 	setPass(&a, WINDOW_HEIGHT / 2);
@@ -269,11 +242,13 @@ size_t createAccount() {
 
 size_t editAccount() {
 	system("cls");
+	// Пустой вектор
 	if (accounts.size() == 0) {
 		drawCentered("There is nothing to edit", WINDOW_HEIGHT / 2);
 		waitAnyKey();
 		return 0;
 	}
+	// Запрос номера
 	size_t id = getId();
 	bool correct;
 	while (true) {
@@ -308,6 +283,7 @@ size_t editAccount() {
 }
 
 size_t viewAccounts() {
+	// Пустой вектор
 	if (accounts.size() == 0) {
 		system("cls");
 		drawCentered("There is nothing to show", WINDOW_HEIGHT / 2);

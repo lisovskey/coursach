@@ -39,6 +39,7 @@ static const char* AUTHORIZATION = "AUTHORIZATION";
 static const char* SORTING = "SORTING STUDENTS";
 static const char* SEARCHING = "SEARCHING FOR STUDENTS";
 static const char* ADDING = "ADDING A STUDENT";
+static const char* REGISTRATION = "ADMIN REGISTRATION";
 
 static const size_t WINDOW_WIDTH = 80;
 static const size_t WINDOW_HEIGHT = 40;

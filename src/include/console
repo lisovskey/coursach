@@ -31,12 +31,8 @@ public:
 	std::ostream& Out;
 	std::istream& In;
 	TConsole();
-	void ClrEol();						// функция удаления символов от курсора до конца строки
-	void ClrScr();						// функция очистки экрана
-	void Delay(WORD);					// функция задержки выполнения
 	void DelLine();						// функция удаления строки
 	void GotoXY(int, int);				// функция перемещения курсора
-	void InsLine();						// функция добавления строки
 	bool KeyPressed();					// функция проверки нажатия клавиши
 	WCHAR ReadKey();					// функция чтения символа с клавиатуры
 	void BackgroundColor(BYTE);			// функция задания цвета фона

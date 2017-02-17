@@ -272,7 +272,7 @@ namespace {
 
 		// Отображение
 		cout << right << setfill('0') << setw(2)
-			<< s->id << setfill(' ') << setw(1) << "" << left
+			<< s->id % 100 << setfill(' ') << setw(1) << "" << left
 			<< (char)179 << setw(24) << s->name
 			<< (char)179 << setw(9) << s->group
 			<< (char)179 << setw(8) << s->gpa
@@ -287,10 +287,16 @@ namespace {
 	size_t createStudent() {
 		// Создание студента
 		system("cls");
-		drawCentered(STUD_CREATING, 1);
 		student s;
 		s.id = students.size() + 1;
 
+		if (s.id > 99) {
+			drawCentered("Too much students", WINDOW_HEIGHT / 2);
+			waitAnyKey();
+			return 0;
+		}
+
+		drawCentered(STUD_CREATING, 1);
 		setName(&s, WINDOW_HEIGHT / 2 - 10);
 		cout << endl;
 		setGroup(&s, WINDOW_HEIGHT / 2 - 8);
@@ -325,6 +331,12 @@ namespace {
 		system("cls");
 		student s;
 		s.id = students.size() + 1;
+
+		if (s.id > 99) {
+			drawCentered("Too much students", WINDOW_HEIGHT / 2);
+			waitAnyKey();
+			return 0;
+		}
 
 		strcpy_s(s.name, generateName().c_str());
 		s.group = generateGroup();
@@ -380,16 +392,25 @@ namespace {
 	}
 
 	size_t viewList(vector<student> &list) {
-		// Заголовки
-		drawTitles(7,
-			3, "id", 24, "name", 9, "group", 8, "gpa",
-			8, "passed", 11, "circs", 11, "cash");
 		// Основная информация о каждом студенте
-		for (student &s : list) {
-			viewStudent(&s);
+		size_t size = students.size();
+		size_t height = WINDOW_HEIGHT - 4;
+		size_t limit = 0;
+		TConsole tc;
+		for (size_t j = 0; j < size; j += height) {
+			drawTitles(7,
+				3, "id", 24, "name", 9, "group", 8, "gpa",
+				8, "passed", 11, "circs", 11, "cash");
+			if (size - j < height)
+				limit += size % height;
+			else
+				limit += height;
+			for (size_t i = j; i < limit; i++) {
+				viewStudent(&list[i]);
+			}
+			waitAnyKey();
+			system("cls");
 		}
-		cout << "\n" << endl;
-		waitAnyKey();
 
 		return list.size();
 	}
