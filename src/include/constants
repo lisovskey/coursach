@@ -5,7 +5,7 @@ static const char* ACCLIST = "users.bin";
 
 static const char* ADMIN = "ADMIN";
 static const char* USER = "USER";
-static const char* ADD = "ADD";
+static const char* ADD = "MAKE NEW";
 static const char* FIND = "FIND";
 static const char* EDIT = "EDIT";
 static const char* VIEW = "VIEW ALL";

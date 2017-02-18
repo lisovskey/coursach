@@ -12,7 +12,10 @@
 #include "input"
 using namespace std;
 
-size_t getPositiveNumber(size_t y) {
+size_t getPositiveNumber() {
+	TConsole tc;
+	size_t y = tc.WhereY();
+
 	string line;
 	size_t number;
 
@@ -29,7 +32,28 @@ size_t getPositiveNumber(size_t y) {
 	}
 }
 
-bool getBoolean(size_t y) {
+size_t getMark() {
+	TConsole tc;
+	size_t y = tc.WhereY();
+
+	// Валидная отметка
+	size_t mark;
+	while (true) {
+		mark = getPositiveNumber();
+		if (mark > 0 && mark < 11) {
+			return mark;
+		}
+		else {
+			clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+			drawPreCentered("Invalid mark: ", y);
+		}
+	}
+}
+
+bool getBoolean() {
+	TConsole tc;
+	size_t y = tc.WhereY();
+
 	string line;
 	while (true) {
 		getline(cin, line);

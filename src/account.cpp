@@ -54,7 +54,7 @@ namespace {
 		drawPreCentered("Enter id: ", WINDOW_HEIGHT / 2);
 		size_t id;
 		while (true) {
-			id = getPositiveNumber(WINDOW_HEIGHT / 2);
+			id = getPositiveNumber();
 			if (id > 0 && id <= accounts.size())
 				return id;
 			else {
@@ -126,7 +126,7 @@ namespace {
 	void setRole(account* a, size_t y) {
 		// Администратор или пользователь
 		drawPreCentered("Is admin: ", y);
-		a->admin = getBoolean(y);
+		a->admin = getBoolean();
 	}
 
 	size_t deleteAccount(size_t id) {

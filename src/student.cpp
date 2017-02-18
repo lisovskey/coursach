@@ -112,8 +112,8 @@ namespace {
 			if (s->privileges.dormitory)
 				cash -= 16.42;
 		}
-		// Не вылетает
 		s->cash = cash;
+		// Не вылетает
 		return true;
 	}
 
@@ -122,7 +122,7 @@ namespace {
 		drawPreCentered("Enter id: ", WINDOW_HEIGHT / 2);
 		size_t id;
 		while (true) {
-			id = getPositiveNumber(WINDOW_HEIGHT / 2);
+			id = getPositiveNumber();
 			if (id > 0 && id <= students.size())
 				return id;
 			else {
@@ -165,7 +165,7 @@ namespace {
 		drawPreCentered("Enter group: ", y);
 		size_t group;
 		while (true) {
-			group = getPositiveNumber(y);
+			group = getPositiveNumber();
 			if (group > 99999 && group < 1000000) {
 				s->group = group;
 				return;
@@ -177,63 +177,48 @@ namespace {
 		}
 	}
 
-	size_t getMark(size_t y) {
-		// Валидная отметка
-		size_t mark;
-		while (true) {
-			mark = getPositiveNumber(y);
-			if (mark > 0 && mark < 11) {
-				return mark;
-			}
-			else {
-				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
-				drawPreCentered("Invalid mark: ", y);
-			}
-		}
-	}
-
 	void setMarks(student* s, size_t y) {
 		// Установка отметок с расчетом среднего балла
 		double sum = 0;
 		drawPreCentered("Enter math mark: ", y);
-		sum += s->knowledge.math = getMark(y);
+		sum += s->knowledge.math = getMark();
 		drawPreCentered("Enter programming mark: ", y + 1);
-		sum += s->knowledge.prog = getMark(y + 1);
+		sum += s->knowledge.prog = getMark();
 		drawPreCentered("Enter physics mark: ", y + 2);
-		sum += s->knowledge.phys = getMark(y + 2);
+		sum += s->knowledge.phys = getMark();
 		drawPreCentered("Enter philosophy mark: ", y + 3);
-		sum += s->knowledge.phil = getMark(y + 3);
+		sum += s->knowledge.phil = getMark();
 		s->gpa = sum / 4;
 	}
 
 	void setCredits(student* s, size_t y) {
 		// Установка вовремя сданных зачетов
 		drawPreCentered("Passed graphics on time: ", y);
-		s->passes.graphics = getBoolean(y);
+		s->passes.graphics = getBoolean();
 		drawPreCentered("Passed english on time: ", y + 1);
-		s->passes.english = getBoolean(y + 1);
+		s->passes.english = getBoolean();
 		drawPreCentered("Passed swimming on time: ", y + 2);
-		s->passes.swimming = getBoolean(y + 2);
+		s->passes.swimming = getBoolean();
 		drawPreCentered("Passed designing on time: ", y + 3);
-		s->passes.designing = getBoolean(y + 3);
+		s->passes.designing = getBoolean();
 		drawPreCentered("Passed history on time: ", y + 4);
-		s->passes.history = getBoolean(y + 4);
+		s->passes.history = getBoolean();
 	}
 
 	void setCircs(student* s, size_t y) {
 		// Установка влияющих факторов
 		drawPreCentered("Is on budget: ", y);
-		s->privileges.budget = getBoolean(y);
+		s->privileges.budget = getBoolean();
 		drawPreCentered("Is activist: ", y + 1);
-		s->privileges.activism = getBoolean(y + 1);
+		s->privileges.activism = getBoolean();
 		drawPreCentered("Do scince: ", y + 2);
-		s->privileges.science = getBoolean(y + 2);
+		s->privileges.science = getBoolean();
 		drawPreCentered("Is foreign: ", y + 3);
-		s->privileges.foreign = getBoolean(y + 3);
+		s->privileges.foreign = getBoolean();
 		drawPreCentered("Is invalid: ", y + 4);
-		s->privileges.invalid = getBoolean(y + 4);
+		s->privileges.invalid = getBoolean();
 		drawPreCentered("Lives in dormitory: ", y + 5);
-		s->privileges.dormitory = getBoolean(y + 5);
+		s->privileges.dormitory = getBoolean();
 	}
 
 	size_t viewStudent(student* s) {
