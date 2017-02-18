@@ -610,13 +610,13 @@ size_t sortStudents() {
 }
 
 size_t saveStudents() {
+	system("cls");
 	// Запись из вектора в файл
 	ofstream fout(STUDLIST, ios::binary | ios::out | ios_base::trunc);
 	for (student &person : students)
 		fout.write((char*)&person, sizeof(student));
 	fout.close();
 
-	system("cls");
 	drawCentered("All changes have been saved", WINDOW_HEIGHT / 2);
 	waitAnyKey();
 

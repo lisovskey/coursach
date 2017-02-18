@@ -69,7 +69,7 @@ bool getBoolean() {
 		}
 
 		clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
-		drawPreCentered("Try again: ", y);
+		drawPreCentered("Yes or no: ", y);
 	}
 }
 
