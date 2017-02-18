@@ -2,9 +2,10 @@
 * RitZEED inc.
 */
 
-#include <conio.h>
+#include "stdafx"
 #include "drawer"
 #include "presser"
+#include <conio.h>
 using namespace std;
 
 int getPress() {

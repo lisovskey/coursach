@@ -2,7 +2,7 @@
 * RitZEED inc.
 */
 
-#include <string>
+#include "stdafx"
 #include "stringer"
 using namespace std;
 

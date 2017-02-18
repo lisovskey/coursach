@@ -2,14 +2,7 @@
 * RitZEED inc.
 */
 
-#include <iostream>
-#include <iomanip>
-#include <fstream>
-#include <string>
-#include <cstring>
-#include <vector>
-#include <regex>
-#include <algorithm>
+#include "stdafx"
 #include "constants"
 #include "stringer"
 #include "console"
@@ -18,39 +11,43 @@
 #include "drawer"
 #include "generator"
 #include "student"
+#include <fstream>
+#include <vector>
+#include <regex>
+#include <algorithm>
 using namespace std;
 
 namespace {
 	// Внутрефайловые имена
 
 	typedef struct {
-		size_t	math : 4;
-		size_t	prog : 4;
-		size_t	phys : 4;
-		size_t	phil : 4;
+		size_t	math	:4;
+		size_t	prog	:4;
+		size_t	phys	:4;
+		size_t	phil	:4;
 	} marks;
 
 	typedef struct {
-		bool			graphics : 1;
-		bool			english : 1;
-		bool			swimming : 1;
-		bool			designing : 1;
-		bool			history : 1;
+		bool	graphics	:1;
+		bool	english		:1;
+		bool	swimming	:1;
+		bool	designing	:1;
+		bool	history		:1;
 	} credits;
 
 	typedef struct {
-		bool			budget : 1;
-		bool			activism : 1;
-		bool			science : 1;
-		bool			foreign : 1;
-		bool			invalid : 1;
-		bool			dormitory : 1;
+		bool	budget		:1;
+		bool	activism	:1;
+		bool	science		:1;
+		bool	foreign		:1;
+		bool	invalid		:1;
+		bool	dormitory	:1;
 	} circumstances;
 
 	typedef struct {
-		size_t	id;
+		size_t			id;
 		char			name[24];
-		size_t		group;
+		size_t			group;
 		marks			knowledge;
 		double			gpa;
 		credits			passes;
@@ -437,9 +434,9 @@ namespace {
 					drawTitles(7,
 						3, "id", 24, "name", 9, "group", 8, "gpa",
 						8, "passed", 11, "circs", 11, "cash");
-					count++;
 					found = true;
 				}
+				count++;
 				viewStudent(&students[i]);
 			}
 		}

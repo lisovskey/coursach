@@ -2,10 +2,9 @@
 * RitZEED inc.
 */
 
-#include <string>
-#include <cstdlib>
-#include <random>
+#include "stdafx"
 #include "generator"
+#include <random>
 using namespace std;
 
 random_device rd;

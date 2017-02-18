@@ -1,10 +1,8 @@
-#include <windows.h>
-#include <iostream>
-#include <iomanip>
+#include "stdafx"
 #include "console"
+#include <windows.h>
 
-TConsole::TConsole() :In(std::cin), Out(std::cout) {
-	InputHandle = GetStdHandle(STD_INPUT_HANDLE);
+TConsole::TConsole() :Out(std::cout) {
 	OutputHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 	GetConsoleScreenBufferInfo(OutputHandle, &ScreenBufInfo);
 }
@@ -31,32 +29,6 @@ void TConsole::GotoXY(int X, int Y) {
 		GotoXY(0, 0);
 		DelLine();
 	}
-}
-
-bool TConsole::KeyPressed() {
-	bool flag = false;
-	DWORD NumberOfEvents;
-	GetNumberOfConsoleInputEvents(InputHandle, &NumberOfEvents);
-	if (NumberOfEvents > 0) {
-		INPUT_RECORD IR;
-		DWORD NumRead;
-		if (PeekConsoleInput(InputHandle, &IR, 1, &NumRead)) {
-			if ((IR.EventType == KEY_EVENT) && (IR.Event.KeyEvent.bKeyDown)) flag = true;
-			else ReadConsoleInput(InputHandle, &IR, 1, &NumRead);
-		}
-	}
-	return flag;
-}
-
-WCHAR TConsole::ReadKey() {
-	DWORD NumRead;
-	INPUT_RECORD IR;
-	do {
-		do {
-		} while (!KeyPressed());
-		ReadConsoleInput(InputHandle, &IR, 1, &NumRead);
-	} while (IR.Event.KeyEvent.uChar.UnicodeChar == 0);
-	return IR.Event.KeyEvent.uChar.UnicodeChar;
 }
 
 void TConsole::BackgroundColor(BYTE Color) {

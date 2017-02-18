@@ -20,16 +20,15 @@
 
 void initWindow(BYTE, BYTE, const char*);
 void clsUnder(BYTE, BYTE, size_t);
+void clsAll();
 
 class TConsole
 {
 private:
-	HANDLE InputHandle;
 	HANDLE OutputHandle;
 	CONSOLE_SCREEN_BUFFER_INFO ScreenBufInfo;
 public:
 	std::ostream& Out;
-	std::istream& In;
 	TConsole();
 	void DelLine();						// функция удаления строки
 	void GotoXY(int, int);				// функция перемещения курсора

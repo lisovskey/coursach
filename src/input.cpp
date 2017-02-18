@@ -2,14 +2,13 @@
 * RitZEED inc.
 */
 
-#include <iostream>
-#include <string>
-#include <sstream>
+#include "stdafx"
 #include "constants"
 #include "drawer"
 #include "console"
 #include "stringer"
 #include "input"
+#include <sstream>
 using namespace std;
 
 size_t getPositiveNumber() {

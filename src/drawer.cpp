@@ -2,15 +2,12 @@
 * RitZEED inc.
 */
 
-#include <iostream>
-#include <iomanip>
-#include <cstdarg>
-#include <cstring>
-#include <string>
-#include <windows.h>
+#include "stdafx"
 #include "constants"
 #include "console"
 #include "drawer"
+#include <cstdarg>
+#include <windows.h>
 using namespace std;
 
 TConsole tc;

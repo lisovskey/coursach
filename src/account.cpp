@@ -2,15 +2,7 @@
 * RitZEED inc.
 */
 
-#include <iostream>
-#include <iomanip>
-#include <fstream>
-#include <string>
-#include <cstring>
-#include <cstdlib>
-#include <vector>
-#include <regex>
-#include <windows.h>
+#include "stdafx"
 #include "constants"
 #include "console"
 #include "stringer"
@@ -18,16 +10,20 @@
 #include "input"
 #include "drawer"
 #include "account"
+#include <fstream>
+#include <vector>
+#include <regex>
+#include <windows.h>
 using namespace std;
 
 namespace {
 	// Внутрефайловые имена
 
 	typedef struct {
-		size_t			id;
-		char			login[20];
-		char			pass[20];
-		bool			admin;
+		size_t		id;
+		char		login[20];
+		char		pass[20];
+		bool		admin;
 	} account;
 
 	// Вектор аккаунтов
@@ -164,6 +160,11 @@ namespace {
 bool auth() {
 	initWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "coursach");
 	if (getAccounts() == 0) {
+		// Отображение подсказок
+		drawHelp();
+		waitAnyKey();
+		system("cls");
+
 		drawCentered(REGISTRATION, 1);
 		// Создание аккаунта администратора
 		account admin;
