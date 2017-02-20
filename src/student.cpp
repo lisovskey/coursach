@@ -21,16 +21,17 @@ namespace {
 	// Внутрефайловые имена
 
 	typedef struct {
-		size_t	math	:4;
-		size_t	prog	:4;
-		size_t	phys	:4;
-		size_t	phil	:4;
+		size_t	mathmatics	:4;
+		size_t	programming	:4;
+		size_t	physics		:4;
+		size_t	philosophy	:4;
+		size_t	analytics	:4;
 	} marks;
 
 	typedef struct {
 		bool	graphics	:1;
 		bool	english		:1;
-		bool	swimming	:1;
+		bool	pe			:1;
 		bool	designing	:1;
 		bool	history		:1;
 	} credits;
@@ -61,13 +62,14 @@ namespace {
 	bool calculateCash(student* s) {
 		// Расчет стипендии
 		double cash, start_cash = 58.28;
-		bool satisfactory_marks = s->knowledge.math >= 4 &&
-			s->knowledge.prog >= 4 &&
-			s->knowledge.phys >= 4 &&
-			s->knowledge.phil >= 4;
+		bool satisfactory_marks = s->knowledge.mathmatics > 3.9 &&
+			s->knowledge.programming > 3.9 &&
+			s->knowledge.physics > 3.9 &&
+			s->knowledge.philosophy > 3.9 &&
+			s->knowledge.analytics > 3.9;
 		bool passed_all_credits = s->passes.graphics &&
 			s->passes.english &&
-			s->passes.swimming &&
+			s->passes.pe &&
 			s->passes.designing &&
 			s->passes.history;
 		// Исключение
@@ -93,11 +95,11 @@ namespace {
 		if (cash > 1) {
 			if (s->gpa < 5)
 				cash *= 0.8;
-			else if (s->gpa > 5.99 && s->gpa < 8)
+			else if (s->gpa > 5.9 && s->gpa < 8)
 				cash *= 1.2;
-			else if (s->gpa > 7.99 && s->gpa < 9)
+			else if (s->gpa > 7.9 && s->gpa < 9)
 				cash *= 1.4;
-			else if (s->gpa > 8.99)
+			else if (s->gpa > 8.9)
 				cash *= 1.6;
 
 			if (s->privileges.invalid)
@@ -163,13 +165,17 @@ namespace {
 		size_t group;
 		while (true) {
 			group = getPositiveNumber();
-			if (group > 99999 && group < 1000000) {
-				s->group = group;
-				return;
-			}
-			else {
+			if (group < 100000 || group > 999999) {
 				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
 				drawPreCentered("Invalid group: ", y);
+			}
+			else if (group < 600000 || group > 699999) {
+				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+				drawPreCentered("Only '16 first course: ", y);
+			}
+			else {
+				s->group = group;
+				return;
 			}
 		}
 	}
@@ -177,15 +183,17 @@ namespace {
 	void setMarks(student* s, size_t y) {
 		// Установка отметок с расчетом среднего балла
 		double sum = 0;
-		drawPreCentered("Enter math mark: ", y);
-		sum += s->knowledge.math = getMark();
-		drawPreCentered("Enter programming mark: ", y + 1);
-		sum += s->knowledge.prog = getMark();
+		drawPreCentered("Enter mathmatics mark: ", y);
+		sum += s->knowledge.mathmatics = getMark();
+		drawPreCentered("Enter programmingramming mark: ", y + 1);
+		sum += s->knowledge.programming = getMark();
 		drawPreCentered("Enter physics mark: ", y + 2);
-		sum += s->knowledge.phys = getMark();
+		sum += s->knowledge.physics = getMark();
 		drawPreCentered("Enter philosophy mark: ", y + 3);
-		sum += s->knowledge.phil = getMark();
-		s->gpa = sum / 4;
+		sum += s->knowledge.philosophy = getMark();
+		drawPreCentered("Enter analytics mark: ", y + 4);
+		sum += s->knowledge.analytics = getMark();
+		s->gpa = sum / 5;
 	}
 
 	void setCredits(student* s, size_t y) {
@@ -194,8 +202,8 @@ namespace {
 		s->passes.graphics = getBoolean();
 		drawPreCentered("Passed english on time: ", y + 1);
 		s->passes.english = getBoolean();
-		drawPreCentered("Passed swimming on time: ", y + 2);
-		s->passes.swimming = getBoolean();
+		drawPreCentered("Passed PE on time: ", y + 2);
+		s->passes.pe = getBoolean();
 		drawPreCentered("Passed designing on time: ", y + 3);
 		s->passes.designing = getBoolean();
 		drawPreCentered("Passed history on time: ", y + 4);
@@ -208,7 +216,7 @@ namespace {
 		s->privileges.budget = getBoolean();
 		drawPreCentered("Is activist: ", y + 1);
 		s->privileges.activism = getBoolean();
-		drawPreCentered("Do scince: ", y + 2);
+		drawPreCentered("Engaged in science: ", y + 2);
 		s->privileges.science = getBoolean();
 		drawPreCentered("Is foreign: ", y + 3);
 		s->privileges.foreign = getBoolean();
@@ -226,7 +234,7 @@ namespace {
 			count++;
 		if (s->passes.english)
 			count++;
-		if (s->passes.swimming)
+		if (s->passes.pe)
 			count++;
 		if (s->passes.designing)
 			count++;
@@ -253,15 +261,14 @@ namespace {
 			circs += "-";
 
 		// Отображение
-		cout << right << setfill('0') << setw(2)
-			<< s->id % 100 << setfill(' ') << setw(1) << "" << left
+		cout << " " << fixed << right << setw(2) << setfill('0')
+			<< s->id % 100 << left << " " << setfill(' ')
 			<< (char)179 << setw(24) << s->name
-			<< (char)179 << setw(9) << s->group
-			<< (char)179 << setw(8) << s->gpa
+			<< (char)179 << setw(8) << s->group << setprecision(1)
+			<< (char)179 << setw(6) << s->gpa
 			<< (char)179 << setw(8) << passes
-			<< (char)179 << setw(11) << circs
-			<< (char)179 << setw(11) << fixed
-			<< setprecision(2) << s->cash << endl;
+			<< (char)179 << setw(11) << circs << setprecision(2)
+			<< (char)179 << setw(13) << s->cash << endl;
 
 		return s->id;
 	}
@@ -285,9 +292,9 @@ namespace {
 		cout << endl;
 		setMarks(&s, WINDOW_HEIGHT / 2 - 6);
 		cout << endl;
-		setCredits(&s, WINDOW_HEIGHT / 2 - 1);
+		setCredits(&s, WINDOW_HEIGHT / 2);
 		cout << endl;
-		setCircs(&s, WINDOW_HEIGHT / 2 + 5);
+		setCircs(&s, WINDOW_HEIGHT / 2 + 6);
 
 		// В случае низких отметок
 		if (!calculateCash(&s)) {
@@ -299,9 +306,10 @@ namespace {
 
 		// Добавление в вектор
 		students.push_back(s);
+
 		drawTitles(7,
-			3, "id", 24, "name", 9, "group", 8, "gpa",
-			8, "passed", 11, "circs", 11, "cash");
+			4, " id", 24, "name", 8, "group", 6, "gpa",
+			8, "passed", 11, "circs", 13, "cash");
 		viewStudent(&s);
 		drawCentered("Student has been added", WINDOW_HEIGHT / 2);
 		waitAnyKey();
@@ -325,11 +333,12 @@ namespace {
 
 		// Отметки
 		s.gpa = 0;
-		s.gpa += s.knowledge.math = generateMark();
-		s.gpa += s.knowledge.prog = generateMark();
-		s.gpa += s.knowledge.phys = generateMark();
-		s.gpa += s.knowledge.phil = generateMark();
-		s.gpa /= 4;
+		s.gpa += s.knowledge.mathmatics = generateMark();
+		s.gpa += s.knowledge.programming = generateMark();
+		s.gpa += s.knowledge.physics = generateMark();
+		s.gpa += s.knowledge.philosophy = generateMark();
+		s.gpa += s.knowledge.analytics = generateMark();
+		s.gpa /= 5;
 
 		// Другие факторы
 		s.privileges.invalid = generateBool(-16);
@@ -341,19 +350,20 @@ namespace {
 			s.privileges.invalid + s.privileges.activism + s.privileges.foreign);
 
 		// Своевременные зачеты
-		s.passes.graphics = generateBool((int)s.gpa + 6 * s.privileges.budget - 1);
-		s.passes.designing = generateBool((int)s.gpa + 6 * s.privileges.budget - 1);
-		s.passes.english = generateBool((int)s.gpa + 6 * s.privileges.budget - 1);
-		s.passes.swimming = generateBool((int)s.gpa + 6 * s.privileges.budget - 1);
-		s.passes.history = generateBool((int)s.gpa + 6 * s.privileges.budget - 1);
+		s.passes.graphics = generateBool((int)s.gpa + 8 * s.privileges.budget - 1);
+		s.passes.designing = generateBool((int)s.gpa + 8 * s.privileges.budget - 1);
+		s.passes.english = generateBool((int)s.gpa + 8 * s.privileges.budget - 1);
+		s.passes.pe = generateBool((int)s.gpa + 8 * s.privileges.budget - 1);
+		s.passes.history = generateBool((int)s.gpa + 8 * s.privileges.budget - 1);
 
 		calculateCash(&s);
 
 		// Добавление в вектор
 		students.push_back(s);
+
 		drawTitles(7,
-			3, "id", 24, "name", 9, "group", 8, "gpa",
-			8, "passed", 11, "circs", 11, "cash");
+			4, " id", 24, "name", 8, "group", 6, "gpa",
+			8, "passed", 11, "circs", 13, "cash");
 		viewStudent(&s);
 		drawCentered("Student has been generated", WINDOW_HEIGHT / 2);
 		waitAnyKey();
@@ -381,8 +391,8 @@ namespace {
 		TConsole tc;
 		for (size_t j = 0; j < size; j += height) {
 			drawTitles(7,
-				3, "id", 24, "name", 9, "group", 8, "gpa",
-				8, "passed", 11, "circs", 11, "cash");
+				4, " id", 24, "name", 8, "group", 6, "gpa",
+				8, "passed", 11, "circs", 13, "cash");
 			if (size - j < height)
 				limit += size % height;
 			else
@@ -432,8 +442,8 @@ namespace {
 			if (condition(s, request)) {
 				if (!found) {
 					drawTitles(7,
-						3, "id", 24, "name", 9, "group", 8, "gpa",
-						8, "passed", 11, "circs", 11, "cash");
+						4, " id", 24, "name", 8, "group", 6, "gpa",
+						8, "passed", 11, "circs", 13, "cash");
 					found = true;
 				}
 				count++;
@@ -533,9 +543,10 @@ size_t editStudent() {
 	size_t id = getId();
 	bool correct;
 	while (true) {
+		// Изменяемый студент
 		drawTitles(7,
-			3, "id", 24, "name", 9, "group", 8, "gpa",
-			8, "passed", 11, "circs", 11, "cash");
+			4, " id", 24, "name", 8, "group", 6, "gpa",
+			8, "passed", 11, "circs", 13, "cash");
 		viewStudent(&students[id - 1]);
 		drawMenu(7, NAME, GROUP, MARKS, CREDITS, CIRCS, REMOVE, BACK);
 		do {

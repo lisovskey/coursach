@@ -1,7 +1,10 @@
 #pragma once
 
 static const char* STUDLIST = "students.bin";
-static const char* ACCLIST = "users.bin";
+static const char* ACCLIST = "accounts.bin";
+
+static const size_t WINDOW_WIDTH = 80;
+static const size_t WINDOW_HEIGHT = 40;
 
 static const char* ADMIN = "ADMIN";
 static const char* USER = "USER";
@@ -40,6 +43,3 @@ static const char* SORTING = "SORTING STUDENTS";
 static const char* SEARCHING = "SEARCHING FOR STUDENTS";
 static const char* ADDING = "ADDING A STUDENT";
 static const char* REGISTRATION = "ADMIN REGISTRATION";
-
-static const size_t WINDOW_WIDTH = 80;
-static const size_t WINDOW_HEIGHT = 40;

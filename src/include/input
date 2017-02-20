@@ -3,4 +3,4 @@
 size_t getPositiveNumber();
 size_t getMark();
 bool getBoolean();
-std::string getPass(size_t size);
+std::string getPass(size_t);

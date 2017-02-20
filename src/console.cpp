@@ -1,6 +1,5 @@
 #include "stdafx"
 #include "console"
-#include <windows.h>
 
 TConsole::TConsole() :Out(std::cout) {
 	OutputHandle = GetStdHandle(STD_OUTPUT_HANDLE);

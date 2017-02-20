@@ -13,7 +13,6 @@
 #include <fstream>
 #include <vector>
 #include <regex>
-#include <windows.h>
 using namespace std;
 
 namespace {
@@ -147,10 +146,10 @@ namespace {
 			role = "user";
 
 		// Отображение
-		cout << right << setfill('0') << setw(2)
+		cout << " " << right << setfill('0') << setw(2)
 			<< a->id << setfill(' ') << " " << left
 			<< (char)179 << setw(25) << a->login
-			<< (char)179 << setw(25) << a->pass
+			<< (char)179 << setw(24) << a->pass
 			<< (char)179 << setw(24) << role << endl;
 
 		return a->id;
@@ -161,7 +160,7 @@ bool auth() {
 	initWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "coursach");
 	if (getAccounts() == 0) {
 		// Отображение подсказок
-		drawHelp();
+		drawAdminHelp();
 		waitAnyKey();
 		system("cls");
 
@@ -175,7 +174,7 @@ bool auth() {
 		accounts.push_back(admin);
 
 		drawTitles(4,
-			3, "id", 25, "login", 25, "password", 24, "role");
+			4, "id", 25, "login", 24, "password", 24, "role");
 		viewAccount(&admin);
 		drawCentered("Admin account has been created", WINDOW_HEIGHT / 2);
 		waitAnyKey();
@@ -233,8 +232,9 @@ size_t createAccount() {
 
 	// Добавление в вектор
 	accounts.push_back(a);
+
 	drawTitles(4,
-		3, "id", 25, "login", 25, "password", 24, "role");
+		4, "id", 25, "login", 24, "password", 24, "role");
 	viewAccount(&a);
 	drawCentered("Account has been added", WINDOW_HEIGHT / 2);
 	waitAnyKey();
@@ -253,8 +253,9 @@ size_t editAccount() {
 	size_t id = getId();
 	bool correct;
 	while (true) {
+		// Изменяемый аккаунт
 		drawTitles(4,
-			3, "id", 25, "login", 25, "password", 24, "role");
+			4, "id", 25, "login", 24, "password", 24, "role");
 		viewAccount(&accounts[id - 1]);
 		drawMenu(5, LOGIN, PASS, ROLE, REMOVE, BACK);
 		do {
@@ -293,7 +294,7 @@ size_t viewAccounts() {
 	}
 	// Заголовки
 	drawTitles(4,
-		3, "id", 25, "login", 25, "password", 24, "role");
+		4, "id", 25, "login", 24, "password", 24, "role");
 	// Основная информация о каждом аккаунте
 	for (account &a : accounts) {
 		viewAccount(&a);

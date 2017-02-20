@@ -1,7 +1,10 @@
 #pragma once
 
+#define WIN32_LEAN_AND_MEAN
+
 #include <iostream>
 #include <iomanip>
 #include <string>
 #include <cstring>
 #include <cstdlib>
+#include <windows.h>

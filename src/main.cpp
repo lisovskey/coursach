@@ -40,7 +40,7 @@ int userMode() {
 			case '3': sortStudents();
 				break;
 			// Помощь
-			case '4': drawHelp();
+			case '4': drawUserHelp();
 				waitAnyKey();
 				break;
 			// Выйти из программы
@@ -60,7 +60,7 @@ int adminMode() {
 	while (true) {
 		system("cls");
 		drawCentered(MENU, 1);
-		drawMenu(8, ADD, EDIT, VIEW, SORT, SAVE, ACCS, HELP, QUIT);
+		drawMenu(9, ADD, FIND, EDIT, VIEW, SORT, SAVE, ACCS, HELP, QUIT);
 		// Цикл выбора действия
 		do {
 			correct = true;
@@ -68,23 +68,26 @@ int adminMode() {
 			// Добавить студента
 			case '1': addStudent();
 				break;
+			// Найти студента
+			case '2': findStudent();
+				break;
 			// Изменить информацию
-			case '2': editStudent();
+			case '3': editStudent();
 				break;
 			// Сортировать список
-			case '3': viewStudents();
+			case '4': viewStudents();
 				break;
 			// Сортировать список
-			case '4': sortStudents();
+			case '5': sortStudents();
 				break;
 			// Сохранить изменения
-			case '5': saveStudents();
+			case '6': saveStudents();
 				break;
 			// Администрирование
-			case '6': administration();
+			case '7': administration();
 				break;
 			// Помощь
-			case '7': drawHelp();
+			case '8': drawAdminHelp();
 				waitAnyKey();
 				break;
 			// Выйти из программы

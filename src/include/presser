@@ -1,4 +1,5 @@
 #pragma once
 
-int getPress();
+#define getPress() _getwch()
+
 void waitAnyKey();
