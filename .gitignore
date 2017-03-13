@@ -16,11 +16,11 @@
 *.userprefs
 
 # Build results
+[Ss]ettings/
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
-[Ss]ettings/
 x64/
 x86/
 bld/
