@@ -14,4 +14,68 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\include\account">
+      <Filter>Заголовочные файлы</Filter>
+    </None>
+    <None Include="..\include\console">
+      <Filter>Заголовочные файлы</Filter>
+    </None>
+    <None Include="..\include\constants">
+      <Filter>Заголовочные файлы</Filter>
+    </None>
+    <None Include="..\include\drawer">
+      <Filter>Заголовочные файлы</Filter>
+    </None>
+    <None Include="..\include\generator">
+      <Filter>Заголовочные файлы</Filter>
+    </None>
+    <None Include="..\include\input">
+      <Filter>Заголовочные файлы</Filter>
+    </None>
+    <None Include="..\include\presser">
+      <Filter>Заголовочные файлы</Filter>
+    </None>
+    <None Include="..\include\stdafx">
+      <Filter>Заголовочные файлы</Filter>
+    </None>
+    <None Include="..\include\stringer">
+      <Filter>Заголовочные файлы</Filter>
+    </None>
+    <None Include="..\include\student">
+      <Filter>Заголовочные файлы</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\account.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\console.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\drawer.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\generator.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\input.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\main.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\presser.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\stdafx.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\stringer.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\student.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+  </ItemGroup>
 </Project>

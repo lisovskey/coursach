@@ -1,0 +1,7 @@
+#pragma once
+
+bool auth();
+size_t createAccount();
+size_t editAccount();
+size_t viewAccounts();
+void writeAccounts();

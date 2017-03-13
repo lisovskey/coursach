@@ -1,0 +1,14 @@
+#pragma once
+
+#define WIN32_LEAN_AND_MEAN
+#define clearScreen() system("cls")
+
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <cstring>
+#include <cstdlib>
+#include <windows.h>
+
+// Глобальная вспомогательная переменная
+static bool correct_press;

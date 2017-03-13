@@ -1,0 +1,11 @@
+#pragma once
+
+void readData();
+size_t addStudent();
+size_t findStudent();
+size_t editStudent();
+size_t viewStudents();
+size_t sortStudents();
+void writeStudents();
+void writeConfig();
+size_t settings();
