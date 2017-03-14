@@ -17,6 +17,10 @@
 #include <algorithm>
 using namespace std;
 
+#define drawStudentTitles() drawTitles(7, \
+	4, ID_TITLE, 24, NAME_TITLE, 8, GROUP_TITLE, 6, GPA_TITLE, \
+	8, CRED_TITLE, 11, CIRCS_TITLE, 13, CASH_TITLE);
+
 namespace {
 
 	typedef struct {
@@ -312,9 +316,7 @@ namespace {
 		students.push_back(s);
 
 		// Отображение
-		drawTitles(7,
-			4, " id", 24, "name", 8, "group", 6, "gpa",
-			8, "passed", 11, "circs", 13, "cash");
+		drawStudentTitles();
 		viewStudent(&s);
 		drawCentered(STUDENT_ADDED, WINDOW_HEIGHT / 2);
 		waitAnyKey();
@@ -367,9 +369,7 @@ namespace {
 		// Добавление в вектор
 		students.push_back(s);
 
-		drawTitles(7,
-			4, " id", 24, "name", 8, "group", 6, "gpa",
-			8, "passed", 11, "circs", 13, "cash");
+		drawStudentTitles();
 		viewStudent(&s);
 		drawCentered(STUDENT_GENERATED, WINDOW_HEIGHT / 2);
 		waitAnyKey();
@@ -398,9 +398,7 @@ namespace {
 		size_t limit = 0;
 		TConsole tc;
 		for (size_t j = 0; j < size; j += height) {
-			drawTitles(7,
-				4, " id", 24, "name", 8, "group", 6, "gpa",
-				8, "passed", 11, "circs", 13, "cash");
+			drawStudentTitles();
 
 			limit += (size - j < height) ? size % height : height;
 
@@ -457,9 +455,7 @@ namespace {
 			student s = students[i];
 			if (condition(s, request)) {
 				if (!found) {
-					drawTitles(7,
-						4, " id", 24, "name", 8, "group", 6, "gpa",
-						8, "passed", 11, "circs", 13, "cash");
+					drawStudentTitles();
 					found = true;
 				}
 				count++;
@@ -647,9 +643,7 @@ size_t editStudent() {
 	size_t id = getId();
 	while (true) {
 		// Изменяемый студент
-		drawTitles(7,
-			4, " id", 24, "name", 8, "group", 6, "gpa",
-			8, "passed", 11, "circs", 13, "cash");
+		drawStudentTitles();
 		viewStudent(&students[id - 1]);
 		drawMenu(7, NAME, GROUP, MARKS, CREDITS, CIRCS, REMOVE, BACK);
 		do {

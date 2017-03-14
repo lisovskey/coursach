@@ -15,6 +15,9 @@
 #include <regex>
 using namespace std;
 
+#define drawAccountTitles() drawTitles(4, \
+	4, ID_TITLE, 25, LOGIN_TITLE, 24, PASS_TITLE, 24, ROLE_TITLE);
+
 namespace {
 
 	typedef struct {
@@ -181,8 +184,8 @@ bool auth() {
 		admin.admin = true;
 		accounts.push_back(admin);
 
-		drawTitles(4,
-			4, " id", 25, "login", 24, "password", 24, "role");
+		// Отображение
+		drawAccountTitles();
 		viewAccount(&admin);
 		drawCentered(ADMIN_CREATED, WINDOW_HEIGHT / 2);
 		waitAnyKey();
@@ -244,8 +247,7 @@ size_t createAccount() {
 	accounts.push_back(a);
 
 	// Отображение
-	drawTitles(4,
-		4, " id", 25, "login", 24, "password", 24, "role");
+	drawAccountTitles();
 	viewAccount(&a);
 	drawCentered(ACCOUNT_ADDED, WINDOW_HEIGHT / 2);
 	waitAnyKey();
@@ -266,8 +268,7 @@ size_t editAccount() {
 	size_t id = getId();
 	while (true) {
 		// Изменяемый аккаунт
-		drawTitles(4,
-			4, " id", 25, "login", 24, "password", 24, "role");
+		drawAccountTitles();
 		viewAccount(&accounts[id - 1]);
 		drawMenu(5, LOGIN, PASS, ROLE, REMOVE, BACK);
 		do {
@@ -307,8 +308,7 @@ size_t viewAccounts() {
 		return 0;
 	}
 	// Заголовки
-	drawTitles(4,
-		4, " id", 25, "login", 24, "password", 24, "role");
+	drawAccountTitles();
 	// Основная информация о каждом аккаунте
 	for (account &a : accounts) {
 		viewAccount(&a);

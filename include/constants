@@ -110,6 +110,17 @@ static const char* CURRENT_PRICE = "Current price: ";
 static const char* CASH_CHANGED = "Default cash has been changed";
 static const char* PRICE_CHANGED = "Dormitory rent price has been changed";
 
+static const char* ID_TITLE = " id";
+static const char* LOGIN_TITLE = "login";
+static const char* PASS_TITLE = "password";
+static const char* ROLE_TITLE = "role";
+static const char* NAME_TITLE = "name";
+static const char* GROUP_TITLE = "group";
+static const char* GPA_TITLE = "gpa";
+static const char* CRED_TITLE = "passed";
+static const char* CIRCS_TITLE = "circs";
+static const char* CASH_TITLE = "cash";
+
 static const char* PRESS_ANY_KEY = "press any key...";
 static const char* DEFAULT_CASH_CONFIG = "default cash = ";
 static const char* DORM_PRICE_CONFIG = "dormitory rent price = ";
