@@ -11,4 +11,4 @@
 #include <windows.h>
 
 // Глобальная вспомогательная переменная
-static bool correct_press;
+static bool g_correct_press;

@@ -28,7 +28,7 @@ int userMode() {
 		drawMenu(5, FIND, VIEW, SORT, HELP, QUIT);
 		// Цикл выбора действия
 		do {
-			correct_press = true;
+			g_correct_press = true;
 			switch (getPress()) {
 			// Найти студента
 			case '1': findStudent();
@@ -47,9 +47,9 @@ int userMode() {
 			case '0': if (quit()) return 0;
 				break;
 			// Неверный ввод
-			default: correct_press = false;
+			default: g_correct_press = false;
 			} 
-		} while (!correct_press);
+		} while (!g_correct_press);
 	}
 }
 
@@ -62,7 +62,7 @@ int adminMode() {
 		drawMenu(10, ADD, FIND, EDIT, VIEW, SORT, SAVE, SETTINGS, ACCS, HELP, QUIT);
 		// Цикл выбора действия
 		do {
-			correct_press = true;
+			g_correct_press = true;
 			switch (getPress()) {
 			// Добавить студента
 			case '1': addStudent();
@@ -96,9 +96,9 @@ int adminMode() {
 			case '0': if (quit()) return 0;
 				break;
 			// Неверный ввод
-			default: correct_press = false;
+			default: g_correct_press = false;
 			}
-		} while (!correct_press);
+		} while (!g_correct_press);
 	}
 }
 
@@ -110,7 +110,7 @@ int administration() {
 		drawMenu(5, ADD, EDIT, VIEW, SAVE, BACK);
 		// Цикл выбора действия
 		do {
-			correct_press = true;
+			g_correct_press = true;
 			switch (getPress()) {
 			// Добавить аккаунт
 			case '1': createAccount();
@@ -127,9 +127,9 @@ int administration() {
 			// Вернуться
 			case '0': return 0;
 			// Неверный ввод
-			default: correct_press = false;
+			default: g_correct_press = false;
 			}
-		} while (!correct_press);
+		} while (!g_correct_press);
 	}
 }
 

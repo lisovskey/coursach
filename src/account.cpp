@@ -272,7 +272,7 @@ size_t editAccount() {
 		viewAccount(&accounts[id - 1]);
 		drawMenu(5, LOGIN, PASS, ROLE, REMOVE, BACK);
 		do {
-			correct_press = true;
+			g_correct_press = true;
 			switch (getPress()) {
 			// Логин
 			case '1': clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
@@ -291,9 +291,9 @@ size_t editAccount() {
 			// Вернуться
 			case '0': return 0;
 			// Неверный ввод
-			default: correct_press = false;
+			default: g_correct_press = false;
 			}
-		} while (!correct_press);
+		} while (!g_correct_press);
 	}
 }
 

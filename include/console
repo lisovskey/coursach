@@ -32,14 +32,12 @@ private:
 public:
 	std::ostream& Out;
 	TConsole();
-	void DelLine();						// функция удаления строки
-	void GotoXY(int, int);				// функция перемещения курсора
-	bool KeyPressed();					// функция проверки нажатия клавиши
-	WCHAR ReadKey();					// функция чтения символа с клавиатуры
-	void BackgroundColor(BYTE);			// функция задания цвета фона
-	void TextColor(BYTE);				// функция задания цвета текста
-	void InvertColors();				// функция инвертирования цветов
-	int WhereX();						// функция получения текущей координаты X курсора
-	int WhereY();						// функция получения текущей координаты Y курсора
-	void Window(BYTE, BYTE);			// функция задания размеров окна
+	void DelLine();
+	void GotoXY(int, int);
+	void BackgroundColor(BYTE);
+	void TextColor(BYTE);
+	void InvertColors();
+	int WhereX();
+	int WhereY();
+	void Window(BYTE, BYTE);
 };

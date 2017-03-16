@@ -116,8 +116,12 @@ namespace {
 				cash *= 1.1;
 			if (s->privileges.science)
 				cash *= 1.2;
-			if (s->privileges.dormitory)
-				cash -= dormitory_rent_price;
+			if (s->privileges.dormitory) {
+				if (s->privileges.foreign)
+					cash -= dormitory_rent_price * 4;
+				else
+					cash -= dormitory_rent_price;
+			}
 		}
 		// Если стипендия меньше платы за общежитие
 		if (cash < 0) cash = 0;
@@ -614,7 +618,7 @@ size_t findStudent() {
 		drawCentered(SEARCHING, 1);
 		drawMenu(3, BY_NAME, BY_GROUP, BACK);
 		do {
-			correct_press = true;
+			g_correct_press = true;
 			switch (getPress()) {
 			// По имени
 			case '1': return viewFoundStudents(byName);
@@ -623,7 +627,7 @@ size_t findStudent() {
 			// Вернуться
 			case '0': return 0;
 			// Неверный ввод
-			default: correct_press = false;
+			default: g_correct_press = false;
 			}
 		} while (true);
 	}
@@ -647,7 +651,7 @@ size_t editStudent() {
 		viewStudent(&students[id - 1]);
 		drawMenu(7, NAME, GROUP, MARKS, CREDITS, CIRCS, REMOVE, BACK);
 		do {
-			correct_press = true;
+			g_correct_press = true;
 			switch (getPress()) {
 			// Имя
 			case '1': clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
@@ -678,9 +682,9 @@ size_t editStudent() {
 			// Вернуться
 			case '0': return 0;
 			// Неверный ввод
-			default: correct_press = false;
+			default: g_correct_press = false;
 			}
-		} while (!correct_press);
+		} while (!g_correct_press);
 	}
 }
 
@@ -746,7 +750,7 @@ size_t settings() {
 	drawCentered(SETTINGS, 1);
 	drawMenu(3, DEFAULT_CASH, DORM_PRICE, BACK);
 	do {
-		correct_press = true;
+		g_correct_press = true;
 		switch (getPress()) {
 		// Изменить базовую стипендию
 		case '1': changeDefaultCash();
@@ -757,7 +761,7 @@ size_t settings() {
 		// Вернуться
 		case '0': return 0;
 		// Неверный ввод
-		default: correct_press = false;
+		default: g_correct_press = false;
 		}
 	} while (true);
 }

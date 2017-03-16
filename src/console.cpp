@@ -93,8 +93,6 @@ void clsUnder(BYTE width, BYTE height, size_t y) {
 	tc.GotoXY(0, y);
 	int count = height - y;
 	if (count > 0) {
-		while (count--) {
-			std::cout << std::setw(width) << std::setfill(' ') << "";
-		}
+		std::cout << std::setw(width * count) << std::setfill(' ') << "";
 	}
 }
