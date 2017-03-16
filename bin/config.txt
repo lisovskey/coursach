@@ -1,0 +1,2 @@
+default cash = 58.28
+dormitory rent price = 18.22
