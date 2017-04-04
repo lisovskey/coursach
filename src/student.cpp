@@ -141,7 +141,7 @@ namespace {
 				return id;
 			else {
 				clearScreen();
-				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_HEIGHT / 2);
+				TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_HEIGHT / 2);
 				drawPreCentered(INVALID_ID, WINDOW_HEIGHT / 2);
 			}
 		}
@@ -157,15 +157,15 @@ namespace {
 			cin.clear();
 			if (strlen(name) == STRING_LENGTH) {
 				cin.ignore(10000, '\n');
-				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+				TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
 				drawPreCentered(LONG_NAME, y);
 			}
 			else if (!regex_match(name, regex("[A-Z a-z]+"))) {
-				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+				TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
 				drawPreCentered(INVALID_NAME, y);
 			}
 			else if (wordCount(name) != 2) {
-				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+				TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
 				drawPreCentered(SURNAME_NAME, y);
 			}
 			else {
@@ -183,11 +183,11 @@ namespace {
 		while (true) {
 			group = getPositiveNumber();
 			if (group < 100000 || group > 999999) {
-				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+				TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
 				drawPreCentered(INVALID_GROUP, y);
 			}
 			else if (group < 600000 || group > 699999) {
-				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+				TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
 				drawPreCentered(DIFFERENT_GROUP, y);
 			}
 			else {
@@ -397,10 +397,10 @@ namespace {
 	size_t viewList(vector<student> &list) {
 		/// Отображение всех студентов в переданном векторе
 
-		size_t size = students.size();
+		size_t size = list.size();
 		size_t height = WINDOW_HEIGHT - 4;
 		size_t limit = 0;
-		TConsole tc;
+
 		for (size_t j = 0; j < size; j += height) {
 			drawStudentTitles();
 
@@ -413,7 +413,7 @@ namespace {
 			clearScreen();
 		}
 
-		return list.size();
+		return size;
 	}
 
 	size_t viewSortedList(vector<student> list, bool(*compare)(student, student)) {
@@ -654,26 +654,26 @@ size_t editStudent() {
 			g_correct_press = true;
 			switch (getPress()) {
 			// Имя
-			case '1': clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
+			case '1': TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
 				setName(&students[id - 1], WINDOW_HEIGHT / 2);
 				break;
 			// Группу
-			case '2': clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
+			case '2': TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
 				setGroup(&students[id - 1], WINDOW_HEIGHT / 2);
 				break;
 			// Отметки
-			case '3': clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
+			case '3': TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
 				setMarks(&students[id - 1], WINDOW_HEIGHT / 2 - 2);
 				if (!calculateCash(&students[id - 1]))
 					return deleteStudent(id);
 				break;
 			// Зачеты
-			case '4': clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
+			case '4': TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
 				setCredits(&students[id - 1], WINDOW_HEIGHT / 2 - 2);
 				calculateCash(&students[id - 1]);
 				break;
 			// Льготы
-			case '5': clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
+			case '5': TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
 				setCircs(&students[id - 1], WINDOW_HEIGHT / 2 - 3);
 				calculateCash(&students[id - 1]);
 				break;

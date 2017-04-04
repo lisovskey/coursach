@@ -57,7 +57,7 @@ namespace {
 			if (id > 0 && id <= accounts.size())
 				return id;
 			else {
-				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_HEIGHT / 2);
+				TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_HEIGHT / 2);
 				drawPreCentered(INVALID_ID, WINDOW_HEIGHT / 2);
 			}
 		}
@@ -82,15 +82,15 @@ namespace {
 			}
 			if (strlen(login) == STRING_LENGTH) {
 				cin.ignore(10000, '\n');
-				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+				TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
 				drawPreCentered(LONG_LOGIN, y);
 			}
 			else if (!regex_match(login, regex("[0-9A-Za-z]+"))) {
-				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+				TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
 				drawPreCentered(INVALID_LOGIN, y);
 			}
 			else if (already_taken) {
-				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+				TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
 				drawPreCentered(TAKEN_LOGIN, y);
 			}
 			else {
@@ -110,11 +110,11 @@ namespace {
 			cin.clear();
 			if (strlen(pass) == STRING_LENGTH) {
 				cin.ignore(10000, '\n');
-				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+				TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
 				drawPreCentered(LONG_PASS, y);
 			}
 			else if (!regex_match(pass, regex("[0-9_A-Z-a-z]+"))) {
-				clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+				TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
 				drawPreCentered(INVALID_PASS, y);
 			}
 			else {
@@ -168,7 +168,7 @@ namespace {
 bool auth() {
 	/// Инициализация окна и авторизация или решистрация
 
-	initWindow(WINDOW_WIDTH, WINDOW_HEIGHT, APP_NAME);
+	TConsole::initWindow(WINDOW_WIDTH, WINDOW_HEIGHT, APP_NAME);
 	if (readAccounts() == 0) {
 		// Отображение подсказок
 		drawAdminHelp();
@@ -275,15 +275,15 @@ size_t editAccount() {
 			g_correct_press = true;
 			switch (getPress()) {
 			// Логин
-			case '1': clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
+			case '1': TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
 				setLogin(&accounts[id - 1], WINDOW_HEIGHT / 2);
 				break;
 			// Пароль
-			case '2': clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
+			case '2': TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
 				setPass(&accounts[id - 1], WINDOW_HEIGHT / 2);
 				break;
 			// Уровень доступа
-			case '3': clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
+			case '3': TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
 				setRole(&accounts[id - 1], WINDOW_HEIGHT / 2);
 				break;
 			// Удалить

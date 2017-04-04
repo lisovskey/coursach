@@ -28,7 +28,7 @@ size_t getPositiveNumber() {
 			if (ss.eof())
 				return number;
 
-		clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+		TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
 		drawPreCentered(TRY_AGAIN, y);
 	}
 }
@@ -49,7 +49,7 @@ double getMoney() {
 				if (money > 0 && money < 1000)
 					return money;
 
-		clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+		TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
 		drawPreCentered(TRY_AGAIN, y);
 	}
 }
@@ -66,7 +66,7 @@ size_t getMark() {
 			return mark;
 		}
 		else {
-			clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+			TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
 			drawPreCentered(TRY_AGAIN, y);
 		}
 	}
@@ -91,7 +91,7 @@ bool getBoolean() {
 			return false;
 		}
 
-		clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+		TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
 		drawPreCentered(TRY_AGAIN, y);
 	}
 }

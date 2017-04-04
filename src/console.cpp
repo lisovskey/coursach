@@ -75,7 +75,7 @@ void TConsole::Window(BYTE X, BYTE Y) {
 	GotoXY(0, 0);
 }
 
-void initWindow(BYTE width, BYTE height, const char* title) {
+void TConsole::initWindow(BYTE width, BYTE height, const char* title) {
 	if (width + height > 255) {
 		std::cerr << "Too big window" << std::endl;
 		exit(1);
@@ -88,7 +88,7 @@ void initWindow(BYTE width, BYTE height, const char* title) {
 	tc.TextColor(COLOR_WHITE);
 }
 
-void clsUnder(BYTE width, BYTE height, size_t y) {
+void TConsole::clsUnder(BYTE width, BYTE height, size_t y) {
 	TConsole tc;
 	tc.GotoXY(0, y);
 	int count = height - y;
