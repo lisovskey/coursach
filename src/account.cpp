@@ -24,7 +24,7 @@ namespace {
 		size_t		id;
 		char		login[STRING_LENGTH];
 		char		pass[STRING_LENGTH];
-		bool		admin;
+		bool		role;
 	} account;
 
 	// Вектор аккаунтов
@@ -127,7 +127,7 @@ namespace {
 		/// Ввод роли пользователя
 
 		drawPreCentered(ENTER_ROLE, y);
-		a->admin = getBoolean();
+		a->role = getBoolean();
 	}
 
 	size_t deleteAccount(const size_t id) {
@@ -150,7 +150,7 @@ namespace {
 		/// Отображение основной информации об аккаунте
 
 		string role;
-		role = a->admin ? "admin" : "user";
+		role = a->role ? "admin" : "user";
 
 		// Отображение
 		cout << " " << right << setfill('0') << setw(2)
@@ -170,7 +170,7 @@ bool auth() {
 	TConsole::initWindow(WINDOW_WIDTH, WINDOW_HEIGHT, APP_NAME);
 	if (readAccounts() == 0) {
 		// Отображение подсказок
-		drawAdminHelp();
+		drawHelp(ROLE_ADMIN);
 		waitAnyKey();
 		clearScreen();
 
@@ -180,7 +180,7 @@ bool auth() {
 		admin.id = 1;
 		setLogin(&admin, WINDOW_HEIGHT / 2 - 1);
 		setPass(&admin, WINDOW_HEIGHT / 2);
-		admin.admin = true;
+		admin.role = ROLE_ADMIN;
 		accounts.push_back(admin);
 
 		// Отображение
@@ -213,7 +213,7 @@ bool auth() {
 				drawCentered(greeting.c_str(), WINDOW_HEIGHT / 2);
 				waitAnyKey();
 
-				return account.admin;
+				return account.role;
 			}
 		}
 		drawCentered(INCORRECT_AUTH, WINDOW_HEIGHT / 2);

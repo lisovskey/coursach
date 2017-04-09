@@ -1,5 +1,10 @@
 #pragma once
 
+enum {
+	ROLE_USER,
+	ROLE_ADMIN
+};
+
 bool auth();
 size_t createAccount();
 size_t editAccount();

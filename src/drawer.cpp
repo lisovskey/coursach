@@ -104,7 +104,7 @@ void drawPreCentered(const char* str, const size_t y) {
 	cout << setw(WINDOW_WIDTH / 2) << setfill(' ') << right << str;
 }
 
-void drawUserHelp() {
+void drawHelp(bool admin) {
 	clearScreen();
 	drawCentered("copyright 2017 lisovskey", 1);
 	drawCentered("english and windows only", 3);
@@ -112,28 +112,53 @@ void drawUserHelp() {
 	drawCentered("console program for calculating students' grants", 5);
 	cout << endl << setw(WINDOW_WIDTH) << setfill((char)196) << "";
 	drawCentered("coursach", 6);
-	drawCentered("feel free to search by name or group", 10);
-	cout << endl << setw(WINDOW_WIDTH) << setfill((char)196) << "";
-	drawCentered(FIND, 11);
-	drawCentered("to sort by name, gpa and grant", 14);
-	cout << endl << setw(WINDOW_WIDTH) << setfill((char)196) << "";
-	drawCentered(SORT, 15);
-	drawCentered("and just to view in id order", 18);
-	cout << endl << setw(WINDOW_WIDTH) << setfill((char)196) << "";
-	drawCentered(VIEW, 19);
-	drawCentered("there are all weird letters you need to know", 23);
-	drawPreCentered("b - ", 24);
-	cout << "budget";
-	drawPreCentered("a - ", 25);
-	cout << "activism";
-	drawPreCentered("s - ", 26);
-	cout << "science";
-	drawPreCentered("f - ", 27);
-	cout << "foreign";
-	drawPreCentered("i - ", 28);
-	cout << "invalid";
-	drawPreCentered("d - ", 29);
-	cout << "dormitory";
+	if (admin) {
+		drawCentered("feel free to generate and manually create students", 9);
+		cout << endl << setw(WINDOW_WIDTH) << setfill((char)196) << "";
+		drawCentered(ADD, 10);
+		drawCentered("to edit fields and delete them", 13);
+		cout << endl << setw(WINDOW_WIDTH) << setfill((char)196) << "";
+		drawCentered(EDIT, 14);
+		drawCentered("to search by name or group", 17);
+		cout << endl << setw(WINDOW_WIDTH) << setfill((char)196) << "";
+		drawCentered(FIND, 18);
+		drawCentered("to sort by name, gpa and grant", 21);
+		cout << endl << setw(WINDOW_WIDTH) << setfill((char)196) << "";
+		drawCentered(SORT, 22);
+		drawCentered("and just to view in id order", 25);
+		cout << endl << setw(WINDOW_WIDTH) << setfill((char)196) << "";
+		drawCentered(VIEW, 26);
+		drawCentered("also to create and edit accounts", 29);
+		cout << endl << setw(WINDOW_WIDTH) << setfill((char)196) << "";
+		drawCentered(ACCS, 30);
+		drawCentered("and don't forget to save changes", 33);
+		cout << endl << setw(WINDOW_WIDTH) << setfill((char)196) << "";
+		drawCentered(SAVE, 34);
+	}
+	else {
+		drawCentered("feel free to search by name or group", 10);
+		cout << endl << setw(WINDOW_WIDTH) << setfill((char)196) << "";
+		drawCentered(FIND, 11);
+		drawCentered("to sort by name, gpa and grant", 14);
+		cout << endl << setw(WINDOW_WIDTH) << setfill((char)196) << "";
+		drawCentered(SORT, 15);
+		drawCentered("and just to view in id order", 18);
+		cout << endl << setw(WINDOW_WIDTH) << setfill((char)196) << "";
+		drawCentered(VIEW, 19);
+		drawCentered("there are all weird letters you need to know", 23);
+		drawPreCentered("b - ", 24);
+		cout << "budget";
+		drawPreCentered("a - ", 25);
+		cout << "activism";
+		drawPreCentered("s - ", 26);
+		cout << "science";
+		drawPreCentered("f - ", 27);
+		cout << "foreign";
+		drawPreCentered("i - ", 28);
+		cout << "invalid";
+		drawPreCentered("d - ", 29);
+		cout << "dormitory";
+	}
 }
 
 void drawAdminHelp() {
@@ -144,25 +169,5 @@ void drawAdminHelp() {
 	drawCentered("console program for calculating students' grants", 5);
 	cout << endl << setw(WINDOW_WIDTH) << setfill((char)196) << "";
 	drawCentered("coursach", 6);
-	drawCentered("feel free to generate and manually create students", 9);
-	cout << endl << setw(WINDOW_WIDTH) << setfill((char)196) << "";
-	drawCentered(ADD, 10);
-	drawCentered("to edit fields and delete them", 13);
-	cout << endl << setw(WINDOW_WIDTH) << setfill((char)196) << "";
-	drawCentered(EDIT, 14);
-	drawCentered("to search by name or group", 17);
-	cout << endl << setw(WINDOW_WIDTH) << setfill((char)196) << "";
-	drawCentered(FIND, 18);
-	drawCentered("to sort by name, gpa and grant", 21);
-	cout << endl << setw(WINDOW_WIDTH) << setfill((char)196) << "";
-	drawCentered(SORT, 22);
-	drawCentered("and just to view in id order", 25);
-	cout << endl << setw(WINDOW_WIDTH) << setfill((char)196) << "";
-	drawCentered(VIEW, 26);
-	drawCentered("also to create and edit accounts", 29);
-	cout << endl << setw(WINDOW_WIDTH) << setfill((char)196) << "";
-	drawCentered(ACCS, 30);
-	drawCentered("and don't forget to save changes", 33);
-	cout << endl << setw(WINDOW_WIDTH) << setfill((char)196) << "";
-	drawCentered(SAVE, 34);
+	
 }

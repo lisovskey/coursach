@@ -5,5 +5,4 @@ void drawTitles(const size_t, ...);
 void drawPressAnyKey();
 void drawCentered(const char*, const size_t);
 void drawPreCentered(const char*, const size_t);
-void drawUserHelp();
-void drawAdminHelp();
+void drawHelp(bool);
