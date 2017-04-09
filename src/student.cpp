@@ -89,9 +89,8 @@ namespace {
 			cash = default_cash * 2;
 		}
 		else if (s->privileges.budget) {
-			if (!passed_all_credits) {
+			if (!passed_all_credits)
 				cash = 0;
-			}
 			else cash = default_cash;
 		}
 		else {
@@ -124,7 +123,9 @@ namespace {
 			}
 		}
 		// Если стипендия меньше платы за общежитие
-		if (cash < 0) cash = 0;
+		if (cash < 0) {
+			cash = 0;
+		}
 
 		s->cash = cash;
 		return true;
@@ -137,13 +138,11 @@ namespace {
 		size_t id;
 		while (true) {
 			id = getPositiveNumber();
-			if (id > 0 && id <= students.size())
-				return id;
-			else {
-				clearScreen();
+			if (id < 1 || id > students.size()) {
 				TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_HEIGHT / 2);
 				drawPreCentered(INVALID_ID, WINDOW_HEIGHT / 2);
 			}
+			else return id;
 		}
 	}
 
@@ -401,13 +400,13 @@ namespace {
 		size_t height = WINDOW_HEIGHT - 4;
 		size_t limit = 0;
 
-		for (size_t j = 0; j < size; j += height) {
+		for (size_t i = 0; i < size; i += height) {
 			drawStudentTitles();
 
-			limit += (size - j < height) ? size % height : height;
+			limit += (size - i < height) ? size % height : height;
 
-			for (size_t i = j; i < limit; i++) {
-				viewStudent(&list[i]);
+			for (size_t j = i; j < limit; j++) {
+				viewStudent(&list[j]);
 			}
 			waitAnyKey();
 			clearScreen();
@@ -503,10 +502,8 @@ namespace {
 			}
 			studin.close();
 			return students.size() != 0;
-		}
-		else {
-			return false;
-		}
+		} 
+		else return false;
 	}
 
 	bool readConfig() {
@@ -532,7 +529,8 @@ namespace {
 				confin.close();
 				return false;
 			}
-		} else return false;
+		} 
+		else return false;
 
 		confin.close();
 		return true;

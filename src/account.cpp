@@ -54,12 +54,11 @@ namespace {
 		size_t id;
 		while (true) {
 			id = getPositiveNumber();
-			if (id > 0 && id <= accounts.size())
-				return id;
-			else {
+			if (id < 1 || id > accounts.size()) {
 				TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_HEIGHT / 2);
 				drawPreCentered(INVALID_ID, WINDOW_HEIGHT / 2);
 			}
+			else return id;
 		}
 	}
 
