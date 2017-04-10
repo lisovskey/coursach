@@ -1,5 +1,4 @@
 #pragma once
 
-size_t wordCount(std::string);
 std::string lower(std::string);
 std::string capitalize(std::string str);

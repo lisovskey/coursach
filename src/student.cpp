@@ -163,7 +163,7 @@ namespace {
 				TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
 				drawPreCentered(INVALID_NAME, y);
 			}
-			else if (wordCount(name) != 2) {
+			else if (!regex_match(name, regex("^[A-Za-z]+ [A-Za-z]+$"))) {
 				TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
 				drawPreCentered(SURNAME_NAME, y);
 			}
