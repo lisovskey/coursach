@@ -7,7 +7,7 @@
 #include <random>
 using namespace std;
 
-const char* NAMES[] = { "Alex", "Anton", "Alice", "Anastasia", "Alena", "Angella",
+const string NAMES[] = { "Alex", "Anton", "Alice", "Anastasia", "Alena", "Angella",
 "Alina", "Anatoly", "Andrew", "Alexander", "Alexandra", "Artur", "Boris", "Caroline",
 "Christine", "Dmitry", "Danila", "Denis", "Daria", "Evgeny", "Evgeniya", "Egor",
 "Elisabet", "Eveline", "Elya", "Eldar", "Fedor", "German", "Gleb", "Grigory", "Georgy",
@@ -20,7 +20,7 @@ const char* NAMES[] = { "Alex", "Anton", "Alice", "Anastasia", "Alena", "Angella
 "Victor", "Vladimir", "Vladislav", "Vasily", "Vyacheslav", "Vera", "Veronica", "Viktoriya",
 "Vlada", "Violett", "Varvara", "Yury", "Yan", "Yana", "Yaroslav", "Zoe", "Zlata" };
 
-const char* SURNAMES[] = { "Black", "Gray", "White", "Green", "Brown", "Smith", "Martin",
+const string SURNAMES[] = { "Black", "Gray", "White", "Green", "Brown", "Smith", "Martin",
 "Wilson", "Lee", "Johnson", "Williams", "Miller", "Jones", "Davis", "Anderson", "Taylor",
 "Thomas", "Jackson", "Harris", "Lewis", "Robinson", "Walker", "Young", "Allen", "Nelson",
 "Scott", "Hill", "King", "Mitchell", "Roberts", "Carter", "Adams", "Evans", "Turner", "Diaz" };

@@ -167,7 +167,7 @@ namespace {
 bool auth() {
 	/// Инициализация окна и авторизация или решистрация
 
-	TConsole::initWindow(WINDOW_WIDTH, WINDOW_HEIGHT, APP_NAME);
+	TConsole::initWindow(WINDOW_WIDTH, WINDOW_HEIGHT, APP_NAME.c_str());
 	if (readAccounts() == 0) {
 		// Отображение подсказок
 		drawHelp(ROLE_ADMIN);
@@ -210,7 +210,7 @@ bool auth() {
 				strcmp(input.pass, account.pass) == 0) {
 				string greeting = account.login;
 				greeting = "hello, " + greeting;
-				drawCentered(greeting.c_str(), WINDOW_HEIGHT / 2);
+				drawCentered(greeting, WINDOW_HEIGHT / 2);
 				waitAnyKey();
 
 				return account.role;

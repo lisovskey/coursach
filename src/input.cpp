@@ -11,7 +11,7 @@
 #include <sstream>
 using namespace std;
 
-const char* TRY_AGAIN = "Try again: ";
+const string TRY_AGAIN = "Try again: ";
 
 size_t getPositiveNumber() {
 	TConsole tc;

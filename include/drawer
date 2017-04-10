@@ -3,6 +3,6 @@
 void drawMenu(const size_t, ...);
 void drawTitles(const size_t, ...);
 void drawPressAnyKey();
-void drawCentered(const char*, const size_t);
-void drawPreCentered(const char*, const size_t);
+void drawCentered(const std::string, const size_t);
+void drawPreCentered(const std::string, const size_t);
 void drawHelp(bool);

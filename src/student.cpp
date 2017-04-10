@@ -512,7 +512,7 @@ namespace {
 		ifstream confin(CONFLIST, ios::in);
 
 		if (confin.is_open()) {
-			confin.seekg(strlen(DEFAULT_CASH_CONFIG), confin.cur);
+			confin.seekg(DEFAULT_CASH_CONFIG.length(), confin.cur);
 			if (confin.cur != EOF) {
 				confin >> default_cash;
 				confin.ignore(10000, '\n');
@@ -521,7 +521,7 @@ namespace {
 				confin.close();
 				return false;
 			}
-			confin.seekg(strlen(DORM_PRICE_CONFIG), confin.cur);
+			confin.seekg(DORM_PRICE_CONFIG.length(), confin.cur);
 			if (confin.cur != EOF) {
 				confin >> dormitory_rent_price;
 			} 

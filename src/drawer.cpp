@@ -43,7 +43,7 @@ void drawMenu(const size_t num, ...) {
 			else
 				drawButton(num - count);
 
-			cout << " " << va_arg(args, char*);
+			cout << " " << va_arg(args, string);
 			y += 2;
 		}
 		va_end(args);
@@ -71,10 +71,10 @@ void drawTitles(const size_t num, ...) {
 		tc.InvertColors();
 		va_start(args, num);
 		size_t width = va_arg(args, size_t);
-		cout << left << setw(width) << va_arg(args, char*);
+		cout << left << setw(width) << va_arg(args, string);
 		while (--count) {
 			width = va_arg(args, size_t);
-			cout << (char)179 << setw(width) << va_arg(args, char*);
+			cout << (char)179 << setw(width) << va_arg(args, string);
 		}
 		va_end(args);
 		tc.InvertColors();
@@ -94,12 +94,12 @@ void drawPressAnyKey() {
 	tc.GotoXY(WINDOW_WIDTH - 1, WINDOW_HEIGHT - 1);
 }
 
-void drawCentered(const char* str, const size_t y) {
-	tc.GotoXY(WINDOW_WIDTH / 2 - strlen(str) / 2, y);
+void drawCentered(const string str, const size_t y) {
+	tc.GotoXY(WINDOW_WIDTH / 2 - str.length() / 2, y);
 	cout << " " << str << " ";
 }
 
-void drawPreCentered(const char* str, const size_t y) {
+void drawPreCentered(const string str, const size_t y) {
 	tc.GotoXY(0, y);
 	cout << setw(WINDOW_WIDTH / 2) << setfill(' ') << right << str;
 }
