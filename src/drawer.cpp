@@ -9,10 +9,10 @@
 #include <cstdarg>
 using namespace std;
 
-const char* TOO_MANY_ARGS = "Too many arguments";
-const char* MEMORY_ERROR = "Memory error";
+const string TOO_MANY_ARGS = "Too many arguments";
+const string MEMORY_ERROR = "Memory error";
 
-TConsole tc;
+TConsole tc = TConsole();
 
 template <typename T>
 void drawButton(T button) {
@@ -159,15 +159,4 @@ void drawHelp(bool admin) {
 		drawPreCentered("d - ", 29);
 		cout << "dormitory";
 	}
-}
-
-void drawAdminHelp() {
-	clearScreen();
-	drawCentered("copyright 2017 lisovskey", 1);
-	drawCentered("english and windows only", 3);
-	drawCentered("bsuir bdprog course work, variant 23", 4);
-	drawCentered("console program for calculating students' grants", 5);
-	cout << endl << setw(WINDOW_WIDTH) << setfill((char)196) << "";
-	drawCentered("coursach", 6);
-	
 }
