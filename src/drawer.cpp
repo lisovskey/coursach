@@ -15,13 +15,15 @@ const string MEMORY_ERROR = "Memory error";
 TConsole tc = TConsole();
 
 template <typename T>
-void drawButton(T button) {
+void drawButton(T button)
+{
 	tc.InvertColors();
 	cout << " " << button << " ";
 	tc.InvertColors();
 }
 
-void drawMenu(const size_t num, ...) {
+void drawMenu(const size_t num, ...)
+{
 	if (num > 10) {
 		cerr << TOO_MANY_ARGS << endl;
 		exit(1);
@@ -57,7 +59,8 @@ void drawMenu(const size_t num, ...) {
 	}
 }
 
-void drawTitles(const size_t num, ...) {
+void drawTitles(const size_t num, ...)
+{
 	if (num > 10) {
 		cerr << TOO_MANY_ARGS << endl;
 		exit(1);
@@ -89,22 +92,26 @@ void drawTitles(const size_t num, ...) {
 	}
 }
 
-void drawPressAnyKey() {
+void drawPressAnyKey()
+{
 	drawCentered(PRESS_ANY_KEY, WINDOW_HEIGHT - 2);
 	tc.GotoXY(WINDOW_WIDTH - 1, WINDOW_HEIGHT - 1);
 }
 
-void drawCentered(const string str, const size_t y) {
+void drawCentered(const string str, const size_t y)
+{
 	tc.GotoXY(WINDOW_WIDTH / 2 - str.length() / 2, y);
 	cout << " " << str << " ";
 }
 
-void drawPreCentered(const string str, const size_t y) {
+void drawPreCentered(const string str, const size_t y)
+{
 	tc.GotoXY(0, y);
 	cout << setw(WINDOW_WIDTH / 2) << setfill(' ') << right << str;
 }
 
-void drawHelp(bool admin) {
+void drawHelp(bool admin)
+{
 	clearScreen();
 	drawCentered("copyright 2017 lisovskey", 1);
 	drawCentered("english and windows only", 3);

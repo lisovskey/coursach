@@ -1,12 +1,14 @@
 #include "stdafx"
 #include "console"
 
-TConsole::TConsole() :Out(std::cout) {
+TConsole::TConsole() :Out(std::cout)
+{
 	OutputHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 	GetConsoleScreenBufferInfo(OutputHandle, &ScreenBufInfo);
 }
 
-void TConsole::DelLine() {
+void TConsole::DelLine()
+{
 	GetConsoleScreenBufferInfo(OutputHandle, &ScreenBufInfo);
 	CHAR_INFO CI;
 	ScreenBufInfo.srWindow.Top = WhereY();
@@ -21,7 +23,8 @@ void TConsole::DelLine() {
 	FillConsoleOutputAttribute(OutputHandle, ScreenBufInfo.wAttributes, Size, Coord, &Count);
 }
 
-void TConsole::GotoXY(int X, int Y) {
+void TConsole::GotoXY(int X, int Y)
+{
 	ScreenBufInfo.dwCursorPosition.X = X;
 	ScreenBufInfo.dwCursorPosition.Y = Y;
 	if (!SetConsoleCursorPosition(OutputHandle, ScreenBufInfo.dwCursorPosition)) {
@@ -30,38 +33,44 @@ void TConsole::GotoXY(int X, int Y) {
 	}
 }
 
-void TConsole::BackgroundColor(BYTE Color) {
+void TConsole::BackgroundColor(BYTE Color)
+{
 	GetConsoleScreenBufferInfo(OutputHandle, &ScreenBufInfo);
 	WORD TextAttr = ScreenBufInfo.wAttributes;
 	TextAttr = (Color << 4) | (TextAttr & 0x0F);
 	SetConsoleTextAttribute(OutputHandle, TextAttr);
 }
 
-void TConsole::TextColor(BYTE Color) {
+void TConsole::TextColor(BYTE Color)
+{
 	GetConsoleScreenBufferInfo(OutputHandle, &ScreenBufInfo);
 	WORD TextAttr = ScreenBufInfo.wAttributes;
 	TextAttr = (Color & 0x0F) | (TextAttr & 0xF0);
 	SetConsoleTextAttribute(OutputHandle, TextAttr);
 }
 
-void TConsole::InvertColors() {
+void TConsole::InvertColors()
+{
 	GetConsoleScreenBufferInfo(OutputHandle, &ScreenBufInfo);
 	BYTE TextAttr = (BYTE)ScreenBufInfo.wAttributes;
 	TextAttr = ~TextAttr;
 	SetConsoleTextAttribute(OutputHandle, TextAttr);
 }
 
-int TConsole::WhereX() {
+int TConsole::WhereX()
+{
 	GetConsoleScreenBufferInfo(OutputHandle, &ScreenBufInfo);
 	return ScreenBufInfo.dwCursorPosition.X;
 }
 
-int TConsole::WhereY() {
+int TConsole::WhereY()
+{
 	GetConsoleScreenBufferInfo(OutputHandle, &ScreenBufInfo);
 	return ScreenBufInfo.dwCursorPosition.Y;
 }
 
-void TConsole::Window(BYTE X, BYTE Y) {
+void TConsole::Window(BYTE X, BYTE Y)
+{
 	SMALL_RECT ConsoleRect;
 	ConsoleRect.Top = 0;
 	ConsoleRect.Left = 0;
@@ -75,7 +84,8 @@ void TConsole::Window(BYTE X, BYTE Y) {
 	GotoXY(0, 0);
 }
 
-void TConsole::initWindow(BYTE width, BYTE height, const char* title) {
+void TConsole::initWindow(BYTE width, BYTE height, const char* title)
+{
 	if (width + height > 255) {
 		std::cerr << "Too big window" << std::endl;
 		exit(1);
@@ -88,7 +98,8 @@ void TConsole::initWindow(BYTE width, BYTE height, const char* title) {
 	tc.TextColor(COLOR_WHITE);
 }
 
-void TConsole::clsUnder(BYTE width, BYTE height, size_t y) {
+void TConsole::clsUnder(BYTE width, BYTE height, size_t y)
+{
 	TConsole tc;
 	tc.GotoXY(0, y);
 	int count = height - y;

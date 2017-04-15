@@ -1,11 +1,11 @@
 #pragma once
 
 void readData();
-size_t addStudent();
-size_t findStudent();
-size_t editStudent();
-size_t viewStudents();
-size_t sortStudents();
+std::size_t addStudent();
+std::size_t findStudent();
+std::size_t editStudent();
+std::size_t viewStudents();
+std::size_t sortStudents();
 void writeStudents();
 void writeConfig();
-size_t settings();
+std::size_t settings();

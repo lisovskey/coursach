@@ -7,7 +7,8 @@
 #include "presser"
 #include <conio.h>
 
-void waitAnyKey() {
+void waitAnyKey()
+{
 	drawPressAnyKey();
 	getPress();
 }

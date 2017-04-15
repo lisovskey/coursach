@@ -16,11 +16,13 @@ void saveChanges();
 void help(bool);
 bool quit();
 
-int main() {
+int main(void)
+{
 	return auth() ? adminMode() : userMode();
 }
 
-int userMode() {
+int userMode()
+{
 	readData();
 	// Основное меню
 	while (true) {
@@ -53,7 +55,8 @@ int userMode() {
 	}
 }
 
-int adminMode() {
+int adminMode()
+{
 	readData();
 	// Основное меню
 	while (true) {
@@ -101,7 +104,8 @@ int adminMode() {
 	}
 }
 
-int administration() {
+int administration()
+{
 	// Меню администрирования
 	while (true) {
 		clearScreen();
@@ -132,7 +136,8 @@ int administration() {
 	}
 }
 
-void saveChanges() {
+void saveChanges()
+{
 	clearScreen();
 	writeAccounts();
 	writeStudents();
@@ -141,12 +146,14 @@ void saveChanges() {
 	waitAnyKey();
 }
 
-void help(bool role) {
+void help(bool role)
+{
 	drawHelp(role);
 	waitAnyKey();
 }
 
-bool quit() {
+bool quit()
+{
 	clearScreen();
 	drawCentered(QUIT_OR_NO, 1);
 	drawMenu(2, QUIT, BACK);

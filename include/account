@@ -6,7 +6,7 @@ enum {
 };
 
 bool auth();
-size_t createAccount();
-size_t editAccount();
-size_t viewAccounts();
+std::size_t createAccount();
+std::size_t editAccount();
+std::size_t viewAccounts();
 void writeAccounts();

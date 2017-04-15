@@ -40,7 +40,8 @@ const size_t GROUPS[] = {
 random_device rd;
 mt19937 mt(rd());
 
-string generateName() {
+string generateName()
+{
 	string name = "";
 	uniform_int_distribution<int> dist_name(0, 101);
 	name += NAMES[dist_name(mt)];
@@ -50,17 +51,20 @@ string generateName() {
 	return name;
 }
 
-size_t generateGroup() {
+size_t generateGroup()
+{
 	uniform_int_distribution<int> dist(0, 90);
 	return GROUPS[dist(mt)];
 }
 
-size_t generateMark() {
+size_t generateMark()
+{
 	uniform_int_distribution<int> dist(4, 10);
 	return dist(mt);
 }
 
-bool generateBool(const int factor) {
+bool generateBool(const int factor)
+{
 	uniform_int_distribution<int> dist(0, abs(factor));
 	return factor >= 0 ? dist(mt) != 0 : dist(mt) == 0;
 }

@@ -13,7 +13,8 @@ using namespace std;
 
 const string TRY_AGAIN = "Try again: ";
 
-size_t getPositiveNumber() {
+size_t getPositiveNumber()
+{
 	TConsole tc;
 	size_t y = tc.WhereY();
 
@@ -33,7 +34,8 @@ size_t getPositiveNumber() {
 	}
 }
 
-double getMoney() {
+double getMoney()
+{
 	TConsole tc;
 	size_t y = tc.WhereY();
 
@@ -54,11 +56,11 @@ double getMoney() {
 	}
 }
 
-size_t getMark() {
+size_t getMark()
+{
 	TConsole tc;
 	size_t y = tc.WhereY();
 
-	// Валидная отметка
 	size_t mark;
 	while (true) {
 		mark = getPositiveNumber();
@@ -72,7 +74,8 @@ size_t getMark() {
 	}
 }
 
-bool getBoolean() {
+bool getBoolean()
+{
 	TConsole tc;
 	size_t y = tc.WhereY();
 
@@ -96,8 +99,8 @@ bool getBoolean() {
 	}
 }
 
-string getPass(size_t size) {
-	// Скрытие ввода пароля
+string getPass(size_t size)
+{
 	char* result = new char[size];
 	memset(result, '\0', sizeof(char) * size);
 

@@ -66,9 +66,9 @@ namespace {
 	double default_cash;
 	double dormitory_rent_price;
 
-	bool calculateCash(student* s) {
-		/// Расчет стипендии
-
+	bool calculateCash(student* s)
+	/// Расчет стипендии
+	{
 		double cash;
 		bool satisfactory_marks = s->knowledge.mathmatics > 3.9 &&
 			s->knowledge.programming > 3.9 &&
@@ -131,9 +131,9 @@ namespace {
 		return true;
 	}
 
-	size_t getId() {
-		/// Ввод номера с проверкой существования
-
+	size_t getId()
+	/// Ввод номера с проверкой существования
+	{
 		drawPreCentered(ENTER_ID, WINDOW_HEIGHT / 2);
 		size_t id;
 		while (true) {
@@ -146,11 +146,11 @@ namespace {
 		}
 	}
 
-	void setName(student* s, const size_t y) {
-		/// Ввод имени из двух слов только из букв
-
+	void setName(student* s, const size_t y)
+	/// Ввод имени из двух слов только из букв
+	{
 		drawPreCentered(ENTER_NAME, y);
-		static char name[STRING_LENGTH + 1];
+		char name[STRING_LENGTH + 1];
 		while (true) {
 			cin.getline(name, STRING_LENGTH + 1);
 			cin.clear();
@@ -174,9 +174,9 @@ namespace {
 		}
 	}
 
-	void setGroup(student* s, const size_t y) {
-		/// Ввод шестизначного номера группы '16 года
-
+	void setGroup(student* s, const size_t y)
+	/// Ввод шестизначного номера группы '16 года
+	{
 		drawPreCentered(ENTER_GROUP, y);
 		size_t group;
 		while (true) {
@@ -196,9 +196,9 @@ namespace {
 		}
 	}
 
-	void setMarks(student* s, const size_t y) {
-		/// Установка отметок с расчетом среднего балла
-
+	void setMarks(student* s, const size_t y)
+	/// Установка отметок с расчетом среднего балла
+	{
 		double sum = 0;
 		drawPreCentered(ENTER_MATH, y);
 		sum += s->knowledge.mathmatics = getMark();
@@ -213,9 +213,9 @@ namespace {
 		s->gpa = sum / 5;
 	}
 
-	void setCredits(student* s, const size_t y) {
-		/// Установка вовремя сданных зачетов
-
+	void setCredits(student* s, const size_t y)
+	/// Установка вовремя сданных зачетов
+	{
 		drawPreCentered(ENTER_GRAPH, y);
 		s->passes.graphics = getBoolean();
 		drawPreCentered(ENTER_ENG, y + 1);
@@ -228,9 +228,9 @@ namespace {
 		s->passes.history = getBoolean();
 	}
 
-	void setCircs(student* s, const size_t y) {
-		/// Установка влияющих факторов
-
+	void setCircs(student* s, const size_t y)
+	/// Установка влияющих факторов
+	{
 		drawPreCentered(ENTER_BUDGET, y);
 		s->privileges.budget = getBoolean();
 		drawPreCentered(ENTER_ACTIVE, y + 1);
@@ -245,9 +245,9 @@ namespace {
 		s->privileges.dormitory = getBoolean();
 	}
 
-	size_t viewStudent(student* s) {
-		/// Отображение основной информации о студенте
-
+	size_t viewStudent(student* s)
+	/// Отображение основной информации о студенте
+	{
 		// Расчет зачетов
 		string passes = "";
 		int count = 0;
@@ -282,9 +282,9 @@ namespace {
 		return s->id;
 	}
 
-	size_t createStudent() {		
-		/// Создание студента вручную
-		
+	size_t createStudent()
+	/// Создание студента вручную
+	{
 		clearScreen();
 		student s;
 		s.id = students.size() + 1;
@@ -326,9 +326,9 @@ namespace {
 		return s.id;
 	}
 
-	size_t generateStudent() {
-		/// Генерация студента
-
+	size_t generateStudent()
+	/// Генерация студента
+	{
 		clearScreen();
 		student s;
 		s.id = students.size() + 1;
@@ -379,9 +379,9 @@ namespace {
 		return s.id;
 	}
 
-	size_t deleteStudent(const size_t id) {
-		/// Удаление студента из вектора
-
+	size_t deleteStudent(const size_t id)
+	/// Удаление студента из вектора
+	{
 		clearScreen();
 		students.erase(students.begin() + id - 1);
 		// Исправление номеров
@@ -393,9 +393,9 @@ namespace {
 		return students.size();
 	}
 
-	size_t viewList(vector<student> &list) {
-		/// Отображение всех студентов в переданном векторе
-
+	size_t viewList(vector<student> &list)
+	/// Отображение всех студентов в переданном векторе
+	{
 		size_t size = list.size();
 		size_t height = WINDOW_HEIGHT - 4;
 		size_t limit = 0;
@@ -415,34 +415,34 @@ namespace {
 		return size;
 	}
 
-	size_t viewSortedList(vector<student> list, bool(*compare)(student, student)) {
-		/// Сортировка вектора по переданной функции
-
+	size_t viewSortedList(vector<student> list, bool(*compare)(student, student))
+	/// Сортировка вектора по переданной функции
+	{
 		sort(list.begin(), list.end(), compare);
 		return viewList(list);
 	}
 
-	bool byName(student a, student b) {
-		/// Сортировка по убыванию имени
-
+	bool byName(student a, student b)
+	/// Сортировка по убыванию имени
+	{
 		return strcmp(a.name, b.name) < 0;
 	}
 
-	bool byCash(student a, student b) {
-		/// Сортировка по убыванию стипендии
-
+	bool byCash(student a, student b)
+	/// Сортировка по убыванию стипендии
+	{
 		return a.cash > b.cash;
 	}
 
-	bool byGPA(student a, student b) {
-		/// Сортировка по убыванию среднего балла
-
+	bool byGPA(student a, student b)
+	/// Сортировка по убыванию среднего балла
+	{
 		return a.gpa > b.gpa;
 	}
 
-	size_t viewFoundStudents(bool(*condition)(student, string)) {
-		/// Поиск и отображение найденных по запросу студентов
-
+	size_t viewFoundStudents(bool(*condition)(student, string))
+	/// Поиск и отображение найденных по запросу студентов
+	{
 		clearScreen();
 		// Ввод запроса
 		string request;
@@ -475,21 +475,21 @@ namespace {
 		return count;
 	}
 
-	bool byName(student s, string request) {
-		/// Поиск по имени
-
+	bool byName(student s, string request)
+	/// Поиск по имени
+	{
 		return lower(s.name).find(request) != string::npos;
 	}
 
-	bool byGroup(student s, string request) {
-		/// Поиск по группе
-
+	bool byGroup(student s, string request)
+	/// Поиск по группе
+	{
 		return to_string(s.group).find(request) != string::npos;
 	}
 
-	bool readStudents() {
-		/// Считывание студентов из файла в вектор
-
+	bool readStudents()
+	/// Считывание студентов из файла в вектор
+	{
 		ifstream studin(STUDLIST, ios::binary | ios::in);
 		if (studin.is_open()) {
 			size_t i = 1;
@@ -506,9 +506,9 @@ namespace {
 		else return false;
 	}
 
-	bool readConfig() {
-		/// Считывание натроек из файла
-
+	bool readConfig()
+	/// Считывание натроек из файла
+	{
 		ifstream confin(CONFLIST, ios::in);
 
 		if (confin.is_open()) {
@@ -536,9 +536,9 @@ namespace {
 		return true;
 	}
 
-	void changeDefaultCash() {
-		/// Смена базовой стипендии
-
+	void changeDefaultCash()
+	/// Смена базовой стипендии
+	{
 		clearScreen();
 		drawPreCentered(CURRENT_CASH, 1);
 		cout << fixed << setprecision(2) << default_cash;
@@ -555,9 +555,9 @@ namespace {
 		waitAnyKey();
 	}
 
-	void changeDormitoryRentPrice() {
-		/// Смена стоимости оплаты общежития
-
+	void changeDormitoryRentPrice()
+	/// Смена стоимости оплаты общежития
+	{
 		clearScreen();
 		drawPreCentered(CURRENT_PRICE, 1);
 		cout << fixed << setprecision(2) << dormitory_rent_price;
@@ -576,9 +576,9 @@ namespace {
 
 }
 
-void readData() {
-	/// Считывание студентов и настроек с дефолтными значениями
-
+void readData()
+/// Считывание студентов и настроек с дефолтными значениями
+{
 	readStudents();
 	if (!readConfig()) {
 		default_cash = 58.28;
@@ -586,9 +586,9 @@ void readData() {
 	}
 }
 
-size_t addStudent() {
-	/// Добавление нового студента
-
+size_t addStudent()
+/// Добавление нового студента
+{
 	clearScreen();
 	drawCentered(ADDING, 1);
 	drawMenu(3, MANUAL, GENERATE, BACK);
@@ -602,9 +602,9 @@ size_t addStudent() {
 	} while (true);
 }
 
-size_t findStudent() {
-	/// Поиск студента по определенному полю
-
+size_t findStudent()
+/// Поиск студента по определенному полю
+{
 	clearScreen();
 	// Пустой вектор
 	if (students.size() == 0) {
@@ -631,9 +631,9 @@ size_t findStudent() {
 	}
 }
 
-size_t editStudent() {
-	/// Изменение полей студента
-
+size_t editStudent()
+/// Изменение полей студента
+{
 	clearScreen();
 	// Пустой вектор
 	if (students.size() == 0) {
@@ -686,9 +686,9 @@ size_t editStudent() {
 	}
 }
 
-size_t viewStudents() {
-	/// Отображение всех студентов
-
+size_t viewStudents()
+/// Отображение всех студентов
+{
 	// Пустой вектор
 	if (students.size() == 0) {
 		clearScreen();
@@ -699,9 +699,9 @@ size_t viewStudents() {
 	return viewList(students);
 }
 
-size_t sortStudents() {
-	/// Отображение всех студентов в определенном порядке
-
+size_t sortStudents()
+/// Отображение всех студентов в определенном порядке
+{
 	clearScreen();
 	// Пустой вектор
 	if (students.size() == 0) {
@@ -723,27 +723,27 @@ size_t sortStudents() {
 	} while (true);
 }
 
-void writeStudents() {
-	/// Запись из вектора в файл
-
+void writeStudents()
+/// Запись из вектора в файл
+{
 	ofstream studout(STUDLIST, ios::binary | ios::out | ios_base::trunc);
 	for (student &person : students)
 		studout.write((char*)&person, sizeof(student));
 	studout.close();
 }
 
-void writeConfig() {
-	/// Запись настроек в файл
-
+void writeConfig()
+/// Запись настроек в файл
+{
 	ofstream confout(CONFLIST, ios::out | ios_base::trunc);
 	confout << DEFAULT_CASH_CONFIG << default_cash << "\n";
 	confout << DORM_PRICE_CONFIG << dormitory_rent_price;
 	confout.close();
 }
 
-size_t settings() {
-	/// Настройки значений
-
+size_t settings()
+/// Настройки значений
+{
 	clearScreen();
 	drawCentered(SETTINGS, 1);
 	drawMenu(3, DEFAULT_CASH, DORM_PRICE, BACK);

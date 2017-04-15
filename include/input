@@ -1,7 +1,7 @@
 #pragma once
 
-size_t getPositiveNumber();
+std::size_t getPositiveNumber();
 double getMoney();
-size_t getMark();
+std::size_t getMark();
 bool getBoolean();
 std::string getPass(size_t);
