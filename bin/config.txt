@@ -1,2 +1,4 @@
-default cash = 58.28
-dormitory rent price = 18.22
+#DEFAULT CASH
+58.28
+#DORM RENT PRICE
+18.22
