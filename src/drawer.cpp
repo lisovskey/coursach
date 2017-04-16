@@ -73,8 +73,8 @@ void drawTitles(const size_t num, ...)
 	__try {
 		tc.InvertColors();
 		va_start(args, num);
-		size_t width = va_arg(args, size_t);
-		cout << left << setw(width) << va_arg(args, string);
+		size_t width = va_arg(args, size_t) - 1;
+		cout << " " << left << setfill(' ') << setw(width) << va_arg(args, string);
 		while (--count) {
 			width = va_arg(args, size_t);
 			cout << (char)179 << setw(width) << va_arg(args, string);

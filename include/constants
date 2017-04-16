@@ -7,6 +7,8 @@ static const std::string ACCLIST = "accounts.bin";
 static const std::string CONFLIST = "config.txt";
 
 static const size_t STRING_LENGTH = 24;
+static const size_t LOGIN_MIN_LENGTH = 4;
+static const size_t PASS_MIN_LENGTH = 4;
 static const size_t WINDOW_WIDTH = 80;
 static const size_t WINDOW_HEIGHT = 40;
 
@@ -56,9 +58,11 @@ static const std::string ENTER_ID = "Enter id: ";
 static const std::string INVALID_ID = "Invalid id: ";
 static const std::string ENTER_LOGIN = "Enter login: ";
 static const std::string LONG_LOGIN = "Too long login: ";
+static const std::string SHORT_LOGIN = "Too short login: ";
 static const std::string INVALID_LOGIN = "Only digits and letters: ";
 static const std::string ENTER_PASS = "Enter pass: ";
 static const std::string LONG_PASS = "Too long pass: ";
+static const std::string SHORT_PASS = "Too short pass: ";
 static const std::string INVALID_PASS = "Don't use special chars: ";
 static const std::string TAKEN_LOGIN = "Already taken: ";
 static const std::string ENTER_ROLE = "Is admin: ";
@@ -110,7 +114,7 @@ static const std::string CURRENT_PRICE = "Current price: ";
 static const std::string CASH_CHANGED = "Default cash has been changed";
 static const std::string PRICE_CHANGED = "Dormitory rent price has been changed";
 
-static const std::string ID_TITLE = " id";
+static const std::string ID_TITLE = "id";
 static const std::string LOGIN_TITLE = "login";
 static const std::string PASS_TITLE = "password";
 static const std::string ROLE_TITLE = "role";
@@ -120,6 +124,8 @@ static const std::string GPA_TITLE = "gpa";
 static const std::string CRED_TITLE = "passed";
 static const std::string CIRCS_TITLE = "circs";
 static const std::string CASH_TITLE = "cash";
+static const std::string DEFAULT_CASH_TITLE = "default cash";
+static const std::string DORM_PRICE_TITLE = "dormitory rent price";
 
 static const std::string PRESS_ANY_KEY = "press any key...";
 static const std::string DEFAULT_CASH_CONFIG = "default cash = ";

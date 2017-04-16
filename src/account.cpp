@@ -84,6 +84,10 @@ namespace {
 				TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
 				drawPreCentered(LONG_LOGIN, y);
 			}
+			else if (strlen(login) < LOGIN_MIN_LENGTH) {
+				TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+				drawPreCentered(SHORT_LOGIN, y);
+			}
 			else if (!regex_match(login, regex("[0-9A-Za-z]+"))) {
 				TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
 				drawPreCentered(INVALID_LOGIN, y);
@@ -111,6 +115,10 @@ namespace {
 				cin.ignore(10000, '\n');
 				TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
 				drawPreCentered(LONG_PASS, y);
+			}
+			else if (strlen(pass) < PASS_MIN_LENGTH) {
+				TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);
+				drawPreCentered(SHORT_PASS, y);
 			}
 			else if (!regex_match(pass, regex("[0-9_A-Z-a-z]+"))) {
 				TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, y);

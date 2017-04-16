@@ -34,19 +34,19 @@ int userMode()
 			g_correct_press = true;
 			switch (getPress()) {
 			// Найти студента
-			case '1': findStudent();		
+			case '1': findStudent();
 				break;
 			// Сортировать список
-			case '2': viewStudents();		
+			case '2': viewStudents();
 				break;
 			// Сортировать список
-			case '3': sortStudents();		
+			case '3': sortStudents();
 				break;
 			// Помощь
 			case '4': help(ROLE_USER);
 				break;
 			// Выйти из программы
-			case '0': if (quit()) return 0;	
+			case '0': if (quit()) return 0;
 				break;
 			// Неверный ввод
 			default: g_correct_press = false;
@@ -68,34 +68,34 @@ int adminMode()
 			g_correct_press = true;
 			switch (getPress()) {
 			// Добавить студента
-			case '1': addStudent();			
+			case '1': addStudent();
 				break;
 			// Найти студента
-			case '2': findStudent();		
+			case '2': findStudent();
 				break;
 			// Изменить информацию
-			case '3': editStudent();		
+			case '3': editStudent();
 				break;
 			// Сортировать список
-			case '4': viewStudents();		
+			case '4': viewStudents();
 				break;
 			// Сортировать список
-			case '5': sortStudents();		
+			case '5': sortStudents();
 				break;
 			// Сохранить изменения
-			case '6': saveChanges();		
+			case '6': saveChanges();
 				break;
 			// Настройки
-			case '7': settings();			
+			case '7': settings();
 				break;
 			// Администрирование
-			case '8': administration();		
+			case '8': administration();
 				break;
 			// Помощь
 			case '9': help(ROLE_ADMIN);
 				break;
 			// Выйти из программы
-			case '0': if (quit()) return 0;	
+			case '0': if (quit()) return 0;
 				break;
 			// Неверный ввод
 			default: g_correct_press = false;
@@ -110,22 +110,19 @@ int administration()
 	while (true) {
 		clearScreen();
 		drawCentered(ADMINING, 1);
-		drawMenu(5, ADD, EDIT, VIEW, SAVE, BACK);
+		drawMenu(4, ADD, EDIT, VIEW, BACK);
 		// Цикл выбора действия
 		do {
 			g_correct_press = true;
 			switch (getPress()) {
 			// Добавить аккаунт
-			case '1': createAccount();		
+			case '1': createAccount();
 				break;
 			// Сортировать список
-			case '2': editAccount();		
+			case '2': editAccount();
 				break;
 			// Сортировать список
-			case '3': viewAccounts();		
-				break;
-			// Сохранить изменения
-			case '4': saveChanges();		
+			case '3': viewAccounts();
 				break;
 			// Вернуться
 			case '0': return 0;

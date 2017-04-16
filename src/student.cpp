@@ -21,6 +21,9 @@ using namespace std;
 	4, ID_TITLE, 24, NAME_TITLE, 8, GROUP_TITLE, 6, GPA_TITLE, \
 	8, CRED_TITLE, 11, CIRCS_TITLE, 13, CASH_TITLE);
 
+#define drawSettingsTitles() drawTitles(2, \
+	40, DEFAULT_CASH_TITLE, 39, DORM_PRICE_TITLE);
+
 namespace {
 
 	typedef struct {
@@ -99,7 +102,7 @@ namespace {
 			else cash = 0;
 		}
 		// Множители
-		if (cash > 1) {
+		if (cash > 0) {
 			if (s->gpa < 5)
 				cash *= 0.8;
 			else if (s->gpa > 5.9 && s->gpa < 8)
@@ -200,48 +203,51 @@ namespace {
 	/// Установка отметок с расчетом среднего балла
 	{
 		double sum = 0;
-		drawPreCentered(ENTER_MATH, y);
+		int offset = 0;
+		drawPreCentered(ENTER_MATH, y + offset++);
 		sum += s->knowledge.mathmatics = getMark();
-		drawPreCentered(ENTER_PROG, y + 1);
+		drawPreCentered(ENTER_PROG, y + offset++);
 		sum += s->knowledge.programming = getMark();
-		drawPreCentered(ENTER_PHYS, y + 2);
+		drawPreCentered(ENTER_PHYS, y + offset++);
 		sum += s->knowledge.physics = getMark();
-		drawPreCentered(ENTER_PHIL, y + 3);
+		drawPreCentered(ENTER_PHIL, y + offset++);
 		sum += s->knowledge.philosophy = getMark();
-		drawPreCentered(ENTER_ANAL, y + 4);
+		drawPreCentered(ENTER_ANAL, y + offset++);
 		sum += s->knowledge.analytics = getMark();
-		s->gpa = sum / 5;
+		s->gpa = sum / offset;
 	}
 
 	void setCredits(student* s, const size_t y)
 	/// Установка вовремя сданных зачетов
 	{
-		drawPreCentered(ENTER_GRAPH, y);
+		int offset = 0;
+		drawPreCentered(ENTER_GRAPH, y + offset++);
 		s->passes.graphics = getBoolean();
-		drawPreCentered(ENTER_ENG, y + 1);
+		drawPreCentered(ENTER_ENG, y + offset++);
 		s->passes.english = getBoolean();
-		drawPreCentered(ENTER_PE, y + 2);
+		drawPreCentered(ENTER_PE, y + offset++);
 		s->passes.pe = getBoolean();
-		drawPreCentered(ENTER_DESIGN, y + 3);
+		drawPreCentered(ENTER_DESIGN, y + offset++);
 		s->passes.designing = getBoolean();
-		drawPreCentered(ENTER_HIST, y + 4);
+		drawPreCentered(ENTER_HIST, y + offset++);
 		s->passes.history = getBoolean();
 	}
 
 	void setCircs(student* s, const size_t y)
 	/// Установка влияющих факторов
 	{
-		drawPreCentered(ENTER_BUDGET, y);
+		int offset = 0;
+		drawPreCentered(ENTER_BUDGET, y + offset++);
 		s->privileges.budget = getBoolean();
-		drawPreCentered(ENTER_ACTIVE, y + 1);
+		drawPreCentered(ENTER_ACTIVE, y + offset++);
 		s->privileges.activism = getBoolean();
-		drawPreCentered(ENTER_SCIENCE, y + 2);
+		drawPreCentered(ENTER_SCIENCE, y + offset++);
 		s->privileges.science = getBoolean();
-		drawPreCentered(ENTER_FOREIGN, y + 3);
+		drawPreCentered(ENTER_FOREIGN, y + offset++);
 		s->privileges.foreign = getBoolean();
-		drawPreCentered(ENTER_INVALID, y + 4);
+		drawPreCentered(ENTER_INVALID, y + offset++);
 		s->privileges.invalid = getBoolean();
-		drawPreCentered(ENTER_DORM, y + 5);
+		drawPreCentered(ENTER_DORM, y + offset++);
 		s->privileges.dormitory = getBoolean();
 	}
 
@@ -422,24 +428,6 @@ namespace {
 		return viewList(list);
 	}
 
-	bool byName(student a, student b)
-	/// Сортировка по убыванию имени
-	{
-		return strcmp(a.name, b.name) < 0;
-	}
-
-	bool byCash(student a, student b)
-	/// Сортировка по убыванию стипендии
-	{
-		return a.cash > b.cash;
-	}
-
-	bool byGPA(student a, student b)
-	/// Сортировка по убыванию среднего балла
-	{
-		return a.gpa > b.gpa;
-	}
-
 	size_t viewFoundStudents(bool(*condition)(student, string))
 	/// Поиск и отображение найденных по запросу студентов
 	{
@@ -475,18 +463,6 @@ namespace {
 		return count;
 	}
 
-	bool byName(student s, string request)
-	/// Поиск по имени
-	{
-		return lower(s.name).find(request) != string::npos;
-	}
-
-	bool byGroup(student s, string request)
-	/// Поиск по группе
-	{
-		return to_string(s.group).find(request) != string::npos;
-	}
-
 	bool readStudents()
 	/// Считывание студентов из файла в вектор
 	{
@@ -510,6 +486,18 @@ namespace {
 	/// Считывание натроек из файла
 	{
 		ifstream confin(CONFLIST, ios::in);
+		string line;
+		
+		while (getline(confin, line)) {
+			if (line.front() == '#') {
+				if (line.substr(1) == DEFAULT_CASH) {
+					confin >> default_cash;
+				}
+				else if (line.substr(1) == DORM_PRICE) {
+					confin >> dormitory_rent_price;
+				}
+			}
+		}
 
 		if (confin.is_open()) {
 			confin.seekg(DEFAULT_CASH_CONFIG.length(), confin.cur);
@@ -536,42 +524,16 @@ namespace {
 		return true;
 	}
 
-	void changeDefaultCash()
+	void changeSetting(double &setting)
 	/// Смена базовой стипендии
 	{
-		clearScreen();
-		drawPreCentered(CURRENT_CASH, 1);
-		cout << fixed << setprecision(2) << default_cash;
 		drawPreCentered(ENTER_VALUE, WINDOW_HEIGHT / 2);
-		default_cash = getMoney();
+		setting = getMoney();
 
 		// Пересчет стипендии
 		for (student &person : students) {
 			calculateCash(&person);
 		}
-
-		clearScreen();
-		drawCentered(CASH_CHANGED, WINDOW_HEIGHT / 2);
-		waitAnyKey();
-	}
-
-	void changeDormitoryRentPrice()
-	/// Смена стоимости оплаты общежития
-	{
-		clearScreen();
-		drawPreCentered(CURRENT_PRICE, 1);
-		cout << fixed << setprecision(2) << dormitory_rent_price;
-		drawPreCentered(ENTER_VALUE, WINDOW_HEIGHT / 2);
-		dormitory_rent_price = getMoney();
-
-		// Пересчет стипендии
-		for (student &person : students) {
-			calculateCash(&person);
-		}
-
-		clearScreen();
-		drawCentered(PRICE_CHANGED, WINDOW_HEIGHT / 2);
-		waitAnyKey();
 	}
 
 }
@@ -579,11 +541,11 @@ namespace {
 void readData()
 /// Считывание студентов и настроек с дефолтными значениями
 {
-	readStudents();
 	if (!readConfig()) {
 		default_cash = 58.28;
 		dormitory_rent_price = 18.22;
 	}
+	readStudents();
 }
 
 size_t addStudent()
@@ -619,9 +581,13 @@ size_t findStudent()
 			g_correct_press = true;
 			switch (getPress()) {
 			// По имени
-			case '1': return viewFoundStudents(byName);
+			case '1': return viewFoundStudents([](student s, string request) {
+				return lower(s.name).find(request) != string::npos;
+			});
 			// По группе
-			case '2': return viewFoundStudents(byGroup);
+			case '2': return viewFoundStudents([](student s, string request) {
+				return to_string(s.group).find(request) != string::npos;
+			});
 			// Вернуться
 			case '0': return 0;
 			// Неверный ввод
@@ -710,14 +676,20 @@ size_t sortStudents()
 		return 0;
 	}
 	drawCentered(SORTING, 1);
-	drawMenu(4, BY_NAME, BY_CASH, BY_GPA, BACK);
+	drawMenu(4, BY_NAME, BY_GPA, BY_CASH, BACK);
 	do switch (getPress()) {
 	// По имени
-	case '1': return viewSortedList(students, byName);
-	// По стипендии
-	case '2': return viewSortedList(students, byCash);
+	case '1': return viewSortedList(students, [](student a, student b) {
+		return strcmp(a.name, b.name) < 0;
+	});
 	// По среднему баллу
-	case '3': return viewSortedList(students, byGPA);
+	case '2': return viewSortedList(students, [](student a, student b) {
+		return a.gpa > b.gpa;
+	});
+	// По стипендии
+	case '3': return viewSortedList(students, [](student a, student b) {
+		return a.cash > b.cash;
+	});
 	// Вернуться
 	case '0': return 0;
 	} while (true);
@@ -736,30 +708,36 @@ void writeConfig()
 /// Запись настроек в файл
 {
 	ofstream confout(CONFLIST, ios::out | ios_base::trunc);
-	confout << DEFAULT_CASH_CONFIG << default_cash << "\n";
-	confout << DORM_PRICE_CONFIG << dormitory_rent_price;
+	confout << "#" << DEFAULT_CASH << "\n" << default_cash << "\n";
+	confout << "#" << DORM_PRICE << "\n" << dormitory_rent_price;
 	confout.close();
 }
 
 size_t settings()
 /// Настройки значений
 {
-	clearScreen();
-	drawCentered(SETTINGS, 1);
-	drawMenu(3, DEFAULT_CASH, DORM_PRICE, BACK);
-	do {
-		g_correct_press = true;
-		switch (getPress()) {
-		// Изменить базовую стипендию
-		case '1': changeDefaultCash();
-			return 1;
-		// Изменить стоимость оплаты общежития
-		case '2': changeDormitoryRentPrice();
-			return 2;
-		// Вернуться
-		case '0': return 0;
-		// Неверный ввод
-		default: g_correct_press = false;
-		}
-	} while (true);
+	while (true) {
+		// Изменяемые параметры
+		drawSettingsTitles();
+		cout << " " << setfill(' ') << setw(39) << fixed << setprecision(2)
+			<< default_cash	<< (char)179 << setw(39) << dormitory_rent_price;
+		drawMenu(3, DEFAULT_CASH, DORM_PRICE, BACK);
+		do {
+			g_correct_press = true;
+			switch (getPress()) {
+			// Изменить базовую стипендию
+			case '1': TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
+				changeSetting(default_cash);
+				break;
+			// Изменить стоимость оплаты общежития
+			case '2': TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
+				changeSetting(dormitory_rent_price);
+				break;
+			// Вернуться
+			case '0': return 0;
+			// Неверный ввод
+			default: g_correct_press = false;
+			}
+		} while (!g_correct_press);
+	}
 }
