@@ -487,35 +487,17 @@ namespace {
 	{
 		ifstream confin(CONFLIST, ios::in);
 		string line;
-		
-		while (getline(confin, line)) {
-			if (line.front() == '#') {
-				if (line.substr(1) == DEFAULT_CASH) {
-					confin >> default_cash;
-				}
-				else if (line.substr(1) == DORM_PRICE) {
-					confin >> dormitory_rent_price;
-				}
-			}
-		}
 
 		if (confin.is_open()) {
-			confin.seekg(DEFAULT_CASH_CONFIG.length(), confin.cur);
-			if (confin.cur != EOF) {
-				confin >> default_cash;
-				confin.ignore(10000, '\n');
-			}
-			else {
-				confin.close();
-				return false;
-			}
-			confin.seekg(DORM_PRICE_CONFIG.length(), confin.cur);
-			if (confin.cur != EOF) {
-				confin >> dormitory_rent_price;
-			} 
-			else {
-				confin.close();
-				return false;
+			while (getline(confin, line)) {
+				if (line.front() == '#') {
+					if (line.substr(1) == DEFAULT_CASH) {
+						confin >> default_cash;
+					}
+					else if (line.substr(1) == DORM_PRICE) {
+						confin >> dormitory_rent_price;
+					}
+				}
 			}
 		} 
 		else return false;
