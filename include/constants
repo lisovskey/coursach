@@ -6,11 +6,11 @@ static const std::string STUDLIST = "students.bin";
 static const std::string ACCLIST = "accounts.bin";
 static const std::string CONFLIST = "config.txt";
 
-static const size_t STRING_LENGTH = 24;
-static const size_t LOGIN_MIN_LENGTH = 4;
-static const size_t PASS_MIN_LENGTH = 4;
-static const size_t WINDOW_WIDTH = 80;
-static const size_t WINDOW_HEIGHT = 40;
+static const std::size_t STRING_LENGTH = 24;
+static const std::size_t LOGIN_MIN_LENGTH = 4;
+static const std::size_t PASS_MIN_LENGTH = 4;
+static const std::size_t WINDOW_WIDTH = 80;
+static const std::size_t WINDOW_HEIGHT = 40;
 
 static const std::string ADMIN = "ADMIN";
 static const std::string USER = "USER";

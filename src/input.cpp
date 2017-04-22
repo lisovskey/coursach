@@ -99,7 +99,7 @@ bool getBoolean()
 	}
 }
 
-string getPass(size_t size)
+string getPass(const size_t size)
 {
 	char* result = new char[size];
 	memset(result, '\0', sizeof(char) * size);

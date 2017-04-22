@@ -62,7 +62,7 @@ namespace {
 		}
 	}
 
-	void setLogin(account* a, const size_t y)
+	void setLogin(account &a, const size_t y)
 	/// Ввод логина только из букв и цифр
 	{
 		drawPreCentered(ENTER_LOGIN, y);
@@ -73,7 +73,7 @@ namespace {
 			bool already_taken = false;
 			for (account &user : accounts) {
 				if (strcmp(user.login, login) == 0) {
-					if (user.id != a->id) {
+					if (user.id != a.id) {
 						already_taken = true;
 						break;
 					}
@@ -97,13 +97,13 @@ namespace {
 				drawPreCentered(TAKEN_LOGIN, y);
 			}
 			else {
-				strcpy_s(a->login, login);
+				strcpy_s(a.login, login);
 				return;
 			}
 		}
 	}
 
-	void setPass(account* a, const size_t y)
+	void setPass(account &a, const size_t y)
 	/// Ввод пароля только из букв, цифр, дефисов и подчеркиваний
 	{
 		drawPreCentered(ENTER_PASS, y);
@@ -125,17 +125,17 @@ namespace {
 				drawPreCentered(INVALID_PASS, y);
 			}
 			else {
-				strcpy_s(a->pass, pass);
+				strcpy_s(a.pass, pass);
 				return;
 			}
 		}
 	}
 
-	void setRole(account* a, const size_t y)
+	void setRole(account &a, const size_t y)
 	/// Ввод роли пользователя
 	{
 		drawPreCentered(ENTER_ROLE, y);
-		a->role = getBoolean();
+		a.role = getBoolean();
 	}
 
 	size_t deleteAccount(const size_t id)
@@ -145,7 +145,7 @@ namespace {
 		accounts.erase(accounts.begin() + id - 1);
 
 		// Исправление номеров
-		for (size_t i = id - 1; i < accounts.size(); i++) {
+		for (size_t i = id - 1; i < accounts.size(); ++i) {
 			accounts[i].id = i + 1;
 		}
 
@@ -154,20 +154,18 @@ namespace {
 		return accounts.size();
 	}
 
-	size_t viewAccount(account* a)
+	void viewAccount(account &a)
 	/// Отображение основной информации об аккаунте
 	{
 		string role;
-		role = a->role ? "admin" : "user";
+		role = a.role ? "admin" : "user";
 
 		// Отображение
 		cout << " " << right << setfill('0') << setw(2)
-			<< a->id << setfill(' ') << " " << left
-			<< (char)179 << setw(25) << a->login
-			<< (char)179 << setw(24) << a->pass
+			<< a.id << setfill(' ') << " " << left
+			<< (char)179 << setw(25) << a.login
+			<< (char)179 << setw(24) << a.pass
 			<< (char)179 << setw(24) << role << endl;
-
-		return a->id;
 	}
 
 }
@@ -186,14 +184,14 @@ bool auth()
 		// Создание аккаунта администратора
 		account admin;
 		admin.id = 1;
-		setLogin(&admin, WINDOW_HEIGHT / 2 - 1);
-		setPass(&admin, WINDOW_HEIGHT / 2);
+		setLogin(admin, WINDOW_HEIGHT / 2 - 1);
+		setPass(admin, WINDOW_HEIGHT / 2);
 		admin.role = ROLE_ADMIN;
 		accounts.push_back(admin);
 
 		// Отображение
 		drawAccountTitles();
-		viewAccount(&admin);
+		viewAccount(admin);
 		drawCentered(ADMIN_CREATED, WINDOW_HEIGHT / 2);
 		waitAnyKey();
 	}
@@ -244,18 +242,18 @@ size_t createAccount()
 
 	// Заполнение полей
 	drawCentered(ACC_CREATING, 1);
-	setLogin(&a, WINDOW_HEIGHT / 2 - 2);
+	setLogin(a, WINDOW_HEIGHT / 2 - 2);
 	cout << endl;
-	setPass(&a, WINDOW_HEIGHT / 2);
+	setPass(a, WINDOW_HEIGHT / 2);
 	cout << endl;
-	setRole(&a, WINDOW_HEIGHT / 2 + 2);
+	setRole(a, WINDOW_HEIGHT / 2 + 2);
 
 	// Добавление в вектор
 	accounts.push_back(a);
 
 	// Отображение
 	drawAccountTitles();
-	viewAccount(&a);
+	viewAccount(a);
 	drawCentered(ACCOUNT_ADDED, WINDOW_HEIGHT / 2);
 	waitAnyKey();
 	return a.id;
@@ -276,22 +274,22 @@ size_t editAccount()
 	while (true) {
 		// Изменяемый аккаунт
 		drawAccountTitles();
-		viewAccount(&accounts[id - 1]);
+		viewAccount(accounts[id - 1]);
 		drawMenu(5, LOGIN, PASS, ROLE, REMOVE, BACK);
 		do {
 			g_correct_press = true;
 			switch (getPress()) {
 			// Логин
 			case '1': TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
-				setLogin(&accounts[id - 1], WINDOW_HEIGHT / 2);
+				setLogin(accounts[id - 1], WINDOW_HEIGHT / 2);
 				break;
 			// Пароль
 			case '2': TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
-				setPass(&accounts[id - 1], WINDOW_HEIGHT / 2);
+				setPass(accounts[id - 1], WINDOW_HEIGHT / 2);
 				break;
 			// Уровень доступа
 			case '3': TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
-				setRole(&accounts[id - 1], WINDOW_HEIGHT / 2);
+				setRole(accounts[id - 1], WINDOW_HEIGHT / 2);
 				break;
 			// Удалить
 			case '4': return deleteAccount(id);
@@ -318,7 +316,7 @@ size_t viewAccounts()
 	drawAccountTitles();
 	// Основная информация о каждом аккаунте
 	for (account &a : accounts) {
-		viewAccount(&a);
+		viewAccount(a);
 	}
 	cout << "\n" << endl;
 	waitAnyKey();

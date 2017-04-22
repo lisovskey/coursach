@@ -27,28 +27,28 @@ using namespace std;
 namespace {
 
 	typedef struct {
-		size_t	mathmatics	:4;
-		size_t	programming	:4;
-		size_t	physics		:4;
-		size_t	philosophy	:4;
-		size_t	analytics	:4;
+		size_t	mathmatics;
+		size_t	programming;
+		size_t	physics;
+		size_t	philosophy;
+		size_t	analytics;
 	} marks;
 
 	typedef struct {
-		bool	graphics	:1;
-		bool	english		:1;
-		bool	pe			:1;
-		bool	designing	:1;
-		bool	history		:1;
+		bool	graphics;
+		bool	english;
+		bool	pe;
+		bool	designing;
+		bool	history;
 	} credits;
 
 	typedef struct {
-		bool	budget		:1;
-		bool	activism	:1;
-		bool	science		:1;
-		bool	foreign		:1;
-		bool	invalid		:1;
-		bool	dormitory	:1;
+		bool	budget;
+		bool	activism;
+		bool	science;
+		bool	foreign;
+		bool	invalid;
+		bool	dormitory;
 	} circumstances;
 
 	typedef struct {
@@ -69,57 +69,57 @@ namespace {
 	double default_cash;
 	double dormitory_rent_price;
 
-	bool calculateCash(student* s)
+	bool calculateCash(student &s)
 	/// Расчет стипендии
 	{
 		double cash;
-		bool satisfactory_marks = s->knowledge.mathmatics > 3.9 &&
-			s->knowledge.programming > 3.9 &&
-			s->knowledge.physics > 3.9 &&
-			s->knowledge.philosophy > 3.9 &&
-			s->knowledge.analytics > 3.9;
-		bool passed_all_credits = s->passes.graphics &&
-			s->passes.english &&
-			s->passes.pe &&
-			s->passes.designing &&
-			s->passes.history;
+		bool satisfactory_marks = s.knowledge.mathmatics > 3.9 &&
+			s.knowledge.programming > 3.9 &&
+			s.knowledge.physics > 3.9 &&
+			s.knowledge.philosophy > 3.9 &&
+			s.knowledge.analytics > 3.9;
+		bool passed_all_credits = s.passes.graphics &&
+			s.passes.english &&
+			s.passes.pe &&
+			s.passes.designing &&
+			s.passes.history;
 		// Исключение
 		if (!satisfactory_marks) {
 			return false;
 		}
 		// Базовая стипендия
-		if (s->privileges.foreign) {
+		if (s.privileges.foreign) {
 			cash = default_cash * 2;
 		}
-		else if (s->privileges.budget) {
+		else if (s.privileges.budget) {
 			if (!passed_all_credits)
 				cash = 0;
 			else cash = default_cash;
 		}
 		else {
-			if (s->privileges.invalid)
+			if (s.privileges.invalid)
 				cash = default_cash * 0.8;
 			else cash = 0;
 		}
 		// Множители
 		if (cash > 0) {
-			if (s->gpa < 5)
+			if (s.gpa < 5)
 				cash *= 0.8;
-			else if (s->gpa > 5.9 && s->gpa < 8)
+			else if (s.gpa > 5.9 && s.gpa < 8)
 				cash *= 1.2;
-			else if (s->gpa > 7.9 && s->gpa < 9)
+			else if (s.gpa > 7.9 && s.gpa < 9)
 				cash *= 1.4;
-			else if (s->gpa > 8.9)
+			else if (s.gpa > 8.9)
 				cash *= 1.6;
 
-			if (s->privileges.invalid)
+			if (s.privileges.invalid)
 				cash *= 1.5;
-			if (s->privileges.activism)
+			if (s.privileges.activism)
 				cash *= 1.1;
-			if (s->privileges.science)
+			if (s.privileges.science)
 				cash *= 1.2;
-			if (s->privileges.dormitory) {
-				if (s->privileges.foreign)
+			if (s.privileges.dormitory) {
+				if (s.privileges.foreign)
 					cash -= dormitory_rent_price * 4;
 				else
 					cash -= dormitory_rent_price;
@@ -130,7 +130,7 @@ namespace {
 			cash = 0;
 		}
 
-		s->cash = cash;
+		s.cash = cash;
 		return true;
 	}
 
@@ -149,7 +149,7 @@ namespace {
 		}
 	}
 
-	void setName(student* s, const size_t y)
+	void setName(student &s, const size_t y)
 	/// Ввод имени из двух слов только из букв
 	{
 		drawPreCentered(ENTER_NAME, y);
@@ -171,13 +171,13 @@ namespace {
 				drawPreCentered(SURNAME_NAME, y);
 			}
 			else {
-				strcpy_s(s->name, capitalize(name).c_str());
+				strcpy_s(s.name, capitalize(name).c_str());
 				return;
 			}
 		}
 	}
 
-	void setGroup(student* s, const size_t y)
+	void setGroup(student &s, const size_t y)
 	/// Ввод шестизначного номера группы '16 года
 	{
 		drawPreCentered(ENTER_GROUP, y);
@@ -193,99 +193,97 @@ namespace {
 				drawPreCentered(DIFFERENT_GROUP, y);
 			}
 			else {
-				s->group = group;
+				s.group = group;
 				return;
 			}
 		}
 	}
 
-	void setMarks(student* s, const size_t y)
+	void setMarks(student &s, const size_t y)
 	/// Установка отметок с расчетом среднего балла
 	{
 		double sum = 0;
 		int offset = 0;
 		drawPreCentered(ENTER_MATH, y + offset++);
-		sum += s->knowledge.mathmatics = getMark();
+		sum += s.knowledge.mathmatics = getMark();
 		drawPreCentered(ENTER_PROG, y + offset++);
-		sum += s->knowledge.programming = getMark();
+		sum += s.knowledge.programming = getMark();
 		drawPreCentered(ENTER_PHYS, y + offset++);
-		sum += s->knowledge.physics = getMark();
+		sum += s.knowledge.physics = getMark();
 		drawPreCentered(ENTER_PHIL, y + offset++);
-		sum += s->knowledge.philosophy = getMark();
+		sum += s.knowledge.philosophy = getMark();
 		drawPreCentered(ENTER_ANAL, y + offset++);
-		sum += s->knowledge.analytics = getMark();
-		s->gpa = sum / offset;
+		sum += s.knowledge.analytics = getMark();
+		s.gpa = sum / offset;
 	}
 
-	void setCredits(student* s, const size_t y)
+	void setCredits(student &s, const size_t y)
 	/// Установка вовремя сданных зачетов
 	{
 		int offset = 0;
 		drawPreCentered(ENTER_GRAPH, y + offset++);
-		s->passes.graphics = getBoolean();
+		s.passes.graphics = getBoolean();
 		drawPreCentered(ENTER_ENG, y + offset++);
-		s->passes.english = getBoolean();
+		s.passes.english = getBoolean();
 		drawPreCentered(ENTER_PE, y + offset++);
-		s->passes.pe = getBoolean();
+		s.passes.pe = getBoolean();
 		drawPreCentered(ENTER_DESIGN, y + offset++);
-		s->passes.designing = getBoolean();
+		s.passes.designing = getBoolean();
 		drawPreCentered(ENTER_HIST, y + offset++);
-		s->passes.history = getBoolean();
+		s.passes.history = getBoolean();
 	}
 
-	void setCircs(student* s, const size_t y)
+	void setCircs(student &s, const size_t y)
 	/// Установка влияющих факторов
 	{
 		int offset = 0;
 		drawPreCentered(ENTER_BUDGET, y + offset++);
-		s->privileges.budget = getBoolean();
+		s.privileges.budget = getBoolean();
 		drawPreCentered(ENTER_ACTIVE, y + offset++);
-		s->privileges.activism = getBoolean();
+		s.privileges.activism = getBoolean();
 		drawPreCentered(ENTER_SCIENCE, y + offset++);
-		s->privileges.science = getBoolean();
+		s.privileges.science = getBoolean();
 		drawPreCentered(ENTER_FOREIGN, y + offset++);
-		s->privileges.foreign = getBoolean();
+		s.privileges.foreign = getBoolean();
 		drawPreCentered(ENTER_INVALID, y + offset++);
-		s->privileges.invalid = getBoolean();
+		s.privileges.invalid = getBoolean();
 		drawPreCentered(ENTER_DORM, y + offset++);
-		s->privileges.dormitory = getBoolean();
+		s.privileges.dormitory = getBoolean();
 	}
 
-	size_t viewStudent(student* s)
+	void viewStudent(student &s)
 	/// Отображение основной информации о студенте
 	{
 		// Расчет зачетов
 		string passes = "";
 		int count = 0;
-		if (s->passes.graphics)		count++;
-		if (s->passes.english)		count++;
-		if (s->passes.pe)			count++;
-		if (s->passes.designing)	count++;
-		if (s->passes.history)		count++;
+		if (s.passes.graphics)		count++;
+		if (s.passes.english)		count++;
+		if (s.passes.pe)			count++;
+		if (s.passes.designing)		count++;
+		if (s.passes.history)		count++;
 		passes += '0' + count;
 		passes += "/5";
 
 		// Другие факторы
 		string circs = "";
-		if (s->privileges.budget)		circs += "b ";
-		if (s->privileges.activism)		circs += "a ";
-		if (s->privileges.science)		circs += "s ";
-		if (s->privileges.foreign)		circs += "f ";
-		if (s->privileges.invalid)		circs += "i ";
-		if (s->privileges.dormitory)	circs += "d";
+		if (s.privileges.budget)		circs += "b ";
+		if (s.privileges.activism)		circs += "a ";
+		if (s.privileges.science)		circs += "s ";
+		if (s.privileges.foreign)		circs += "f ";
+		if (s.privileges.invalid)		circs += "i ";
+		if (s.privileges.dormitory)		circs += "d";
 		if (circs.length() == 0)		circs += "-";
 
 		// Отображение
 		cout << " " << fixed << right << setw(2) << setfill('0')
-			<< s->id % 100 << left << " " << setfill(' ')
-			<< (char)179 << setw(24) << s->name
-			<< (char)179 << setw(8) << s->group << setprecision(1)
-			<< (char)179 << setw(6) << s->gpa
+			<< s.id % 100 << left << " " << setfill(' ')
+			<< (char)179 << setw(24) << s.name
+			<< (char)179 << setw(8) << s.group << setprecision(1)
+			<< (char)179 << setw(6) << s.gpa
 			<< (char)179 << setw(8) << passes
 			<< (char)179 << setw(11) << circs << setprecision(2)
-			<< (char)179 << setw(13) << s->cash << endl;
-
-		return s->id;
+			<< (char)179 << setw(13) << s.cash << endl;
 	}
 
 	size_t createStudent()
@@ -303,18 +301,18 @@ namespace {
 
 		// Заполнение полей
 		drawCentered(STUD_CREATING, 1);
-		setName(&s, WINDOW_HEIGHT / 2 - 10);
+		setName(s, WINDOW_HEIGHT / 2 - 10);
 		cout << endl;
-		setGroup(&s, WINDOW_HEIGHT / 2 - 8);
+		setGroup(s, WINDOW_HEIGHT / 2 - 8);
 		cout << endl;
-		setMarks(&s, WINDOW_HEIGHT / 2 - 6);
+		setMarks(s, WINDOW_HEIGHT / 2 - 6);
 		cout << endl;
-		setCredits(&s, WINDOW_HEIGHT / 2);
+		setCredits(s, WINDOW_HEIGHT / 2);
 		cout << endl;
-		setCircs(&s, WINDOW_HEIGHT / 2 + 6);
+		setCircs(s, WINDOW_HEIGHT / 2 + 6);
 
 		// В случае низких отметок
-		if (!calculateCash(&s)) {
+		if (!calculateCash(s)) {
 			clearScreen();
 			drawCentered(STUDENT_EXPELLED, WINDOW_HEIGHT / 2);
 			waitAnyKey();
@@ -326,7 +324,7 @@ namespace {
 
 		// Отображение
 		drawStudentTitles();
-		viewStudent(&s);
+		viewStudent(s);
 		drawCentered(STUDENT_ADDED, WINDOW_HEIGHT / 2);
 		waitAnyKey();
 		return s.id;
@@ -373,13 +371,13 @@ namespace {
 		s.passes.pe = generateBool((int)s.gpa + 8 * s.privileges.budget - 1);
 		s.passes.history = generateBool((int)s.gpa + 8 * s.privileges.budget - 1);
 
-		calculateCash(&s);
+		calculateCash(s);
 
 		// Добавление в вектор
 		students.push_back(s);
 
 		drawStudentTitles();
-		viewStudent(&s);
+		viewStudent(s);
 		drawCentered(STUDENT_GENERATED, WINDOW_HEIGHT / 2);
 		waitAnyKey();
 		return s.id;
@@ -391,7 +389,7 @@ namespace {
 		clearScreen();
 		students.erase(students.begin() + id - 1);
 		// Исправление номеров
-		for (size_t i = id - 1; i < students.size(); i++) {
+		for (size_t i = id - 1; i < students.size(); ++i) {
 			students[i].id = i + 1;
 		}
 		drawCentered(STUDENT_GENERATED, WINDOW_HEIGHT / 2);
@@ -411,8 +409,8 @@ namespace {
 
 			limit += (size - i < height) ? size % height : height;
 
-			for (size_t j = i; j < limit; j++) {
-				viewStudent(&list[j]);
+			for (size_t j = i; j < limit; ++j) {
+				viewStudent(list[j]);
 			}
 			waitAnyKey();
 			clearScreen();
@@ -442,7 +440,7 @@ namespace {
 		// Сравнение с именем каждого студента в векторе		
 		size_t count = 0;
 		bool found = false;
-		for (size_t i = 0; i < students.size(); i++) {
+		for (size_t i = 0; i < students.size(); ++i) {
 			student s = students[i];
 			if (condition(s, request)) {
 				if (!found) {
@@ -450,7 +448,7 @@ namespace {
 					found = true;
 				}
 				count++;
-				viewStudent(&students[i]);
+				viewStudent(students[i]);
 			}
 		}
 
@@ -472,7 +470,7 @@ namespace {
 			student tmp;
 			while (studin.peek() != EOF) {
 				studin.read((char*)&tmp, sizeof(student));
-				calculateCash(&tmp);
+				calculateCash(tmp);
 				tmp.id = i++;
 				students.push_back(tmp);
 			}
@@ -514,7 +512,7 @@ namespace {
 
 		// Пересчет стипендии
 		for (student &person : students) {
-			calculateCash(&person);
+			calculateCash(person);
 		}
 	}
 
@@ -594,34 +592,34 @@ size_t editStudent()
 	while (true) {
 		// Изменяемый студент
 		drawStudentTitles();
-		viewStudent(&students[id - 1]);
+		viewStudent(students[id - 1]);
 		drawMenu(7, NAME, GROUP, MARKS, CREDITS, CIRCS, REMOVE, BACK);
 		do {
 			g_correct_press = true;
 			switch (getPress()) {
 			// Имя
 			case '1': TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
-				setName(&students[id - 1], WINDOW_HEIGHT / 2);
+				setName(students[id - 1], WINDOW_HEIGHT / 2);
 				break;
 			// Группу
 			case '2': TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
-				setGroup(&students[id - 1], WINDOW_HEIGHT / 2);
+				setGroup(students[id - 1], WINDOW_HEIGHT / 2);
 				break;
 			// Отметки
 			case '3': TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
-				setMarks(&students[id - 1], WINDOW_HEIGHT / 2 - 2);
-				if (!calculateCash(&students[id - 1]))
+				setMarks(students[id - 1], WINDOW_HEIGHT / 2 - 2);
+				if (!calculateCash(students[id - 1]))
 					return deleteStudent(id);
 				break;
 			// Зачеты
 			case '4': TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
-				setCredits(&students[id - 1], WINDOW_HEIGHT / 2 - 2);
-				calculateCash(&students[id - 1]);
+				setCredits(students[id - 1], WINDOW_HEIGHT / 2 - 2);
+				calculateCash(students[id - 1]);
 				break;
 			// Льготы
 			case '5': TConsole::clsUnder(WINDOW_WIDTH, WINDOW_HEIGHT, 2);
-				setCircs(&students[id - 1], WINDOW_HEIGHT / 2 - 3);
-				calculateCash(&students[id - 1]);
+				setCircs(students[id - 1], WINDOW_HEIGHT / 2 - 3);
+				calculateCash(students[id - 1]);
 				break;
 			// Удалить
 			case '6': return deleteStudent(id);
