@@ -1,5 +1,5 @@
-#include "stdafx"
-#include "console"
+#include "stdafx.hpp"
+#include "console.hpp"
 
 TConsole::TConsole() :Out(std::cout)
 {

@@ -2,25 +2,17 @@
 * RitZEED inc.
 */
 
-#include "stdafx"
-#include "constants"
-#include "console"
-#include "drawer"
+#include "stdafx.hpp"
+#include "constants.hpp"
+#include "console.hpp"
+#include "drawer.hpp"
 #include <cstdarg>
 using namespace std;
 
 const string TOO_MANY_ARGS = "Too many arguments";
 const string MEMORY_ERROR = "Memory error";
 
-TConsole tc = TConsole();
-
-template <typename T>
-void drawButton(T button)
-{
-	tc.InvertColors();
-	cout << " " << button << " ";
-	tc.InvertColors();
-}
+TConsole tc;
 
 void drawMenu(const size_t num, ...)
 {
@@ -40,10 +32,12 @@ void drawMenu(const size_t num, ...)
 		while (count--) {
 			tc.GotoXY(x, y);
 
+			tc.InvertColors();
 			if (count == 0)
-				drawButton(0);
+				cout << " " << 0 << " ";
 			else
-				drawButton(num - count);
+				cout << " " << num - count << " ";
+			tc.InvertColors();
 
 			cout << " " << va_arg(args, string);
 			y += 2;

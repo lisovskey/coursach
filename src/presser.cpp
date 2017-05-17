@@ -2,9 +2,9 @@
 * RitZEED inc.
 */
 
-#include "stdafx"
-#include "drawer"
-#include "presser"
+#include "stdafx.hpp"
+#include "drawer.hpp"
+#include "presser.hpp"
 #include <conio.h>
 
 void waitAnyKey()

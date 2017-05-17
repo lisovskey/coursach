@@ -2,12 +2,12 @@
 * RitZEED inc.
 */
 
-#include "stdafx"
-#include "generator"
+#include "stdafx.hpp"
+#include "generator.hpp"
 #include <random>
 using namespace std;
 
-const string NAMES[] = { "Alex", "Anton", "Alice", "Anastasia", "Alena", "Angella",
+const string NAMES[] { "Alex", "Anton", "Alice", "Anastasia", "Alena", "Angella",
 "Alina", "Anatoly", "Andrew", "Alexander", "Alexandra", "Artur", "Boris", "Caroline",
 "Christine", "Dmitry", "Danila", "Denis", "Daria", "Evgeny", "Evgeniya", "Egor",
 "Elisabet", "Eveline", "Elya", "Eldar", "Fedor", "German", "Gleb", "Grigory", "Georgy",
@@ -20,12 +20,12 @@ const string NAMES[] = { "Alex", "Anton", "Alice", "Anastasia", "Alena", "Angell
 "Victor", "Vladimir", "Vladislav", "Vasily", "Vyacheslav", "Vera", "Veronica", "Viktoriya",
 "Vlada", "Violett", "Varvara", "Yury", "Yan", "Yana", "Yaroslav", "Zoe", "Zlata" };
 
-const string SURNAMES[] = { "Black", "Gray", "White", "Green", "Brown", "Smith", "Martin",
+const string SURNAMES[] { "Black", "Gray", "White", "Green", "Brown", "Smith", "Martin",
 "Wilson", "Lee", "Johnson", "Williams", "Miller", "Jones", "Davis", "Anderson", "Taylor",
 "Thomas", "Jackson", "Harris", "Lewis", "Robinson", "Walker", "Young", "Allen", "Nelson",
 "Scott", "Hill", "King", "Mitchell", "Roberts", "Carter", "Adams", "Evans", "Turner", "Diaz" };
 
-const size_t GROUPS[] = { 
+const int GROUPS[] { 
 	651001, 651002, 651003, 651004, 651005, 651006, 650501,	650502, 650503, 650504, 650505, 
 	662101, 644101, 661401, 630501, 653501, 653502, 653503,	653504, 653505, 674001, 674002, 
 	674003, 674004, 610901, 642801, 614301, 614302, 650701,	660801, 660802, 672301, 672302, 
@@ -38,33 +38,33 @@ const size_t GROUPS[] = {
 };
 
 random_device rd;
-mt19937 mt(rd());
+mt19937 mt{ rd() };
 
 string generateName()
 {
 	string name = "";
-	uniform_int_distribution<int> dist_name(0, 101);
+	uniform_int_distribution<int> dist_name{ 0, 101 };
 	name += NAMES[dist_name(mt)];
 	name += " ";
-	uniform_int_distribution<int> dist_surname(0, 34);
+	uniform_int_distribution<int> dist_surname{ 0, 34 };
 	name += SURNAMES[dist_surname(mt)];
 	return name;
 }
 
-size_t generateGroup()
+int generateGroup()
 {
-	uniform_int_distribution<int> dist(0, 90);
+	uniform_int_distribution<int> dist{ 0, 90 };
 	return GROUPS[dist(mt)];
 }
 
-size_t generateMark()
+int generateMark()
 {
-	uniform_int_distribution<int> dist(4, 10);
+	uniform_int_distribution<int> dist{ 4, 10 };
 	return dist(mt);
 }
 
 bool generateBool(const int factor)
 {
-	uniform_int_distribution<int> dist(0, abs(factor));
+	uniform_int_distribution<int> dist{ 0, abs(factor) };
 	return factor >= 0 ? dist(mt) != 0 : dist(mt) == 0;
 }

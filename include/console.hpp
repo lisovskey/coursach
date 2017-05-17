@@ -21,10 +21,6 @@ enum {
 	COLOR_WHITE
 };
 
-void initWindow(BYTE, BYTE, const char*);
-void clsUnder(BYTE, BYTE, size_t);
-void clsAll();
-
 class TConsole {
 private:
 	HANDLE OutputHandle;

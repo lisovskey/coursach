@@ -2,12 +2,12 @@
 * RitZEED inc.
 */
 
-#include "stdafx"
-#include "presser"
-#include "constants"
-#include "account"
-#include "student"
-#include "drawer"
+#include "stdafx.hpp"
+#include "presser.hpp"
+#include "constants.hpp"
+#include "account.hpp"
+#include "student.hpp"
+#include "drawer.hpp"
 
 int userMode();
 int adminMode();
@@ -36,7 +36,7 @@ int userMode()
 			// Найти студента
 			case '1': findStudent();
 				break;
-			// Сортировать список
+			// Отобразить список
 			case '2': viewStudents();
 				break;
 			// Сортировать список
@@ -62,7 +62,7 @@ int adminMode()
 	while (true) {
 		clearScreen();
 		drawCentered(MENU, 1);
-		drawMenu(10, ADD, FIND, EDIT, VIEW, SORT, SAVE, SETTINGS, ACCS, HELP, QUIT);
+		drawMenu(10, ADD, FIND, EDIT, VIEW, SORT, SETTINGS, ACCS, SAVE, HELP, QUIT);
 		// Цикл выбора действия
 		do {
 			g_correct_press = true;
@@ -76,20 +76,20 @@ int adminMode()
 			// Изменить информацию
 			case '3': editStudent();
 				break;
-			// Сортировать список
+			// Отобразить список
 			case '4': viewStudents();
 				break;
 			// Сортировать список
 			case '5': sortStudents();
-				break;
-			// Сохранить изменения
-			case '6': saveChanges();
-				break;
+				break;			
 			// Настройки
-			case '7': settings();
+			case '6': settings();
 				break;
 			// Администрирование
-			case '8': administration();
+			case '7': administration();
+				break;
+			// Сохранить изменения
+			case '8': saveChanges();
 				break;
 			// Помощь
 			case '9': help(ROLE_ADMIN);

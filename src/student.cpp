@@ -2,15 +2,15 @@
 * RitZEED inc.
 */
 
-#include "stdafx"
-#include "constants"
-#include "stringer"
-#include "console"
-#include "presser"
-#include "input"
-#include "drawer"
-#include "generator"
-#include "student"
+#include "stdafx.hpp"
+#include "constants.hpp"
+#include "stringer.hpp"
+#include "console.hpp"
+#include "presser.hpp"
+#include "input.hpp"
+#include "drawer.hpp"
+#include "generator.hpp"
+#include "student.hpp"
 #include <fstream>
 #include <vector>
 #include <regex>
@@ -27,11 +27,11 @@ using namespace std;
 namespace {
 
 	typedef struct {
-		size_t	mathmatics;
-		size_t	programming;
-		size_t	physics;
-		size_t	philosophy;
-		size_t	analytics;
+		int		mathmatics;
+		int		programming;
+		int		physics;
+		int		philosophy;
+		int		analytics;
 	} marks;
 
 	typedef struct {
@@ -54,7 +54,7 @@ namespace {
 	typedef struct {
 		size_t			id;
 		char			name[STRING_LENGTH];
-		size_t			group;
+		int				group;
 		marks			knowledge;
 		double			gpa;
 		credits			passes;
@@ -66,11 +66,10 @@ namespace {
 	vector<student> students;
 
 	// Изменяемые параметры
-	double default_cash;
-	double dormitory_rent_price;
+	double default_cash, dormitory_rent_price;
 
+	// Расчет стипендии
 	bool calculateCash(student &s)
-	/// Расчет стипендии
 	{
 		double cash;
 		bool satisfactory_marks = s.knowledge.mathmatics > 3.9 &&
@@ -134,8 +133,8 @@ namespace {
 		return true;
 	}
 
+	// Ввод номера с проверкой существования
 	size_t getId()
-	/// Ввод номера с проверкой существования
 	{
 		drawPreCentered(ENTER_ID, WINDOW_HEIGHT / 2);
 		size_t id;
@@ -149,8 +148,8 @@ namespace {
 		}
 	}
 
+	// Ввод имени из двух слов только из букв
 	void setName(student &s, const size_t y)
-	/// Ввод имени из двух слов только из букв
 	{
 		drawPreCentered(ENTER_NAME, y);
 		char name[STRING_LENGTH + 1];
@@ -177,8 +176,8 @@ namespace {
 		}
 	}
 
+	// Ввод шестизначного номера группы '16 года
 	void setGroup(student &s, const size_t y)
-	/// Ввод шестизначного номера группы '16 года
 	{
 		drawPreCentered(ENTER_GROUP, y);
 		size_t group;
@@ -199,8 +198,8 @@ namespace {
 		}
 	}
 
+	// Установка отметок с расчетом среднего балла
 	void setMarks(student &s, const size_t y)
-	/// Установка отметок с расчетом среднего балла
 	{
 		double sum = 0;
 		int offset = 0;
@@ -217,8 +216,8 @@ namespace {
 		s.gpa = sum / offset;
 	}
 
+	// Установка вовремя сданных зачетов
 	void setCredits(student &s, const size_t y)
-	/// Установка вовремя сданных зачетов
 	{
 		int offset = 0;
 		drawPreCentered(ENTER_GRAPH, y + offset++);
@@ -233,8 +232,8 @@ namespace {
 		s.passes.history = getBoolean();
 	}
 
+	// Установка влияющих факторов
 	void setCircs(student &s, const size_t y)
-	/// Установка влияющих факторов
 	{
 		int offset = 0;
 		drawPreCentered(ENTER_BUDGET, y + offset++);
@@ -251,11 +250,11 @@ namespace {
 		s.privileges.dormitory = getBoolean();
 	}
 
+	// Отображение основной информации о студенте
 	void viewStudent(student &s)
-	/// Отображение основной информации о студенте
 	{
 		// Расчет зачетов
-		string passes = "";
+		string passes{};
 		int count = 0;
 		if (s.passes.graphics)		count++;
 		if (s.passes.english)		count++;
@@ -266,7 +265,7 @@ namespace {
 		passes += "/5";
 
 		// Другие факторы
-		string circs = "";
+		string circs{};
 		if (s.privileges.budget)		circs += "b ";
 		if (s.privileges.activism)		circs += "a ";
 		if (s.privileges.science)		circs += "s ";
@@ -286,18 +285,12 @@ namespace {
 			<< (char)179 << setw(13) << s.cash << endl;
 	}
 
+	// Создание студента вручную
 	size_t createStudent()
-	/// Создание студента вручную
 	{
 		clearScreen();
 		student s;
 		s.id = students.size() + 1;
-
-		if (s.id > 99) {
-			drawCentered(TOO_MUCH_STUDENTS, WINDOW_HEIGHT / 2);
-			waitAnyKey();
-			return 0;
-		}
 
 		// Заполнение полей
 		drawCentered(STUD_CREATING, 1);
@@ -330,19 +323,12 @@ namespace {
 		return s.id;
 	}
 
+	// Генерация студента
 	size_t generateStudent()
-	/// Генерация студента
 	{
 		clearScreen();
 		student s;
 		s.id = students.size() + 1;
-
-		if (s.id > 99) {
-			drawCentered(TOO_MUCH_STUDENTS, WINDOW_HEIGHT / 2);
-			waitAnyKey();
-			return 0;
-		}
-
 		strcpy_s(s.name, generateName().c_str());
 		s.group = generateGroup();
 
@@ -383,8 +369,8 @@ namespace {
 		return s.id;
 	}
 
-	size_t deleteStudent(const size_t id)
-	/// Удаление студента из вектора
+	// Удаление студента из вектора
+	void deleteStudent(const size_t id)
 	{
 		clearScreen();
 		students.erase(students.begin() + id - 1);
@@ -392,13 +378,12 @@ namespace {
 		for (size_t i = id - 1; i < students.size(); ++i) {
 			students[i].id = i + 1;
 		}
-		drawCentered(STUDENT_GENERATED, WINDOW_HEIGHT / 2);
+		drawCentered(STUDENT_REMOVED, WINDOW_HEIGHT / 2);
 		waitAnyKey();
-		return students.size();
 	}
 
-	size_t viewList(vector<student> &list)
-	/// Отображение всех студентов в переданном векторе
+	// Отображение всех студентов в переданном векторе
+	void viewList(vector<student> &list)
 	{
 		size_t size = list.size();
 		size_t height = WINDOW_HEIGHT - 4;
@@ -408,26 +393,24 @@ namespace {
 			drawStudentTitles();
 
 			limit += (size - i < height) ? size % height : height;
-
 			for (size_t j = i; j < limit; ++j) {
 				viewStudent(list[j]);
 			}
+
 			waitAnyKey();
 			clearScreen();
 		}
-
-		return size;
 	}
 
-	size_t viewSortedList(vector<student> list, bool(*compare)(student, student))
-	/// Сортировка вектора по переданной функции
+	// Сортировка вектора по переданной функции
+	void viewSortedList(vector<student> list, bool(*compare)(student, student))
 	{
 		sort(list.begin(), list.end(), compare);
 		return viewList(list);
 	}
 
+	// Поиск и отображение найденных по запросу студентов
 	size_t viewFoundStudents(bool(*condition)(student, string))
-	/// Поиск и отображение найденных по запросу студентов
 	{
 		clearScreen();
 		// Ввод запроса
@@ -440,15 +423,14 @@ namespace {
 		// Сравнение с именем каждого студента в векторе		
 		size_t count = 0;
 		bool found = false;
-		for (size_t i = 0; i < students.size(); ++i) {
-			student s = students[i];
-			if (condition(s, request)) {
+		for (student &person : students) {
+			if (condition(person, request)) {
 				if (!found) {
 					drawStudentTitles();
 					found = true;
 				}
 				count++;
-				viewStudent(students[i]);
+				viewStudent(person);
 			}
 		}
 
@@ -461,8 +443,8 @@ namespace {
 		return count;
 	}
 
+	// Считывание студентов из файла в вектор
 	bool readStudents()
-	/// Считывание студентов из файла в вектор
 	{
 		ifstream studin(STUDLIST, ios::binary | ios::in);
 		if (studin.is_open()) {
@@ -474,14 +456,13 @@ namespace {
 				tmp.id = i++;
 				students.push_back(tmp);
 			}
-			studin.close();
 			return students.size() != 0;
 		} 
 		else return false;
 	}
 
+	// Считывание натроек из файла
 	bool readConfig()
-	/// Считывание натроек из файла
 	{
 		ifstream confin(CONFLIST, ios::in);
 		string line;
@@ -497,15 +478,14 @@ namespace {
 					}
 				}
 			}
+
+			return true;
 		} 
 		else return false;
-
-		confin.close();
-		return true;
 	}
 
+	// Смена базовой стипендии
 	void changeSetting(double &setting)
-	/// Смена базовой стипендии
 	{
 		drawPreCentered(ENTER_VALUE, WINDOW_HEIGHT / 2);
 		setting = getMoney();
@@ -518,8 +498,8 @@ namespace {
 
 }
 
+// Считывание студентов и настроек с дефолтными значениями
 void readData()
-/// Считывание студентов и настроек с дефолтными значениями
 {
 	if (!readConfig()) {
 		default_cash = 58.28;
@@ -528,10 +508,16 @@ void readData()
 	readStudents();
 }
 
+// Добавление нового студента
 size_t addStudent()
-/// Добавление нового студента
 {
 	clearScreen();
+	// Переполнение вектора
+	if (students.size() > 98) {
+		drawCentered(TOO_MUCH_STUDENTS, WINDOW_HEIGHT / 2);
+		waitAnyKey();
+		return 0;
+	}
 	drawCentered(ADDING, 1);
 	drawMenu(3, MANUAL, GENERATE, BACK);
 	do switch (getPress()) {
@@ -544,8 +530,8 @@ size_t addStudent()
 	} while (true);
 }
 
+// Поиск студента по определенному полю
 size_t findStudent()
-/// Поиск студента по определенному полю
 {
 	clearScreen();
 	// Пустой вектор
@@ -577,15 +563,15 @@ size_t findStudent()
 	}
 }
 
-size_t editStudent()
-/// Изменение полей студента
+// Изменение полей студента
+void editStudent()
 {
 	clearScreen();
 	// Пустой вектор
 	if (students.size() == 0) {
 		drawCentered(NOTHING_TO_EDIT, WINDOW_HEIGHT / 2);
 		waitAnyKey();
-		return 0;
+		return;
 	}
 	// Запрос номера
 	size_t id = getId();
@@ -624,7 +610,7 @@ size_t editStudent()
 			// Удалить
 			case '6': return deleteStudent(id);
 			// Вернуться
-			case '0': return 0;
+			case '0': return;
 			// Неверный ввод
 			default: g_correct_press = false;
 			}
@@ -632,28 +618,28 @@ size_t editStudent()
 	}
 }
 
-size_t viewStudents()
-/// Отображение всех студентов
+// Отображение всех студентов
+void viewStudents()
 {
 	// Пустой вектор
 	if (students.size() == 0) {
 		clearScreen();
 		drawCentered(NOTHING_TO_SHOW, WINDOW_HEIGHT / 2);
 		waitAnyKey();
-		return 0;
+		return;
 	}
-	return viewList(students);
+	viewList(students);
 }
 
-size_t sortStudents()
-/// Отображение всех студентов в определенном порядке
+// Отображение всех студентов в определенном порядке
+void sortStudents()
 {
 	clearScreen();
 	// Пустой вектор
 	if (students.size() == 0) {
 		drawCentered(NOTHING_TO_SORT, WINDOW_HEIGHT / 2);
 		waitAnyKey();
-		return 0;
+		return;
 	}
 	drawCentered(SORTING, 1);
 	drawMenu(4, BY_NAME, BY_GPA, BY_CASH, BACK);
@@ -671,30 +657,12 @@ size_t sortStudents()
 		return a.cash > b.cash;
 	});
 	// Вернуться
-	case '0': return 0;
-	} while (true);
+	case '0': return;
+	} while (true); 
 }
 
-void writeStudents()
-/// Запись из вектора в файл
-{
-	ofstream studout(STUDLIST, ios::binary | ios::out | ios_base::trunc);
-	for (student &person : students)
-		studout.write((char*)&person, sizeof(student));
-	studout.close();
-}
-
-void writeConfig()
-/// Запись настроек в файл
-{
-	ofstream confout(CONFLIST, ios::out | ios_base::trunc);
-	confout << "#" << DEFAULT_CASH << "\n" << default_cash << "\n";
-	confout << "#" << DORM_PRICE << "\n" << dormitory_rent_price;
-	confout.close();
-}
-
-size_t settings()
-/// Настройки значений
+// Настройки значений
+void settings()
 {
 	while (true) {
 		// Изменяемые параметры
@@ -714,10 +682,26 @@ size_t settings()
 				changeSetting(dormitory_rent_price);
 				break;
 			// Вернуться
-			case '0': return 0;
+			case '0': return;
 			// Неверный ввод
 			default: g_correct_press = false;
 			}
 		} while (!g_correct_press);
 	}
+}
+
+// Запись из вектора в файл
+void writeStudents()
+{
+	ofstream studout(STUDLIST, ios::binary | ios::out | ios_base::trunc);
+	for (student &person : students)
+		studout.write((char*)&person, sizeof(student));
+}
+
+// Запись настроек в файл
+void writeConfig()
+{
+	ofstream confout(CONFLIST, ios::out | ios_base::trunc);
+	confout << "#" << DEFAULT_CASH << "\n" << default_cash << "\n";
+	confout << "#" << DORM_PRICE << "\n" << dormitory_rent_price;
 }

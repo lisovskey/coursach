@@ -7,8 +7,8 @@ static const std::string ACCLIST = "accounts.bin";
 static const std::string CONFLIST = "config.txt";
 
 static const std::size_t STRING_LENGTH = 24;
-static const std::size_t LOGIN_MIN_LENGTH = 4;
-static const std::size_t PASS_MIN_LENGTH = 4;
+static const std::size_t LOGIN_MIN_LENGTH = 3;
+static const std::size_t PASS_MIN_LENGTH = 3;
 static const std::size_t WINDOW_WIDTH = 80;
 static const std::size_t WINDOW_HEIGHT = 40;
 
@@ -93,6 +93,7 @@ static const std::string ENTER_VALUE = "Enter new value: ";
 static const std::string AUTH_LOGIN = "login: ";
 static const std::string AUTH_PASS = "password: ";
 static const std::string SEARCH = "search: ";
+static const std::string PRESS_ANY_KEY = "press any key...";
 
 static const std::string ACCOUNT_REMOVED = "Account was deleted";
 static const std::string STUDENT_REMOVED = "Student was deleted";
@@ -113,6 +114,7 @@ static const std::string CURRENT_CASH = "Current cash: ";
 static const std::string CURRENT_PRICE = "Current price: ";
 static const std::string CASH_CHANGED = "Default cash has been changed";
 static const std::string PRICE_CHANGED = "Dormitory rent price has been changed";
+static const std::string CHANGES_SAVED = "All changes have been saved";
 
 static const std::string ID_TITLE = "id";
 static const std::string LOGIN_TITLE = "login";
@@ -126,8 +128,3 @@ static const std::string CIRCS_TITLE = "circs";
 static const std::string CASH_TITLE = "cash";
 static const std::string DEFAULT_CASH_TITLE = "default cash";
 static const std::string DORM_PRICE_TITLE = "dormitory rent price";
-
-static const std::string PRESS_ANY_KEY = "press any key...";
-static const std::string DEFAULT_CASH_CONFIG = "default cash = ";
-static const std::string DORM_PRICE_CONFIG = "dormitory rent price = ";
-static const std::string CHANGES_SAVED = "All changes have been saved";

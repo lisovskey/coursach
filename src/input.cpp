@@ -2,12 +2,13 @@
 * RitZEED inc.
 */
 
-#include "stdafx"
-#include "constants"
-#include "drawer"
-#include "console"
-#include "stringer"
-#include "input"
+#include "stdafx.hpp"
+#include "constants.hpp"
+#include "drawer.hpp"
+#include "console.hpp"
+#include "stringer.hpp"
+#include "input.hpp"
+#include <windows.h>
 #include <sstream>
 using namespace std;
 
@@ -24,7 +25,7 @@ size_t getPositiveNumber()
 	while (true) {
 		getline(cin, line);
 		cin.clear();
-		stringstream ss(line);
+		stringstream ss{ line };
 		if (ss >> number && line.find('-') == string::npos)
 			if (ss.eof())
 				return number;
@@ -45,7 +46,7 @@ double getMoney()
 	while (true) {
 		getline(cin, line);
 		cin.clear();
-		stringstream ss(line);
+		stringstream ss{ line };
 		if (ss >> money)
 			if (ss.eof())
 				if (money > 0 && money < 1000)
@@ -62,6 +63,7 @@ size_t getMark()
 	size_t y = tc.WhereY();
 
 	size_t mark;
+
 	while (true) {
 		mark = getPositiveNumber();
 		if (mark > 0 && mark < 11) {
@@ -80,6 +82,7 @@ bool getBoolean()
 	size_t y = tc.WhereY();
 
 	string line;
+
 	while (true) {
 		getline(cin, line);
 		cin.clear();

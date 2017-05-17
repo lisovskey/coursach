@@ -3,9 +3,9 @@
 void readData();
 std::size_t addStudent();
 std::size_t findStudent();
-std::size_t editStudent();
-std::size_t viewStudents();
-std::size_t sortStudents();
+void editStudent();
+void viewStudents();
+void sortStudents();
 void writeStudents();
 void writeConfig();
-std::size_t settings();
+void settings();

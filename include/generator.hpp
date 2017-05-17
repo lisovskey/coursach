@@ -1,6 +1,6 @@
 #pragma once
 
 std::string generateName();
-std::size_t generateGroup();
-std::size_t generateMark();
+int generateGroup();
+int generateMark();
 bool generateBool(const int = 2);

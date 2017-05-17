@@ -2,14 +2,14 @@
 * RitZEED inc.
 */
 
-#include "stdafx"
-#include "constants"
-#include "console"
-#include "stringer"
-#include "presser"
-#include "input"
-#include "drawer"
-#include "account"
+#include "stdafx.hpp"
+#include "constants.hpp"
+#include "console.hpp"
+#include "stringer.hpp"
+#include "presser.hpp"
+#include "input.hpp"
+#include "drawer.hpp"
+#include "account.hpp"
 #include <fstream>
 #include <vector>
 #include <regex>
@@ -30,9 +30,10 @@ namespace {
 	// Вектор аккаунтов
 	vector<account> accounts;
 
-	size_t readAccounts()
-	/// Считывание аккаунтов из файла в вектор
+	// Считывание аккаунтов из файла в вектор
+	bool readAccounts()
 	{
+		bool admin_exist = false;
 		ifstream accin(ACCLIST, ios::binary | ios::in);
 		if (accin.is_open()) {
 			size_t i = 1;
@@ -41,14 +42,14 @@ namespace {
 				accin.read((char*)&tmp, sizeof(account));
 				tmp.id = i++;
 				accounts.push_back(tmp);
+				if (tmp.role) admin_exist = true;
 			}
-			accin.close();
 		}
-		return accounts.size();
+		return admin_exist;
 	}
 
+	// Ввод номера с проверкой существования
 	size_t getId()
-	/// Ввод номера с проверкой существования
 	{
 		drawPreCentered(ENTER_ID, WINDOW_HEIGHT / 2);
 		size_t id;
@@ -62,8 +63,8 @@ namespace {
 		}
 	}
 
+	// Ввод логина только из букв и цифр
 	void setLogin(account &a, const size_t y)
-	/// Ввод логина только из букв и цифр
 	{
 		drawPreCentered(ENTER_LOGIN, y);
 		char login[STRING_LENGTH + 1];
@@ -103,8 +104,8 @@ namespace {
 		}
 	}
 
+	// Ввод пароля только из букв, цифр, дефисов и подчеркиваний
 	void setPass(account &a, const size_t y)
-	/// Ввод пароля только из букв, цифр, дефисов и подчеркиваний
 	{
 		drawPreCentered(ENTER_PASS, y);
 		static char pass[STRING_LENGTH + 1];
@@ -131,15 +132,15 @@ namespace {
 		}
 	}
 
+	// Ввод роли пользователя
 	void setRole(account &a, const size_t y)
-	/// Ввод роли пользователя
 	{
 		drawPreCentered(ENTER_ROLE, y);
 		a.role = getBoolean();
 	}
 
+	// Удаление аккаунта из вектора
 	size_t deleteAccount(const size_t id)
-	/// Удаление аккаунта из вектора
 	{
 		clearScreen();
 		accounts.erase(accounts.begin() + id - 1);
@@ -154,34 +155,30 @@ namespace {
 		return accounts.size();
 	}
 
+	// Отображение основной информации об аккаунте
 	void viewAccount(account &a)
-	/// Отображение основной информации об аккаунте
 	{
-		string role;
-		role = a.role ? "admin" : "user";
-
-		// Отображение
 		cout << " " << right << setfill('0') << setw(2)
 			<< a.id << setfill(' ') << " " << left
 			<< (char)179 << setw(25) << a.login
 			<< (char)179 << setw(24) << a.pass
-			<< (char)179 << setw(24) << role << endl;
+			<< (char)179 << setw(24) << (a.role ? "admin" : "user") << endl;
 	}
 
 }
 
+// Инициализация окна и авторизация или регистрация
 bool auth()
-/// Инициализация окна и авторизация или решистрация
 {
 	TConsole::initWindow(WINDOW_WIDTH, WINDOW_HEIGHT, APP_NAME.c_str());
-	if (readAccounts() == 0) {
+	if (!readAccounts()) {
 		// Отображение подсказок
 		drawHelp(ROLE_ADMIN);
 		waitAnyKey();
 		clearScreen();
 
-		drawCentered(REGISTRATION, 1);
 		// Создание аккаунта администратора
+		drawCentered(REGISTRATION, 1);
 		account admin;
 		admin.id = 1;
 		setLogin(admin, WINDOW_HEIGHT / 2 - 1);
@@ -195,6 +192,7 @@ bool auth()
 		drawCentered(ADMIN_CREATED, WINDOW_HEIGHT / 2);
 		waitAnyKey();
 	}
+
 	// Авторизация
 	account input;
 	while (true) {
@@ -227,14 +225,15 @@ bool auth()
 	}
 }
 
+// Создание аккаунта вручную
 size_t createAccount()
-/// Создание аккаунта вручную
 {
 	clearScreen();
 	account a;
 	a.id = accounts.size() + 1;
 
-	if (a.id > 99) {
+	// Переполненный вектор
+	if (a.id > 35) {
 		drawCentered(TOO_MUCH_ACCOUNTS, WINDOW_HEIGHT / 2);
 		waitAnyKey();
 		return 0;
@@ -259,8 +258,8 @@ size_t createAccount()
 	return a.id;
 }
 
+// Изменение полей аккаунта
 size_t editAccount()
-/// Изменение полей аккаунта
 {
 	clearScreen();
 	// Пустой вектор
@@ -302,8 +301,8 @@ size_t editAccount()
 	}
 }
 
+// Отображение всех аккаунтов
 size_t viewAccounts()
-/// Отображение всех аккаунтов
 {
 	// Пустой вектор
 	if (accounts.size() == 0) {
@@ -324,11 +323,10 @@ size_t viewAccounts()
 	return accounts.size();
 }
 
+// Запись из вектора в файл
 void writeAccounts()
-/// Запись из вектора в файл
 {
 	ofstream accout(ACCLIST, ios::binary | ios::out | ios_base::trunc);
 	for (account &user : accounts)
 		accout.write((char*)&user, sizeof(account));
-	accout.close();
 }

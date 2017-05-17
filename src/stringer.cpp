@@ -2,14 +2,14 @@
 * RitZEED inc.
 */
 
-#include "stdafx"
-#include "stringer"
+#include "stdafx.hpp"
+#include "stringer.hpp"
 using namespace std;
 
 string lower(string str)
 {
-	for (size_t i = 0; i < str.length(); i++) {
-		str[i] = tolower(str[i]);
+	for (char &symbol : str) {
+		symbol = tolower(symbol);
 	}
 	return str;
 }

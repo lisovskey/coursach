@@ -8,7 +8,6 @@
 #include <string>
 #include <cstring>
 #include <cstdlib>
-#include <windows.h>
 
 // Глобальная вспомогательная переменная
 static bool g_correct_press;
