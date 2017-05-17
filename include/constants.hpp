@@ -1,5 +1,8 @@
 #pragma once
 
+#include <cstddef>
+#include <string>
+
 static const std::string APP_NAME = "coursach";
 
 static const std::string STUDLIST = "students.bin";

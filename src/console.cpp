@@ -98,7 +98,7 @@ void TConsole::initWindow(BYTE width, BYTE height, const char* title)
 	tc.TextColor(COLOR_WHITE);
 }
 
-void TConsole::clsUnder(BYTE width, BYTE height, size_t y)
+void TConsole::clsUnder(BYTE width, BYTE height, int y)
 {
 	TConsole tc;
 	tc.GotoXY(0, y);

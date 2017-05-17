@@ -37,5 +37,5 @@ public:
 	int WhereY();
 	void Window(BYTE, BYTE);
 	static void initWindow(BYTE, BYTE, const char*);
-	static void clsUnder(BYTE, BYTE, size_t);
+	static void clsUnder(BYTE, BYTE, int);
 };

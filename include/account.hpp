@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstddef>
+
 enum {
 	ROLE_USER,
 	ROLE_ADMIN

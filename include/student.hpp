@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstddef>
+
 void readData();
 std::size_t addStudent();
 std::size_t findStudent();

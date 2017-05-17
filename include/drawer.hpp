@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstddef>
+
 void drawMenu(const std::size_t, ...);
 void drawTitles(const std::size_t, ...);
 void drawPressAnyKey();
