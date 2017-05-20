@@ -16,7 +16,7 @@
 using namespace std;
 
 #define drawAccountTitles() drawTitles(4, \
-	4, ID_TITLE, 25, LOGIN_TITLE, 24, PASS_TITLE, 24, ROLE_TITLE);
+	ID_W, ID_TITLE, LOGIN_W, LOGIN_TITLE, PASS_W, PASS_TITLE, ROLE_W, ROLE_TITLE);
 
 namespace {
 
@@ -158,16 +158,15 @@ namespace {
 	// Отображение основной информации об аккаунте
 	void viewAccount(account &a)
 	{
-		cout << " " << right << setfill('0') << setw(2)
+		cout << " " << right << setfill('0') << setw(ID_W - 2)
 			<< a.id << setfill(' ') << " " << left
-			<< (char)179 << setw(25) << a.login
-			<< (char)179 << setw(24) << a.pass
-			<< (char)179 << setw(24) << (a.role ? "admin" : "user") << endl;
+			<< (char)179 << setw(LOGIN_W) << a.login
+			<< (char)179 << setw(PASS_W) << a.pass
+			<< (char)179 << setw(ROLE_W) << (a.role ? "admin" : "user") << endl;
 	}
 
 }
 
-// Инициализация окна и авторизация или регистрация
 bool auth()
 {
 	TConsole::initWindow(WINDOW_WIDTH, WINDOW_HEIGHT, APP_NAME.c_str());
@@ -225,7 +224,6 @@ bool auth()
 	}
 }
 
-// Создание аккаунта вручную
 size_t createAccount()
 {
 	clearScreen();
@@ -258,7 +256,6 @@ size_t createAccount()
 	return a.id;
 }
 
-// Изменение полей аккаунта
 size_t editAccount()
 {
 	clearScreen();
@@ -301,7 +298,6 @@ size_t editAccount()
 	}
 }
 
-// Отображение всех аккаунтов
 size_t viewAccounts()
 {
 	// Пустой вектор
@@ -323,7 +319,6 @@ size_t viewAccounts()
 	return accounts.size();
 }
 
-// Запись из вектора в файл
 void writeAccounts()
 {
 	ofstream accout(ACCLIST, ios::binary | ios::out | ios_base::trunc);

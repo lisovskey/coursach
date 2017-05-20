@@ -88,13 +88,14 @@ void drawTitles(const size_t num, ...)
 
 void drawPressAnyKey()
 {
-	drawCentered(PRESS_ANY_KEY, WINDOW_HEIGHT - 2);
+	tc.GotoXY(WINDOW_WIDTH / 2 - PRESS_ANY_KEY.length() / 2, WINDOW_HEIGHT - 2);
+	cout << " " << PRESS_ANY_KEY << " ";
 	tc.GotoXY(WINDOW_WIDTH - 1, WINDOW_HEIGHT - 1);
 }
 
 void drawCentered(const string str, const size_t y)
 {
-	tc.GotoXY(WINDOW_WIDTH / 2 - str.length() / 2, y);
+	tc.GotoXY(WINDOW_WIDTH / 2 - str.length() / 2 - 1, y);
 	cout << " " << str << " ";
 }
 

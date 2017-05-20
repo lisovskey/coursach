@@ -18,11 +18,11 @@
 using namespace std;
 
 #define drawStudentTitles() drawTitles(7, \
-	4, ID_TITLE, 24, NAME_TITLE, 8, GROUP_TITLE, 6, GPA_TITLE, \
-	8, CRED_TITLE, 11, CIRCS_TITLE, 13, CASH_TITLE);
+	ID_W, ID_TITLE, NAME_W, NAME_TITLE, GROUP_W, GROUP_TITLE, GPA_W, GPA_TITLE, \
+	CRED_W, CRED_TITLE, CIRCS_W, CIRCS_TITLE, CASH_W, CASH_TITLE);
 
 #define drawSettingsTitles() drawTitles(2, \
-	40, DEFAULT_CASH_TITLE, 39, DORM_PRICE_TITLE);
+	DEFAULT_CASH_W, DEFAULT_CASH_TITLE, DORM_PRICE_W, DORM_PRICE_TITLE);
 
 namespace {
 
@@ -275,14 +275,14 @@ namespace {
 		if (circs.length() == 0)		circs += "-";
 
 		// Отображение
-		cout << " " << fixed << right << setw(2) << setfill('0')
+		cout << " " << fixed << right << setw(ID_W - 2) << setfill('0')
 			<< s.id % 100 << left << " " << setfill(' ')
-			<< (char)179 << setw(24) << s.name
-			<< (char)179 << setw(8) << s.group << setprecision(1)
-			<< (char)179 << setw(6) << s.gpa
-			<< (char)179 << setw(8) << passes
-			<< (char)179 << setw(11) << circs << setprecision(2)
-			<< (char)179 << setw(13) << s.cash << endl;
+			<< (char)179 << setw(NAME_W) << s.name
+			<< (char)179 << setw(GROUP_W) << s.group << setprecision(1)
+			<< (char)179 << setw(GPA_W) << s.gpa
+			<< (char)179 << setw(CRED_W) << passes
+			<< (char)179 << setw(CIRCS_W) << circs << setprecision(2)
+			<< (char)179 << setw(CASH_W) << s.cash << endl;
 	}
 
 	// Создание студента вручную
@@ -469,7 +469,7 @@ namespace {
 
 		if (confin.is_open()) {
 			while (getline(confin, line)) {
-				if (line.front() == '#') {
+				if (!line.empty() && line.front() == '#') {
 					if (line.substr(1) == DEFAULT_CASH) {
 						confin >> default_cash;
 					}
@@ -498,7 +498,6 @@ namespace {
 
 }
 
-// Считывание студентов и настроек с дефолтными значениями
 void readData()
 {
 	if (!readConfig()) {
@@ -508,7 +507,6 @@ void readData()
 	readStudents();
 }
 
-// Добавление нового студента
 size_t addStudent()
 {
 	clearScreen();
@@ -530,7 +528,6 @@ size_t addStudent()
 	} while (true);
 }
 
-// Поиск студента по определенному полю
 size_t findStudent()
 {
 	clearScreen();
@@ -563,7 +560,6 @@ size_t findStudent()
 	}
 }
 
-// Изменение полей студента
 void editStudent()
 {
 	clearScreen();
@@ -618,7 +614,6 @@ void editStudent()
 	}
 }
 
-// Отображение всех студентов
 void viewStudents()
 {
 	// Пустой вектор
@@ -631,7 +626,6 @@ void viewStudents()
 	viewList(students);
 }
 
-// Отображение всех студентов в определенном порядке
 void sortStudents()
 {
 	clearScreen();
@@ -661,14 +655,13 @@ void sortStudents()
 	} while (true); 
 }
 
-// Настройки значений
 void settings()
 {
 	while (true) {
 		// Изменяемые параметры
 		drawSettingsTitles();
-		cout << " " << setfill(' ') << setw(39) << fixed << setprecision(2)
-			<< default_cash	<< (char)179 << setw(39) << dormitory_rent_price;
+		cout << " " << setfill(' ') << setw(DEFAULT_CASH_W - 1) << fixed << setprecision(2)
+			<< default_cash	<< (char)179 << setw(DORM_PRICE_W) << dormitory_rent_price;
 		drawMenu(3, DEFAULT_CASH, DORM_PRICE, BACK);
 		do {
 			g_correct_press = true;
@@ -690,7 +683,6 @@ void settings()
 	}
 }
 
-// Запись из вектора в файл
 void writeStudents()
 {
 	ofstream studout(STUDLIST, ios::binary | ios::out | ios_base::trunc);
@@ -698,7 +690,6 @@ void writeStudents()
 		studout.write((char*)&person, sizeof(student));
 }
 
-// Запись настроек в файл
 void writeConfig()
 {
 	ofstream confout(CONFLIST, ios::out | ios_base::trunc);

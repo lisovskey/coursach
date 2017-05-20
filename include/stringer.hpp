@@ -2,5 +2,8 @@
 
 #include <string>
 
+// Понижение регистра строки
 std::string lower(std::string);
-std::string capitalize(std::string str);
+
+// Повышение регистра первых букв слов в строке
+std::string capitalize(std::string);
